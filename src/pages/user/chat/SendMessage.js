@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { auth, db } from '../../../firebase'
+import { db } from '../../../firebase'
 import { addDoc, collection, serverTimestamp } from 'firebase/firestore'
 import config from '../../../router/config'
 import axios from 'axios'
@@ -57,6 +57,7 @@ const SendMessage = ({ scroll }) => {
          .catch((error) => {
             console.error('Lỗi khi gọi API:', error)
          })
+      // eslint-disable-next-line react-hooks/exhaustive-deps
    }, [])
    // userto
 

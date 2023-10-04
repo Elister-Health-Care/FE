@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useEffect, useRef, useState } from 'react'
 import {
    query,
@@ -40,6 +41,7 @@ const ChatBox = () => {
          .catch((error) => {
             console.error('Lỗi khi gọi API:', error)
          })
+      // eslint-disable-next-line react-hooks/exhaustive-deps
    }, [])
    // userTo
 

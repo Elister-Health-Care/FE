@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import { auth } from '../../../firebase'
-import { useAuthState } from 'react-firebase-hooks/auth'
+
 import config from '../../../router/config'
-import axios from 'axios'
 
 const Message = ({ message, userTo }) => {
    const [user, setUser] = useState({
