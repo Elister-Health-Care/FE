@@ -7,21 +7,49 @@ import {
    faFacebook,
    faGoogle,
 } from '@fortawesome/free-brands-svg-icons'
-import { faEnvelope } from '@fortawesome/free-regular-svg-icons'
+
 import {
-   faUser,
+   faEnvelope,
+   faUser as farUser,
+   faAddressBook,
+   faChessPawn,
+   faAddressCard,
+   faBuilding,
+   faRectangleList,
+   faHospital,
+   faMap as farMap,
+   faCircleXmark,
+} from '@fortawesome/free-regular-svg-icons'
+
+import {
+   faUser as fasUser,
    faLock,
    faChevronRight,
+   faMap as fasMap,
+   faLocation,
+   faSuitcaseMedical,
 } from '@fortawesome/free-solid-svg-icons'
 
 library.add(
    faTwitter,
    faFontAwesome,
-   faUser,
+   fasUser,
+   farUser,
    faLock,
    faChevronRight,
    faInstagram,
    faEnvelope,
    faFacebook,
-   faGoogle
+   faGoogle,
+   faAddressBook,
+   faChessPawn,
+   faAddressCard,
+   faBuilding,
+   faRectangleList,
+   faHospital,
+   farMap,
+   faCircleXmark,
+   fasMap,
+   faLocation,
+   faSuitcaseMedical
 )
