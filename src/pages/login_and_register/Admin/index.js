@@ -6,31 +6,38 @@ import axios from 'axios'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import styles from './AdminLogin.module.scss'
 import config from '~/router/config'
+import validateForm from '~/helpers/validation'
+import Loading from '~/components/Loading'
 
 const cx = classNames.bind(styles)
 
 function AdminLoginPage() {
    const navigate = useNavigate()
+   const [loading, setLoading] = useState(false)
+   const [email, setEmail] = useState('')
+   const [errors, setErrors] = useState({})
 
    useEffect(() => {
       const isAdminLoggedIn = localStorage.getItem('admin')
       if (isAdminLoggedIn) {
-         navigate('/admin/view-infor')
+         navigate('/admin/dashboard')
       }
    }, [navigate])
+
+   const rules = {
+      email: {
+         required: true,
+         email: true,
+      },
+      password: {
+         password: true,
+      },
+   }
 
    const [adminLogin, setadminLogin] = useState({
       email: '',
       password: '',
    })
-
-   const handleInputChange = (e) => {
-      const { name, value } = e.target
-      setadminLogin({
-         ...adminLogin,
-         [name]: value,
-      })
-   }
 
    // eslint-disable-next-line no-unused-vars
    const [admin, setAdmin] = useState({
@@ -50,34 +57,92 @@ function AdminLoginPage() {
       email_verified_at: null,
    })
 
-   const handleLogin = async (e) => {
-      e.preventDefault()
+   const handleInputChange = (e) => {
+      const { name, value } = e.target
+      setadminLogin({
+         ...adminLogin,
+         [name]: value,
+      })
+   }
+
+   const handleEmailChange = (e) => {
+      setEmail(e.target.value)
+   }
+
+   const handleSendmail = async () => {
+      console.log({ email })
       try {
+         setLoading(true)
          const response = await axios.post(
-            config.URL + 'api/admin/login',
-            adminLogin
+            config.URL + 'api/admin/forgot-pw-sendcode',
+            { email }
          )
+
          if (response.status === 200) {
-            console.log(response)
-            const updatedAdmin = response.data.admin
-            updatedAdmin.access_token =
-               response.data.message.original.access_token
-            setAdmin(updatedAdmin) // Cập nhật giá trị của admin bằng setAdmin
-            localStorage.setItem('admin', JSON.stringify(updatedAdmin)) // lưu vào localStorage
-            navigate('/admin/view-infor')
-            console.log(updatedAdmin)
-            console.log('Đăng nhập thành công')
+            setErrors({
+               errors,
+               sendMailOk:
+                  'Email đã được gửi thành công! Vui lòng kiểm tra hộp thư đến của bạn.',
+            })
          } else {
-            console.log(response)
-            console.error('Đăng nhập thất bại')
+            const data = await response.json()
+            setErrors({
+               errors,
+               sendMail: `${data.message}`,
+            })
          }
       } catch (error) {
-         console.log(error)
-         console.error('Lỗi kết nối đến API', error)
+         console.error(error)
+         setErrors({
+            errors,
+            sendMail: 'Có lỗi xảy ra. Vui lòng thử lại sau.',
+         })
+      } finally {
+         setLoading(false)
       }
    }
+
+   const handleLogin = async (e) => {
+      e.preventDefault()
+
+      const validationErrors = validateForm(adminLogin, rules)
+      if (Object.keys(validationErrors).length === 0) {
+         try {
+            setLoading(true)
+            const response = await axios.post(
+               config.URL + 'api/admin/login',
+               adminLogin
+            )
+            if (response.status === 200) {
+               console.log(response)
+               const updatedAdmin = response.data.admin
+               updatedAdmin.access_token =
+                  response.data.message.original.access_token
+               setAdmin(updatedAdmin) // Cập nhật giá trị của admin bằng setAdmin
+               localStorage.setItem('admin', JSON.stringify(updatedAdmin)) // lưu vào localStorage
+               navigate('/admin/dashboard')
+               console.log(updatedAdmin)
+               console.log('Đăng nhập thành công')
+            } else {
+               console.log('aaa', response)
+            }
+         } catch (error) {
+            console.log(error)
+            setErrors({
+               errors,
+               api: 'Tài khoản hoặc mật khẩu chưa đúng',
+            })
+         } finally {
+            setLoading(false)
+         }
+      } else {
+         setErrors(validationErrors)
+      }
+   }
+
    return (
       <div className={cx('container')}>
+         {loading && <Loading />}
          <div className={cx('screen')}>
             <div className={cx('screen_content')}>
                <div className={cx('title')}>Hello Admin!</div>
@@ -99,6 +164,10 @@ function AdminLoginPage() {
                         className={cx('login_input')}
                         placeholder="User name / Email"
                      ></input>
+                     {errors.email && (
+                        <p className={cx('error')}>{errors.email}</p>
+                     )}
+                     {errors.api && <p className={cx('error')}>{errors.api}</p>}
                   </div>
                   <div className={cx('login_field')}>
                      <FontAwesomeIcon
@@ -113,12 +182,15 @@ function AdminLoginPage() {
                         className={cx('login_input')}
                         placeholder="Password"
                      ></input>
+                     {errors.password && (
+                        <p className={cx('error')}>{errors.password}</p>
+                     )}
                   </div>
                   <button
                      type="submit"
                      className={cx('button', 'login_submit')}
                   >
-                     <span className={cx('button_text')}>Log In Now</span>
+                     <span className={cx('button_text')}>Đăng nhập</span>
                      <FontAwesomeIcon
                         icon="fa-solid fa-chevron-right"
                         className={cx('button_icon')}
@@ -126,24 +198,30 @@ function AdminLoginPage() {
                   </button>
                </form>
                <div className={cx('social_login')}>
-                  <h4>log in via</h4>
                   <div className={cx('social_icons')}>
-                     <Link>
+                     <Link to={'/'}>
                         <FontAwesomeIcon
-                           icon="fa-brands fa-google"
+                           icon="fa-solid fa-house"
                            className={cx('social_login_icon')}
                         />
                      </Link>
-                     <Link>
+                     <Link to={'/'}>
                         <FontAwesomeIcon
-                           icon="fa-brands fa-facebook"
+                           icon="fa-regular fa-hospital"
                            className={cx('social_login_icon')}
                         />
                      </Link>
                   </div>
-                  <Link className={cx('back')}>Home &gt;&gt;</Link>
+                  <Link
+                     className={cx('back')}
+                     data-toggle="modal"
+                     data-target="#exampleModal"
+                  >
+                     Quên mật khẩu &gt;&gt;
+                  </Link>
                </div>
             </div>
+
             <div className={cx('screen_background')}>
                <span
                   className={cx(
@@ -169,6 +247,73 @@ function AdminLoginPage() {
                      'screen_background_shape1'
                   )}
                ></span>
+            </div>
+            <div
+               className="modal fade"
+               id="exampleModal"
+               tabIndex="-1"
+               role="dialog"
+               aria-labelledby="exampleModalLabel"
+               aria-hidden="true"
+            >
+               <div className="modal-dialog" role="document">
+                  <div className="modal-content">
+                     <div className="modal-header">
+                        <h5 className="modal-title" id="exampleModalLabel">
+                           Quên mật khẩu
+                        </h5>
+                        <button
+                           type="button"
+                           className="close"
+                           data-dismiss="modal"
+                           aria-label="Close"
+                        >
+                           <span aria-hidden="true">&times;</span>
+                        </button>
+                     </div>
+                     <div className="modal-body">
+                        <div className="form-group">
+                           <label
+                              htmlFor="email_forgot_pass"
+                              className="col-form-label"
+                           >
+                              Email:
+                           </label>
+                           <input
+                              type="email"
+                              className="form-control"
+                              id="email_forgot_pass"
+                              value={email}
+                              onChange={handleEmailChange}
+                           />
+                           {errors.sendMail && (
+                              <p className={cx('error')}>{errors.sendMail}</p>
+                           )}
+                           {errors.sendMailOk && (
+                              <p className={cx('success')}>
+                                 {errors.sendMailOk}
+                              </p>
+                           )}
+                        </div>
+                     </div>
+                     <div className="modal-footer">
+                        <button
+                           type="button"
+                           className="btn btn-secondary"
+                           data-dismiss="modal"
+                        >
+                           Close
+                        </button>
+                        <button
+                           type="button"
+                           className="btn btn-primary"
+                           onClick={handleSendmail}
+                        >
+                           Xác nhận
+                        </button>
+                     </div>
+                  </div>
+               </div>
             </div>
          </div>
       </div>

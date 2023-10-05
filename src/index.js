@@ -1,7 +1,8 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import '~/components/GlobalStyle'
-import '~/components/FontAwesome'
+import '~/components/icon/MixedIcons'
+import '~/components/icon/FontAwesome'
 import App from './App'
 import reportWebVitals from '~/reportWebVitals'
 import { AppProvider } from '~/contexts/AppContext' // Import AppProvider
