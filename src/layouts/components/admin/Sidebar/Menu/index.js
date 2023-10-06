@@ -14,29 +14,32 @@ function Menu({ children }) {
    const [isOpenUl, setisOpenUl] = useState('')
 
    useEffect(() => {
-      if (location.pathname === '/admin/dashboard') {
-         setSelected('Dashboard')
-      } else if (location.pathname === '/admin/department') {
-         setSelected('Quản lý')
-         setUlSelected('Nhân viên')
-         setisOpenUl('Quản lý')
-      } else if (location.pathname === '/category-dish-manager') {
-         setSelected('Quản lý')
-         setUlSelected('Danh mục món ăn')
-         setisOpenUl('Quản lý')
-      } else if (location.pathname === '/desk-manager') {
-         setSelected('Quản lý')
-         setUlSelected('Bàn')
-         setisOpenUl('Quản lý')
-      } else if (location.pathname === '/dish-manager') {
-         setSelected('Quản lý')
-         setUlSelected('Món ăn')
-         setisOpenUl('Quản lý')
-      } else if (location.pathname === '/statistical-manager') {
-         setSelected('Thống kê')
-         setUlSelected('Thống kê')
-         setisOpenUl('Thống kê')
+      switch (location.pathname) {
+         case '/admin/dashboard':
+            setSelected('Dashboard')
+            break
+         case '/admin/all-admin':
+            setSelected('Tài khoản')
+            setUlSelected('Admin')
+            setisOpenUl('Tài khoản')
+            break
+         case '/admin/all-user':
+            setSelected('Tài khoản')
+            setUlSelected('Người dùng')
+            setisOpenUl('Tài khoản')
+            break
+
+         case '/statistical-manager':
+            setSelected('Thống kê')
+            setUlSelected('Thống kê')
+            setisOpenUl('Thống kê')
+            break
+
+         default:
+            // Xử lý mặc định nếu không có trường hợp nào khớp
+            break
       }
+
       // eslint-disable-next-line react-hooks/exhaustive-deps
    }, [])
 
@@ -72,6 +75,44 @@ function Menu({ children }) {
             </li>
             <li className="">
                <Link
+                  onClick={() => handleClickSelect('Tài khoản')}
+                  className={cx(selected === 'Tài khoản' && 'active')}
+               >
+                  <i className="ti-id-badge"></i>
+                  <span className={cx('space_icon')}>Tài khoản</span>
+                  <span
+                     className={cx(
+                        'icon_right',
+                        'ti-angle-right',
+                        isOpenUl === 'Tài khoản' && 'routate_90'
+                     )}
+                  ></span>
+               </Link>
+               <ul
+                  className={cx('ul_close', isOpenUl === 'Tài khoản' && 'open')}
+               >
+                  <li>
+                     <Link
+                        to="all-admin"
+                        onClick={() => handleClickSelectUl('Admin')}
+                        className={cx(ulSeclect === 'Admin' && 'active')}
+                     >
+                        Admin
+                     </Link>
+                  </li>
+                  <li>
+                     <Link
+                        to="all-user"
+                        onClick={() => handleClickSelectUl('Người dùng')}
+                        className={cx(ulSeclect === 'Người dùng' && 'active')}
+                     >
+                        Người dùng
+                     </Link>
+                  </li>
+               </ul>
+            </li>
+            <li className="">
+               <Link
                   onClick={() => handleClickSelect('Quản lý')}
                   className={cx(selected === 'Quản lý' && 'active')}
                >
@@ -88,40 +129,29 @@ function Menu({ children }) {
                <ul className={cx('ul_close', isOpenUl === 'Quản lý' && 'open')}>
                   <li>
                      <Link
-                        to="/staff-manager"
-                        onClick={() => handleClickSelectUl('Nhân viên')}
-                        className={cx(ulSeclect === 'Nhân viên' && 'active')}
+                        to="/"
+                        onClick={() => handleClickSelectUl('Danh mục')}
+                        className={cx(ulSeclect === 'Danh mục' && 'active')}
                      >
-                        Nhân viên
+                        Danh mục
                      </Link>
                   </li>
                   <li>
                      <Link
-                        to="/desk-manager"
-                        onClick={() => handleClickSelectUl('Bàn')}
-                        className={cx(ulSeclect === 'Bàn' && 'active')}
+                        to="/"
+                        onClick={() => handleClickSelectUl('Chuyên khoa')}
+                        className={cx(ulSeclect === 'Chuyên khoa' && 'active')}
                      >
-                        Bàn
+                        Chuyên khoa
                      </Link>
                   </li>
                   <li>
                      <Link
-                        to="/category-dish-manager"
-                        onClick={() => handleClickSelectUl('Danh mục món ăn')}
-                        className={cx(
-                           ulSeclect === 'Danh mục món ăn' && 'active'
-                        )}
+                        to="/"
+                        onClick={() => handleClickSelectUl('Dịch vụ')}
+                        className={cx(ulSeclect === 'Dịch vụ' && 'active')}
                      >
-                        Danh mục món ăn
-                     </Link>
-                  </li>
-                  <li>
-                     <Link
-                        to="/dish-manager"
-                        onClick={() => handleClickSelectUl('Món ăn')}
-                        className={cx(ulSeclect === 'Món ăn' && 'active')}
-                     >
-                        Món ăn
+                        Dịch vụ
                      </Link>
                   </li>
                </ul>
