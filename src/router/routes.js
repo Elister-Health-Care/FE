@@ -9,6 +9,9 @@ import UserLoginPage from '~/pages/login_and_register/user/Login/UserLoginPage'
 import UserUpdateInfor from '~/pages/login_and_register/user/UpdateInfor/UserUpdateInfor'
 import UserRegisterPage from '~/pages/login_and_register/user/Register/UserRegisterPage'
 import AdminLoginPage from '~/pages/login_and_register/Admin'
+import UserLoginPage from '~/pages/login_and_register/user/Login/LoginPage'
+// import UserRegisterPage from '~/pages/login_and_register/user/HospitalRegister'
+import HospitalRegisterPage from '~/pages/login_and_register/user/HospitalRegister'
 
 // Import main pages(public)
 import HomePage from '~/pages/main/Home'
