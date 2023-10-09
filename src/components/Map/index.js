@@ -14,6 +14,7 @@ const center = {
 function Map({ onChildData }) {
    const [lat, setLat] = useState(16.059087)
    const [lng, setLng] = useState(108.205813)
+   // eslint-disable-next-line no-unused-vars
    const [map, setMap] = useState(null)
 
    const [dataToSend, setDataToSend] = useState('')
