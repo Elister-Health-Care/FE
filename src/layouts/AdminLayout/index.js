@@ -1,27 +1,30 @@
-import React from 'react'
+import classNames from 'classnames/bind'
+
+import Header from '~/layouts/components/admin/Header'
+import Slidebar from '~/layouts/components/admin/Sidebar'
+import Footer from '~/layouts/components/admin/Footer'
+
+import styles from './AdminLayout.module.scss'
 import { Outlet } from 'react-router-dom'
 
-import Sidebar from '~/layouts/components/admin/Sidebar'
-
-const AdminDashboardPage = () => {
-   // const navigate = useNavigate()
-
-   // Hàm xử lý đăng xuất
-   // const logoutUser = () => {
-   //    localStorage.removeItem('user')
-   //    navigate('/user-login')
-   // }
-
+const cx = classNames.bind(styles)
+function AdminLayout() {
    return (
-      <div>
-         <div className="sidebar" style={{ opacity: '1' }}>
-            <Sidebar></Sidebar>
-         </div>
-         <div className="home-main">
-            <Outlet />
+      <div className={cx('body_fix')}>
+         <div className={cx('wrapper')}>
+            <Header />
+            <Slidebar />
+            <div className={cx('content_page')}>
+               <div className={cx('content')}>
+                  <div className={cx('content_fluid')}>
+                     <Outlet />
+                  </div>
+                  <Footer />
+               </div>
+            </div>
          </div>
       </div>
    )
 }
 
-export default AdminDashboardPage
+export default AdminLayout

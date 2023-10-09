@@ -8,6 +8,9 @@ import PageNotFoundPage from '~/pages/error/PageNotFound'
 import UserLoginPage from '~/pages/login_and_register/user/Login/UserLoginPage'
 import UserUpdateInfor from '~/pages/login_and_register/user/UpdateInfor/UserUpdateInfor'
 import UserRegisterPage from '~/pages/login_and_register/user/Register/UserRegisterPage'
+import UserLoginPage from '~/pages/login_and_register/user/Login/LoginPage'
+// import UserRegisterPage from '~/pages/login_and_register/user/HospitalRegister'
+import HospitalRegisterPage from '~/pages/login_and_register/user/HospitalRegister'
 import AdminLoginPage from '~/pages/login_and_register/Admin'
 import UserLoginPage from '~/pages/login_and_register/user/Login/LoginPage'
 // import UserRegisterPage from '~/pages/login_and_register/user/HospitalRegister'
@@ -31,21 +34,28 @@ import AdminViewInforPage from '~/pages/admin/Infor'
 import AdminChangePasswordPage from '~/pages/admin/ChangePassword'
 import AdminDepartment from '~/pages/admin/Department'
 
+//Import Test
+
 const BigRoutes = () => (
    <Routes>
       {/* Login route */}
       <Route path="user-login" element={<UserLoginPage />} />
       <Route path="user-update" element={<UserUpdateInfor />} />
       <Route path="user-register" element={<UserRegisterPage />} />
+      {/* <Route path="user-register" element={<UserRegisterPage />} /> */}
+      <Route path="hospital-register" element={<HospitalRegisterPage />} />
       <Route path="admin-login" element={<AdminLoginPage />} />
 
       {/* Public route */}
-      <Route path="home" element={<HomePage />}>
+      <Route path="/" element={<HomePage />}>
          <Route path="product/:id" element={<UserProductDetailPage />} />
       </Route>
 
-      {/* Private route user */}
-      <Route path="user" element={<UserAuthCheck component={UserLayout} />}>
+      {/* Private route user-hospital */}
+      <Route
+         path="user-hospital"
+         element={<UserAuthCheck component={UserLayout} />}
+      >
          <Route path="dashboard" element={<UserDashboardPage />}></Route>
          <Route path="view-infor" element={<UserViewInforPage />} />
          <Route path="change-password" element={<UserChangePasswordPage />} />
