@@ -18,18 +18,33 @@ function Menu({ children }) {
          case '/admin/dashboard':
             setSelected('Dashboard')
             break
-         case '/admin/all-admin':
+         case '/admin/admin-manager':
             setSelected('Tài khoản')
             setUlSelected('Admin')
             setisOpenUl('Tài khoản')
             break
-         case '/admin/all-user':
+         case '/admin/user-manager':
             setSelected('Tài khoản')
             setUlSelected('Người dùng')
             setisOpenUl('Tài khoản')
             break
+         case '/admin/category':
+            setSelected('Quản lý')
+            setUlSelected('Danh mục')
+            setisOpenUl('Quản lý')
+            break
+         case '/admin/department':
+            setSelected('Quản lý')
+            setUlSelected('Chuyên khoa')
+            setisOpenUl('Quản lý')
+            break
+         case '/admin/service':
+            setSelected('Quản lý')
+            setUlSelected('Dịch vụ')
+            setisOpenUl('Quản lý')
+            break
 
-         case '/statistical-manager':
+         case '/admin/statistical':
             setSelected('Thống kê')
             setUlSelected('Thống kê')
             setisOpenUl('Thống kê')
@@ -93,7 +108,7 @@ function Menu({ children }) {
                >
                   <li>
                      <Link
-                        to="all-admin"
+                        to="admin-manager"
                         onClick={() => handleClickSelectUl('Admin')}
                         className={cx(ulSeclect === 'Admin' && 'active')}
                      >
@@ -102,7 +117,7 @@ function Menu({ children }) {
                   </li>
                   <li>
                      <Link
-                        to="all-user"
+                        to="user-manager"
                         onClick={() => handleClickSelectUl('Người dùng')}
                         className={cx(ulSeclect === 'Người dùng' && 'active')}
                      >
@@ -129,7 +144,7 @@ function Menu({ children }) {
                <ul className={cx('ul_close', isOpenUl === 'Quản lý' && 'open')}>
                   <li>
                      <Link
-                        to="/"
+                        to="category"
                         onClick={() => handleClickSelectUl('Danh mục')}
                         className={cx(ulSeclect === 'Danh mục' && 'active')}
                      >
@@ -138,7 +153,7 @@ function Menu({ children }) {
                   </li>
                   <li>
                      <Link
-                        to="/"
+                        to="department"
                         onClick={() => handleClickSelectUl('Chuyên khoa')}
                         className={cx(ulSeclect === 'Chuyên khoa' && 'active')}
                      >
@@ -147,7 +162,7 @@ function Menu({ children }) {
                   </li>
                   <li>
                      <Link
-                        to="/"
+                        to="service"
                         onClick={() => handleClickSelectUl('Dịch vụ')}
                         className={cx(ulSeclect === 'Dịch vụ' && 'active')}
                      >
@@ -177,7 +192,7 @@ function Menu({ children }) {
                >
                   <li>
                      <Link
-                        to="/statistical-manager"
+                        to="statistical"
                         onClick={() => handleClickSelectUl('Thống kê')}
                         className={cx(ulSeclect === 'Thống kê' && 'active')}
                      >
