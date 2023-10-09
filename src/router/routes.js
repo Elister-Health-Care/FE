@@ -5,8 +5,9 @@ import { UserAuthCheck, AdminAuthCheck } from './AuthCheck'
 // Page Not Found
 import PageNotFoundPage from '~/pages/error/PageNotFound'
 // Import login pages
-import UserLoginPage from '~/pages/login_and_register/user/Login/LoginPage'
-import UserRegisterPage from '~/pages/login_and_register/user/Register/RegisterPage'
+import UserLoginPage from '~/pages/login_and_register/user/Login/UserLoginPage'
+import UserUpdateInfor from '~/pages/login_and_register/user/UpdateInfor/UserUpdateInfor'
+import UserRegisterPage from '~/pages/login_and_register/user/Register/UserRegisterPage'
 import AdminLoginPage from '~/pages/login_and_register/Admin'
 
 // Import main pages(public)
@@ -31,6 +32,7 @@ const BigRoutes = () => (
    <Routes>
       {/* Login route */}
       <Route path="user-login" element={<UserLoginPage />} />
+      <Route path="user-update" element={<UserUpdateInfor />} />
       <Route path="user-register" element={<UserRegisterPage />} />
       <Route path="admin-login" element={<AdminLoginPage />} />
 

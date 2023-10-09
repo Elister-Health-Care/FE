@@ -1,5 +1,5 @@
 const config = {
-    URL:'http://localhost/training/health/BE/public/'
+    URL:'http://localhost:99/'
 }
 
 export default config
