@@ -1,5 +1,5 @@
 import classNames from 'classnames/bind'
-import styles from './Loading.module.scss' // Tạo một file CSS để tùy chỉnh hiệu ứng loading
+import styles from './LoadingPage.module.scss' // Tạo một file CSS để tùy chỉnh hiệu ứng loading
 
 const cx = classNames.bind(styles)
 function Loading() {

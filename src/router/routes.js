@@ -33,6 +33,11 @@ import AdminDashboardPage from '~/pages/admin/Dashboard'
 import AdminViewInforPage from '~/pages/admin/Infor'
 import AdminChangePasswordPage from '~/pages/admin/ChangePassword'
 import AdminDepartment from '~/pages/admin/Department'
+import AdminAllUserPage from '~/pages/admin/UserManager'
+import AdminService from '~/pages/admin/Service'
+import AdminCategory from '~/pages/admin/Category'
+import AdminStatistical from '~/pages/admin/Statistical'
+import AdminManager from '~/pages/admin/AdminManager'
 
 //Import Test
 
@@ -67,7 +72,12 @@ const BigRoutes = () => (
          <Route path="dashboard" element={<AdminDashboardPage />}></Route>
          <Route path="view-infor" element={<AdminViewInforPage />} />
          <Route path="change-password" element={<AdminChangePasswordPage />} />
+         <Route path="user-manager" element={<AdminAllUserPage />} />
+         <Route path="admin-manager" element={<AdminManager />} />
          <Route path="department" element={<AdminDepartment />} />
+         <Route path="service" element={<AdminService />} />
+         <Route path="category" element={<AdminCategory />} />
+         <Route path="statistical" element={<AdminStatistical />} />
       </Route>
 
       {/* Error route */}

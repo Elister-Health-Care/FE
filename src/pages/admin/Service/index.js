@@ -1,13 +1,13 @@
 import classNames from 'classnames/bind'
 import TitleAdmin from '~/components/TitleAdmin'
 
-import styles from './AdminDepartment.module.scss'
+import styles from './Service.module.scss'
 
 const cx = classNames.bind(styles)
-const AdminDepartment = () => {
+function AdminService() {
    return (
       <>
-         <TitleAdmin>Chuyên khoa </TitleAdmin>
+         <TitleAdmin>Dịch vụ </TitleAdmin>
          <div className={cx('card', 'shadow')}>
             <div className={cx('card_header')}>
                <span>button, tittle or filter here</span>
@@ -18,4 +18,4 @@ const AdminDepartment = () => {
    )
 }
 
-export default AdminDepartment
+export default AdminService

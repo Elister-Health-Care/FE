@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import styles from './AdminLogin.module.scss'
 import config from '~/router/config'
 import validateForm from '~/helpers/validation'
-import Loading from '~/components/Loading'
+import Loading from '~/components/Loading/LoadingPage'
 
 const cx = classNames.bind(styles)
 
@@ -114,10 +114,9 @@ function AdminLoginPage() {
                adminLogin
             )
             if (response.status === 200) {
-               console.log(response)
-               const updatedAdmin = response.data.admin
-               updatedAdmin.access_token =
-                  response.data.message.original.access_token
+               console.log(response.data.data)
+               const updatedAdmin = response.data.data
+               updatedAdmin.access_token = response.data.data.access_token
                setAdmin(updatedAdmin) // Cập nhật giá trị của admin bằng setAdmin
                localStorage.setItem('admin', JSON.stringify(updatedAdmin)) // lưu vào localStorage
                navigate('/admin/dashboard')
