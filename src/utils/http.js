@@ -1,7 +1,8 @@
 import axios from 'axios'
+import config from './../router/config'
 
 const API = axios.create({
-   baseURL: 'http://localhost/training/health/BE/public/api/',
+   baseURL: config.URL + 'api/',
    timeout: 100000,
 })
 

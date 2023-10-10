@@ -99,7 +99,7 @@ const LoginPage = () => {
                   <div
                      className="d-none d-md-flex col-md-4 col-lg-6 bg-image"
                      style={{
-                        backgroundImage: `url('/blog/image/login.jfif')`,
+                        backgroundImage: `url('/user/image/login.jfif')`,
                      }}
                   ></div>
                   <div className="col-md-8 col-lg-6">
@@ -180,7 +180,7 @@ const LoginPage = () => {
                                     <div className="social google">
                                        <a href="/google">
                                           <img
-                                             src="/blog/image/google.png"
+                                             src="/user/image/google.png"
                                              alt=""
                                           />{' '}
                                           Sign up with Google
@@ -189,7 +189,7 @@ const LoginPage = () => {
                                     <div className="social github">
                                        <a href="/github">
                                           <img
-                                             src="/blog/image/github.png"
+                                             src="/user/image/github.png"
                                              alt=""
                                           />{' '}
                                           Sign up with Github
