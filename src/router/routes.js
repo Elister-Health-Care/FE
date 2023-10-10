@@ -8,11 +8,9 @@ import PageNotFoundPage from '~/pages/error/PageNotFound'
 import UserLoginPage from '~/pages/login_and_register/user/Login/UserLoginPage'
 import UserUpdateInfor from '~/pages/login_and_register/user/UpdateInfor/UserUpdateInfor'
 import UserRegisterPage from '~/pages/login_and_register/user/Register/UserRegisterPage'
-// import UserRegisterPage from '~/pages/login_and_register/user/HospitalRegister'
+
 import HospitalRegisterPage from '~/pages/login_and_register/user/HospitalRegister'
 import AdminLoginPage from '~/pages/login_and_register/Admin'
-// import UserRegisterPage from '~/pages/login_and_register/user/HospitalRegister'
-import HospitalRegisterPage from '~/pages/login_and_register/user/HospitalRegister'
 
 // Import main pages(public)
 import HomePage from '~/pages/main/Home'
@@ -28,6 +26,7 @@ import UserDashboardPage from '~/pages/user/Dashboard'
 // Import admin pages
 import AdminLayout from '~/layouts/AdminLayout'
 import AdminDashboardPage from '~/pages/admin/Dashboard'
+import AdminProfilePage from '~/pages/admin/Profile'
 import AdminViewInforPage from '~/pages/admin/Infor'
 import AdminChangePasswordPage from '~/pages/admin/ChangePassword'
 import AdminDepartment from '~/pages/admin/Department'
@@ -69,6 +68,7 @@ const BigRoutes = () => (
       <Route path="admin" element={<AdminAuthCheck component={AdminLayout} />}>
          <Route path="dashboard" element={<AdminDashboardPage />}></Route>
          <Route path="view-infor" element={<AdminViewInforPage />} />
+         <Route path="profile" element={<AdminProfilePage />} />
          <Route path="change-password" element={<AdminChangePasswordPage />} />
          <Route path="user-manager" element={<AdminAllUserPage />} />
          <Route path="admin-manager" element={<AdminManager />} />

@@ -11,23 +11,55 @@ import config from '~/router/config'
 import ReactPaginate from 'react-paginate'
 import LoadingTable from '~/components/Loading/LoadingTable'
 import { formatDateTime, pushSearchKeyToUrl } from '~/helpers/utils'
+import { ToastContainer, toast } from 'react-toastify'
 const cx = classNames.bind(styles)
 const AdminAllUserPage = () => {
+   const location = useLocation()
    const [loadingTable, setLoadingTable] = useState(false)
    const [users, setUsers] = useState([])
-   const [search, setSearch] = useState({
+
+   const defaultSearchParams = {
       search: '',
       paginate: 5,
       page: 1,
       role: '',
-      is_accept: 'both', // "0" , "1" , "both"
+      is_accept: 'both',
       sortlatest: true,
       sortname: false,
-   })
+   }
+
+   const parseSearchParams = () => {
+      const searchParams = new URLSearchParams(location.search)
+
+      if (searchParams.get('paginate') === null) {
+         return defaultSearchParams
+      }
+
+      return {
+         search: searchParams.get('search') || defaultSearchParams.search,
+         paginate:
+            parseInt(searchParams.get('paginate')) ||
+            defaultSearchParams.paginate,
+         page: parseInt(searchParams.get('page')) || defaultSearchParams.page,
+         role: searchParams.get('role') || defaultSearchParams.role,
+         is_accept:
+            searchParams.get('is_accept') || defaultSearchParams.is_accept,
+         sortlatest: searchParams.get('sortlatest') === 'true',
+         sortname: searchParams.get('sortname') === 'true',
+      }
+   }
+
+   const [search, setSearch] = useState(parseSearchParams())
+
+   // Sử dụng useEffect để cập nhật search khi location.search thay đổi
+   useEffect(() => {
+      setSearch(parseSearchParams())
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+   }, [location.search])
+
    const [perPage, setPerPage] = useState(6)
    const [total, setTotal] = useState(0)
 
-   const location = useLocation()
    const itemsPerPage = perPage
    const pageCount = Math.ceil(total / itemsPerPage)
 
@@ -53,10 +85,11 @@ const AdminAllUserPage = () => {
    }
 
    useEffect(() => {
+      console.log(location)
       const getUser = async () => {
          try {
             setLoadingTable(true)
-            const queryParams = `?search=${search.search}&page=${search.page}&paginate=${search.paginate}&role=${search.role}&sortname=${search.sortname}&sortlatest=${search.sortlatest}`
+            const queryParams = `?search=${search.search}&page=${search.page}&paginate=${search.paginate}&role=${search.role}&sortname=${search.sortname}&sortlatest=${search.sortlatest}&is_accept=${search.is_accept}`
             const response = await http.get('admin/all-user' + queryParams)
             if (response.status === 200) {
                setUsers(response.data.data.data)
@@ -96,6 +129,12 @@ const AdminAllUserPage = () => {
       }
    }
 
+   const handleChangeSelectedAccpect = (e) => {
+      console.log(e.target.value)
+
+      updateSearchParams({ is_accept: e.target.value })
+   }
+
    const handleChangeSelectedName = (e) => {
       if (e.target.value === 'sortlatest') {
          updateSearchParams({ sortlatest: true, sortname: false })
@@ -106,8 +145,57 @@ const AdminAllUserPage = () => {
       }
    }
 
+   const handleChangeSelectedPaginate = (e) => {
+      updateSearchParams({ page: 1, paginate: e.target.value })
+   }
+   const updateUser = (userId, acceptValue) => {
+      const updatedUsers = users.map((user) => {
+         if (user.id === userId) {
+            return { ...user, is_accept: acceptValue }
+         }
+         return user
+      })
+
+      setUsers(updatedUsers)
+   }
+   const handleChangeRole = async (id, value) => {
+      try {
+         const data = { is_accept: value }
+         await http.post('admin/change-accept/' + id, data)
+         console.log('Gọi API thành công')
+         if (value === 2) {
+            toast.warning(' Đã khóa tài khoản có id ' + id, {
+               position: 'top-right',
+               autoClose: 4000,
+               hideProgressBar: false,
+               closeOnClick: true,
+               pauseOnHover: true,
+               draggable: true,
+               progress: undefined,
+               theme: 'light',
+            })
+         } else {
+            toast.success(' Thành công', {
+               position: 'top-right',
+               autoClose: 4000,
+               hideProgressBar: false,
+               closeOnClick: true,
+               pauseOnHover: true,
+               draggable: true,
+               progress: undefined,
+               theme: 'light',
+            })
+         }
+         updateUser(id, value)
+         console.log(setUsers)
+      } catch (error) {
+         console.log('Đã có lỗi xảy ra')
+      }
+   }
+
    return (
       <>
+         <ToastContainer />
          <TitleAdmin>Tài khoản bệnh viện </TitleAdmin>
          <div className={cx('card', 'shadow')}>
             <div className={cx('card_header')}>
@@ -130,6 +218,19 @@ const AdminAllUserPage = () => {
                </div>
                <div className={cx('filter_box')}>
                   <select
+                     defaultValue={search.is_accept}
+                     onChange={handleChangeSelectedAccpect}
+                     className={cx('custom-select', 'fontz_14')}
+                  >
+                     <option value="both">Trạng thái</option>
+                     <option value="0">Chưa duyệt</option>
+                     <option value="1">Đã duyệt</option>
+                     <option value="2">Đã khóa</option>
+                  </select>
+               </div>
+               <div className={cx('filter_box')}>
+                  <select
+                     defaultValue={search.role}
                      onChange={handleChangeSelectedRole}
                      className={cx('custom-select', 'fontz_14')}
                   >
@@ -141,12 +242,30 @@ const AdminAllUserPage = () => {
                </div>
                <div className={cx('filter_box')}>
                   <select
+                     defaultValue={
+                        search.sortlatest === false
+                           ? 'un_sortlatest'
+                           : search.sortname === true
+                           ? 'sortname'
+                           : 'sortlatest'
+                     }
                      onChange={handleChangeSelectedName}
                      className={cx('custom-select', 'fontz_14')}
                   >
                      <option value="sortlatest">Mới nhất</option>
                      <option value="un_sortlatest">Cũ nhất</option>
                      <option value="sortname">Theo tên</option>
+                  </select>
+               </div>
+               <div className={cx('box_left')}>
+                  <select
+                     onChange={handleChangeSelectedPaginate}
+                     className={cx('custom-select', 'fontz_14')}
+                  >
+                     <option value="5">5</option>
+                     <option value="10">10</option>
+                     <option value="15">15</option>
+                     <option value="20">20</option>
                   </select>
                </div>
             </div>
@@ -215,9 +334,9 @@ const AdminAllUserPage = () => {
                                     : 'Bác sĩ'}
                               </td>
                               <td>
-                                 {user.is_accept === 0
-                                    ? 'Chưa duyệt'
-                                    : 'Đã duyệt'}
+                                 {user.email_verified_at === 0
+                                    ? 'Đã xác nhận'
+                                    : 'Chưa xác nhận'}
                               </td>
                               <td>
                                  {user.created_at
@@ -225,21 +344,44 @@ const AdminAllUserPage = () => {
                                     : 'N/A'}
                               </td>
                               <td>
-                                 <Tippy content="Duyệt">
-                                    <button
-                                       className="btn btn-info btn-sm sua"
-                                       data-toggle="modal"
-                                       data-target="#updateModal"
-                                    >
-                                       <i className="ti-check-box" />
-                                    </button>
-                                 </Tippy>
-
-                                 <Tippy content="Khóa">
-                                    <button className="btn btn-danger btn-sm mt-1">
-                                       <i className="ti-lock" />
-                                    </button>
-                                 </Tippy>
+                                 {user.is_accept === 0 ? (
+                                    <>
+                                       <Tippy content="Duyệt">
+                                          <button
+                                             onClick={() =>
+                                                handleChangeRole(user.id, 1)
+                                             }
+                                             className="btn btn-info btn-sm sua"
+                                             data-toggle="modal"
+                                             data-target="#updateModal"
+                                          >
+                                             <i className="ti-check-box" />
+                                          </button>
+                                       </Tippy>
+                                    </>
+                                 ) : user.is_accept === 1 ? (
+                                    <Tippy content="Khóa">
+                                       <button
+                                          onClick={() =>
+                                             handleChangeRole(user.id, 2)
+                                          }
+                                          className="btn btn-danger btn-sm mt-1"
+                                       >
+                                          <i className="ti-lock" />
+                                       </button>
+                                    </Tippy>
+                                 ) : (
+                                    <Tippy content="Mở khóa">
+                                       <button
+                                          onClick={() =>
+                                             handleChangeRole(user.id, 1)
+                                          }
+                                          className="btn btn-secondary btn-sm mt-1"
+                                       >
+                                          <i className="ti-unlock" />
+                                       </button>
+                                    </Tippy>
+                                 )}
                               </td>
                            </tr>
                         ))}

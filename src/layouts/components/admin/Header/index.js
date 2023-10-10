@@ -65,7 +65,7 @@ function Header() {
                         <i className="mdi mdi-home-import-outline"></i>
                         <span className={cx('icon_item')}>Trang chủ</span>
                      </Link>
-                     <Link to={'/'}>
+                     <Link to={'profile'}>
                         <i className="mdi mdi-account-outline"></i>
                         <span className={cx('icon_item')}>Profile</span>
                      </Link>
