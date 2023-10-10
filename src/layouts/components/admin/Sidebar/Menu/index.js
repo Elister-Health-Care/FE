@@ -51,12 +51,14 @@ function Menu({ children }) {
             break
 
          default:
-            // Xử lý mặc định nếu không có trường hợp nào khớp
+            setSelected('')
+            setUlSelected('')
+            setisOpenUl('')
             break
       }
 
       // eslint-disable-next-line react-hooks/exhaustive-deps
-   }, [])
+   }, [location.pathname])
 
    const handleClickSelect = (value) => {
       if (selected === value) {
