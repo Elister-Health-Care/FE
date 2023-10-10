@@ -5,10 +5,14 @@ import { UserAuthCheck, AdminAuthCheck } from './AuthCheck'
 // Page Not Found
 import PageNotFoundPage from '~/pages/error/PageNotFound'
 // Import login pages
-import UserLoginPage from '~/pages/login_and_register/user/Login/LoginPage'
+import UserLoginPage from '~/pages/login_and_register/user/Login/UserLoginPage'
+import UserUpdateInfor from '~/pages/login_and_register/user/UpdateInfor/UserUpdateInfor'
+import UserRegisterPage from '~/pages/login_and_register/user/Register/UserRegisterPage'
 // import UserRegisterPage from '~/pages/login_and_register/user/HospitalRegister'
 import HospitalRegisterPage from '~/pages/login_and_register/user/HospitalRegister'
 import AdminLoginPage from '~/pages/login_and_register/Admin'
+// import UserRegisterPage from '~/pages/login_and_register/user/HospitalRegister'
+import HospitalRegisterPage from '~/pages/login_and_register/user/HospitalRegister'
 
 // Import main pages(public)
 import HomePage from '~/pages/main/Home'
@@ -39,6 +43,8 @@ const BigRoutes = () => (
    <Routes>
       {/* Login route */}
       <Route path="user-login" element={<UserLoginPage />} />
+      <Route path="user-update" element={<UserUpdateInfor />} />
+      <Route path="user-register" element={<UserRegisterPage />} />
       {/* <Route path="user-register" element={<UserRegisterPage />} /> */}
       <Route path="hospital-register" element={<HospitalRegisterPage />} />
       <Route path="admin-login" element={<AdminLoginPage />} />
