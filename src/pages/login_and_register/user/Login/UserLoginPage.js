@@ -4,9 +4,9 @@ import { Link, useNavigate } from 'react-router-dom'
 import { NavLink } from 'reactstrap'
 
 import config from '~/router/config'
-import './LoginPage.css'
+import './UserLogin.css'
 
-const LoginPage = () => {
+const UserLoginPage = () => {
    const navigate = useNavigate()
 
    useEffect(() => {
@@ -66,7 +66,7 @@ const LoginPage = () => {
                response.data.message.original.access_token
             setUser(updatedUser) // Cập nhật giá trị của user bằng setUser
             localStorage.setItem('user', JSON.stringify(updatedUser)) // lưu vào localStorage
-            navigate('/user/view-infor')
+            navigate('/home')
             console.log(updatedUser)
             console.log('Đăng nhập thành công')
          } else {
@@ -81,61 +81,87 @@ const LoginPage = () => {
 
    return (
       <div>
-         {/* <h1>Login Page</h1>
-      <div>
-        <label>Email:</label>
-        <input type="text" value={email} onChange={(e) => setEmail(e.target.value)} />
-      </div>
-      <div>
-        <label>Password:</label>
-        <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-      </div>
-      <button onClick={handleLogin} className="btn btn-primary">Primary Button</button> */}
-
-         <div>
-            {/* <link rel="stylesheet" href="/blog/css/login.css" /> */}
-            <div className="container-fluid ps-md-0">
-               <div className="row g-0">
-                  <div
-                     className="d-none d-md-flex col-md-4 col-lg-6 bg-image"
-                     style={{
-                        backgroundImage: `url('/user/image/login.jfif')`,
-                     }}
-                  ></div>
-                  <div className="col-md-8 col-lg-6">
-                     <div className="login d-flex align-items-center py-5">
+         <div className="login d-flex">
+            <div className="container m-auto ps-md-0">
+               <div className="row g-0 pt-3 pb-3 body-login">
+                  <div className="d-none d-md-block col-md-5 col-lg-6">
+                     <img
+                        alt=""
+                        src="/blog/image/doctor-main.png"
+                        className="w-100 h-auto"
+                     />
+                  </div>
+                  <div className="col-md-7 col-lg-6">
+                     <div className="d-flex align-items-center">
                         <div className="container">
                            <div className="row">
-                              <div className="col-md-9 col-lg-8 mx-auto">
-                                 <h3 className="login-heading mb-4">
-                                    Welcome back!
+                              <div className="col-md-10 mx-auto">
+                                 <NavLink
+                                    className="nav-link-icon d-flex"
+                                    to="/home"
+                                    tag={Link}
+                                 >
+                                    <img
+                                       alt=""
+                                       src="/blog/image/logo.png"
+                                       className="m-auto w-75"
+                                    />
+                                 </NavLink>
+                                 <h3 className="login-heading mb-4 mt-4 text-center">
+                                    <b>Đăng nhập</b>
                                  </h3>
                                  <form
                                     encType="multipart/form-data"
                                     onSubmit={handleLogin}
                                  >
                                     <div className="form-group">
+                                       <label for="email">Email:</label>
                                        <input
                                           name="email"
                                           onChange={handleInputChange}
                                           defaultValue={userLogin.name}
                                           type="email"
-                                          className="form-control"
+                                          id="email"
+                                          className="login-input"
                                           aria-describedby="emailHelp"
                                           placeholder="Email@example.com"
                                        />
                                     </div>
 
                                     <div className="form-group">
+                                       <label for="email">Mật khẩu:</label>
                                        <input
                                           name="password"
                                           onChange={handleInputChange}
                                           defaultValue={userLogin.password}
                                           type="password"
-                                          className="form-control"
+                                          className="login-input"
                                           aria-describedby="emailHelp"
                                           placeholder="Password"
                                        />
+                                    </div>
+                                    <div className="mb-3 float-left">
+                                       <input
+                                          name="check-box"
+                                          onChange={handleInputChange}
+                                          defaultValue={userLogin.password}
+                                          type="checkbox"
+                                          aria-describedby="emailHelp"
+                                          placeholder="Password"
+                                       />{' '}
+                                       Nhớ mật khẩu
+                                    </div>
+                                    <div className="mb-3">
+                                       <div className="float-right">
+                                          <Link
+                                             className="small"
+                                             data-toggle="modal"
+                                             data-target="#modalForGotPassword"
+                                             href="#"
+                                          >
+                                             Forgot password?
+                                          </Link>
+                                       </div>
                                     </div>
                                     {/* 
                       <div className="row mb-3">
@@ -147,43 +173,33 @@ const LoginPage = () => {
                         </div>
                       </div> */}
 
-                                    <div className="d-grid">
+                                    <div className="d-grid mt-5">
                                        <button
-                                          className="col-12 btn btn-lg btn-primary btn-login text-uppercase fw-bold mb-2"
+                                          className="col-12 btn btn-lg btn-login text-uppercase fw-bold mb-2"
                                           type="submit"
                                        >
-                                          Sign in
+                                          Đăng nhập
                                        </button>
-                                       <div className="text-center">
+                                       <div className="text-center mt-2">
                                           <NavLink
-                                             className="nav-link-icon small"
+                                             className="nav-link-icon small ml-2 mr-2"
                                              to="/user-register"
                                              tag={Link}
                                           >
-                                             Do not have an account ? Sign up
-                                             here.
+                                             Bạn chưa có tài khoản? Đăng ký tại
+                                             đây
                                           </NavLink>
-                                       </div>
-                                       <div className="text-center">
-                                          <Link
-                                             className="small"
-                                             data-toggle="modal"
-                                             data-target="#modalForGotPassword"
-                                             href="#"
-                                          >
-                                             Forgot password?
-                                          </Link>
                                        </div>
                                     </div>
 
-                                    <hr className="my-4" />
+                                    <p className="mt-2 text-center">Hoặc</p>
                                     <div className="social google">
                                        <a href="/google">
                                           <img
                                              src="/user/image/google.png"
                                              alt=""
                                           />{' '}
-                                          Sign up with Google
+                                          Đăng nhập với Google
                                        </a>
                                     </div>
                                     <div className="social github">
@@ -192,29 +208,10 @@ const LoginPage = () => {
                                              src="/user/image/github.png"
                                              alt=""
                                           />{' '}
-                                          Sign up with Github
+                                          Đăng nhập với Github
                                        </a>
                                     </div>
                                  </form>
-                                 <hr className="my-4" />
-                                 <div className="d-flex justify-content-center">
-                                    <NavLink
-                                       className="nav-link-icon"
-                                       to="/"
-                                       tag={Link}
-                                    >
-                                       {' '}
-                                       <button
-                                          style={{ borderRadius: '10px' }}
-                                          type="button"
-                                          className="btn btn-outline-primary"
-                                       >
-                                          <i className="fa-solid fa-house"></i>{' '}
-                                          Home
-                                       </button>
-                                    </NavLink>
-                                 </div>
-
                                  {/* Modal */}
                                  <div
                                     className="modal fade"
@@ -304,4 +301,4 @@ const LoginPage = () => {
    )
 }
 
-export default LoginPage
+export default UserLoginPage

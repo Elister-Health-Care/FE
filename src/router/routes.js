@@ -5,8 +5,10 @@ import { UserAuthCheck, AdminAuthCheck } from './AuthCheck'
 // Page Not Found
 import PageNotFoundPage from '~/pages/error/PageNotFound'
 // Import login pages
-import UserLoginPage from '~/pages/login_and_register/user/Login/LoginPage'
-// import UserRegisterPage from '~/pages/login_and_register/user/HospitalRegister'
+import UserLoginPage from '~/pages/login_and_register/user/Login/UserLoginPage'
+import UserUpdateInfor from '~/pages/login_and_register/user/UpdateInfor/UserUpdateInfor'
+import UserRegisterPage from '~/pages/login_and_register/user/Register/UserRegisterPage'
+
 import HospitalRegisterPage from '~/pages/login_and_register/user/HospitalRegister'
 import AdminLoginPage from '~/pages/login_and_register/Admin'
 
@@ -24,6 +26,7 @@ import UserDashboardPage from '~/pages/user/Dashboard'
 // Import admin pages
 import AdminLayout from '~/layouts/AdminLayout'
 import AdminDashboardPage from '~/pages/admin/Dashboard'
+import AdminProfilePage from '~/pages/admin/Profile'
 import AdminViewInforPage from '~/pages/admin/Infor'
 import AdminChangePasswordPage from '~/pages/admin/ChangePassword'
 import AdminDepartment from '~/pages/admin/Department'
@@ -39,6 +42,8 @@ const BigRoutes = () => (
    <Routes>
       {/* Login route */}
       <Route path="user-login" element={<UserLoginPage />} />
+      <Route path="user-update" element={<UserUpdateInfor />} />
+      <Route path="user-register" element={<UserRegisterPage />} />
       {/* <Route path="user-register" element={<UserRegisterPage />} /> */}
       <Route path="hospital-register" element={<HospitalRegisterPage />} />
       <Route path="admin-login" element={<AdminLoginPage />} />
@@ -63,6 +68,7 @@ const BigRoutes = () => (
       <Route path="admin" element={<AdminAuthCheck component={AdminLayout} />}>
          <Route path="dashboard" element={<AdminDashboardPage />}></Route>
          <Route path="view-infor" element={<AdminViewInforPage />} />
+         <Route path="profile" element={<AdminProfilePage />} />
          <Route path="change-password" element={<AdminChangePasswordPage />} />
          <Route path="user-manager" element={<AdminAllUserPage />} />
          <Route path="admin-manager" element={<AdminManager />} />
