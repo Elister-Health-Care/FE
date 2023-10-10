@@ -85,7 +85,6 @@ const AdminAllUserPage = () => {
    }
 
    useEffect(() => {
-      console.log(location)
       const getUser = async () => {
          try {
             setLoadingTable(true)
@@ -101,10 +100,8 @@ const AdminAllUserPage = () => {
             console.error('Lỗi kết nối đến API:', error)
          } finally {
             setLoadingTable(false)
-            console.log(users)
          }
       }
-      console.log(search)
       getUser()
       // eslint-disable-next-line react-hooks/exhaustive-deps
    }, [search])
@@ -117,11 +114,9 @@ const AdminAllUserPage = () => {
    const handleChangeInput = (e) => {
       const newSearchValue = e.target.value
       updateSearchParams({ search: newSearchValue, page: 1 })
-      console.log(location)
    }
 
    const handleChangeSelectedRole = (e) => {
-      console.log(e.target.value)
       if (e.target.value === '') {
          updateSearchParams({ role: '' })
       } else {
@@ -130,8 +125,6 @@ const AdminAllUserPage = () => {
    }
 
    const handleChangeSelectedAccpect = (e) => {
-      console.log(e.target.value)
-
       updateSearchParams({ is_accept: e.target.value })
    }
 
