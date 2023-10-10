@@ -116,7 +116,6 @@ function AdminLoginPage() {
             if (response.status === 200) {
                console.log(response.data.data)
                const updatedAdmin = response.data.data
-               // updatedAdmin.access_token = response.data.data.access_token 
                setAdmin(updatedAdmin) // Cập nhật giá trị của admin bằng setAdmin
                localStorage.setItem('admin', JSON.stringify(updatedAdmin)) // lưu vào localStorage
                navigate('/admin/dashboard')
