@@ -82,7 +82,7 @@ function AdminLoginPage() {
             setErrors({
                errors,
                sendMailOk:
-                  'Email đã được gửi thành công! Vui lòng kiểm tra hộp thư đến của bạn.',
+                  'Email đã được gửi thành công! Vui lòng kiểm tra hộp thư đến của bạn !.',
             })
          } else {
             const data = await response.json()
