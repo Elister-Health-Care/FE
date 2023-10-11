@@ -37,6 +37,15 @@ function validateForm(formData, rules) {
             }
          }
          // Thêm các quy tắc kiểm tra khác tại đây
+         if (ruleName === 'date_of_birth' && formData[fieldName]) {
+            const birthDate = new Date(formData[fieldName])
+            const eighteenYearsAgo = new Date()
+            eighteenYearsAgo.setFullYear(eighteenYearsAgo.getFullYear() - 18)
+
+            if (birthDate > eighteenYearsAgo) {
+               errors[fieldName] = 'Không hợp lệ,Chưa đủ 18 tuổi'
+            }
+         }
       }
    }
 
