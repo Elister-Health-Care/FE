@@ -46,6 +46,12 @@ function validateForm(formData, rules) {
                errors[fieldName] = 'Không hợp lệ,Chưa đủ 18 tuổi'
             }
          }
+
+         if (ruleName === 'name') {
+            if (formData[fieldName].length < 6) {
+               errors[fieldName] = 'Trường tên tối thiểu 6 ký tự'
+            }
+         }
       }
    }
 
