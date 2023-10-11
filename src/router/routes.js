@@ -30,6 +30,7 @@ import AdminProfilePage from '~/pages/admin/Profile'
 import AdminViewInforPage from '~/pages/admin/Infor'
 import AdminChangePasswordPage from '~/pages/admin/ChangePassword'
 import AdminDepartment from '~/pages/admin/Department'
+import AdminHealthInsurance from '~/pages/admin/HealthInsurance'
 import AdminAllUserPage from '~/pages/admin/UserManager'
 import AdminService from '~/pages/admin/Service'
 import AdminCategory from '~/pages/admin/Category'
@@ -73,6 +74,7 @@ const BigRoutes = () => (
          <Route path="user-manager" element={<AdminAllUserPage />} />
          <Route path="admin-manager" element={<AdminManager />} />
          <Route path="department" element={<AdminDepartment />} />
+         <Route path="health-insurance" element={<AdminHealthInsurance />} />
          <Route path="service" element={<AdminService />} />
          <Route path="category" element={<AdminCategory />} />
          <Route path="statistical" element={<AdminStatistical />} />
