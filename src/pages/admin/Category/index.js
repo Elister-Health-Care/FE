@@ -17,21 +17,22 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const cx = classNames.bind(styles)
 const AdminCategory = () => {
+	const location = useLocation()
 	const [loadingTable, setLoadingTable] = useState(false)
 	const [categories, setCategories] = useState([])
 	const [shouldReloadData, setShouldReloadData] = useState(false);
 
-	const [search, setSearch] = useState({
-		search: '',
-		paginate: 5,
-		page: 1,
-		sortlatest: true,
-		sortname: false,
-	})
+    const defaultSearchParams = {
+        search: '',
+        paginate: 5,
+        page: 1,
+        sortlatest: true,
+        sortname: false,
+     }
+
 	const [perPage, setPerPage] = useState(6)
 	const [total, setTotal] = useState(0)
 
-	const location = useLocation()
 	const itemsPerPage = perPage
 	const pageCount = Math.ceil(total / itemsPerPage)
 
@@ -58,16 +59,38 @@ const AdminCategory = () => {
 		index: null,
 	});
 
+    // paramURL to DOM 
+    const parseSearchParams = () => {
+        const searchParams = new URLSearchParams(location.search)
+
+        if (searchParams.get('paginate') === null) {
+            return defaultSearchParams
+        }
+        return {
+            search: searchParams.get('search') || defaultSearchParams.search,
+            paginate:
+                parseInt(searchParams.get('paginate')) ||
+                defaultSearchParams.paginate,
+            page: parseInt(searchParams.get('page')) || defaultSearchParams.page,
+            sortlatest: searchParams.get('sortlatest') === 'true',
+            sortname: searchParams.get('sortname') === 'true',
+        }
+    }
+    const [search, setSearch] = useState(parseSearchParams());
+    useEffect(() => {
+        setSearch(parseSearchParams())
+    }, [location.search]);
+
 	useEffect(() => {
 		pushSearchKeyToUrl(search, location)
-	}, [search, location])
+	}, [search, location]);
 
 	const updateSearchParams = (newSearchParams) => {
 		setSearch((prevSearch) => ({
 			...prevSearch,
 			...newSearchParams,
 		}))
-	}
+	};
 
 	useEffect(() => {
 		const getUser = async () => {
@@ -90,18 +113,22 @@ const AdminCategory = () => {
 		}
 		console.log(search)
 		getUser()
-	}, [search, shouldReloadData])
+	}, [search, shouldReloadData]);
 
 	const handlePageClick = (event) => {
 		const selectedPage = event.selected + 1
 		updateSearchParams({ page: selectedPage })
-	}
+	};
+
+   const handleChangeSelectedPaginate = (e) => {
+      updateSearchParams({ page: 1, paginate: e.target.value })
+   };
 
 	const handleChangeInput = (e) => {
 		const newSearchValue = e.target.value
 		updateSearchParams({ search: newSearchValue, page: 1 })
 		console.log(location)
-	}
+	};
 
 	const handleChangeSelectedName = (e) => {
 		if (e.target.value === 'sortlatest') {
@@ -111,7 +138,7 @@ const AdminCategory = () => {
 		} else {
 			updateSearchParams({ sortname: true })
 		}
-	}
+	};
 
 	// add category 
 	const [formData, setFormData] = useState({
@@ -173,7 +200,7 @@ const AdminCategory = () => {
 			if (error.response.data.data) toast.error(error.response.data.data[0], toastOptions);
 			else toast.error(error.response.data.message, toastOptions);
 		}
-	}
+	};
 	// submit form 
 	// add category 
 
@@ -270,13 +297,32 @@ const AdminCategory = () => {
                   </div>
                </div>
                <div className={cx('filter_box')}>
+                    <select
+                        defaultValue={
+                            search.sortlatest === false
+                            ? 'un_sortlatest'
+                            : search.sortname === true
+                            ? 'sortname'
+                            : 'sortlatest'
+                        }
+                        onChange={handleChangeSelectedName}
+                        className={cx('custom-select', 'fontz_14')}
+                    >
+                        <option value="sortlatest">Mới nhất</option>
+                        <option value="un_sortlatest">Cũ nhất</option>
+                        <option value="sortname">Theo tên</option>
+                    </select>
+               </div>
+               <div className={cx('box_left')}>
                   <select
-                     onChange={handleChangeSelectedName}
+                        defaultValue={search.paginate}
+                     onChange={handleChangeSelectedPaginate}
                      className={cx('custom-select', 'fontz_14')}
                   >
-                     <option value="sortlatest">Mới nhất</option>
-                     <option value="un_sortlatest">Cũ nhất</option>
-                     <option value="sortname">Theo tên</option>
+                     <option value="5">5</option>
+                     <option value="10">10</option>
+                     <option value="15">15</option>
+                     <option value="20">20</option>
                   </select>
                </div>
             </div>
@@ -373,6 +419,7 @@ const AdminCategory = () => {
                      pageCount={pageCount}
                      previousLabel="< Previous"
                      renderOnZeroPageCount={null}
+                     forcePage={search.page - 1}
                   />
                </div>
                {/* Modal add Category */}
@@ -491,7 +538,7 @@ const AdminCategory = () => {
                            </div>
                            <div className="modal-footer">
                               <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
-                              <button type="submit" className="btn btn-success"><i class="fa-solid fa-floppy-disk"></i> Save</button>
+                              <button type="submit" className="btn btn-success"><i className="fa-solid fa-floppy-disk"></i> Save</button>
                            </div>
                         </form>
                      </div>
