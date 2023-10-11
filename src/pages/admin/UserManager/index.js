@@ -62,7 +62,16 @@ const AdminAllUserPage = () => {
 
    const itemsPerPage = perPage
    const pageCount = Math.ceil(total / itemsPerPage)
-
+   const toastOptions = {
+      position: 'top-right',
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: 'colored',
+   }
    // const updateSearchParams = (newSearchParams) => {
    //    setSearch({
    //       ...search,
@@ -157,27 +166,9 @@ const AdminAllUserPage = () => {
          await http.post('admin/change-accept/' + id, data)
          console.log('Gọi API thành công')
          if (value === 2) {
-            toast.warning(' Đã khóa tài khoản có id ' + id, {
-               position: 'top-right',
-               autoClose: 4000,
-               hideProgressBar: false,
-               closeOnClick: true,
-               pauseOnHover: true,
-               draggable: true,
-               progress: undefined,
-               theme: 'light',
-            })
+            toast.warning(' Đã khóa tài khoản có id ' + id, toastOptions)
          } else {
-            toast.success(' Thành công', {
-               position: 'top-right',
-               autoClose: 4000,
-               hideProgressBar: false,
-               closeOnClick: true,
-               pauseOnHover: true,
-               draggable: true,
-               progress: undefined,
-               theme: 'light',
-            })
+            toast.success(' Thành công', toastOptions)
          }
          updateUser(id, value)
          console.log(setUsers)
@@ -390,6 +381,7 @@ const AdminAllUserPage = () => {
                      pageCount={pageCount}
                      previousLabel="< Previous"
                      renderOnZeroPageCount={null}
+                     forcePage={search.page - 1}
                   />
                </div>
             </div>
