@@ -12,7 +12,7 @@ function Menu({ children }) {
    const [selected, setSelected] = useState('')
    const [ulSeclect, setUlSelected] = useState('')
    const [isOpenUl, setisOpenUl] = useState('')
-
+   const admin = JSON.parse(localStorage.getItem('admin'))
    useEffect(() => {
       switch (location.pathname) {
          case '/admin/dashboard':
@@ -58,12 +58,14 @@ function Menu({ children }) {
             break
 
          default:
-            // Xử lý mặc định nếu không có trường hợp nào khớp
+            setSelected('')
+            setUlSelected('')
+            setisOpenUl('')
             break
       }
 
       // eslint-disable-next-line react-hooks/exhaustive-deps
-   }, [])
+   }, [location.pathname])
 
    const handleClickSelect = (value) => {
       if (selected === value) {
@@ -113,15 +115,20 @@ function Menu({ children }) {
                <ul
                   className={cx('ul_close', isOpenUl === 'Tài khoản' && 'open')}
                >
-                  <li>
-                     <Link
-                        to="admin-manager"
-                        onClick={() => handleClickSelectUl('Admin')}
-                        className={cx(ulSeclect === 'Admin' && 'active')}
-                     >
-                        Admin
-                     </Link>
-                  </li>
+                  {admin.role === 'admin' ? (
+                     ''
+                  ) : (
+                     <li>
+                        <Link
+                           to="admin-manager"
+                           onClick={() => handleClickSelectUl('Admin')}
+                           className={cx(ulSeclect === 'Admin' && 'active')}
+                        >
+                           Admin
+                        </Link>
+                     </li>
+                  )}
+
                   <li>
                      <Link
                         to="user-manager"

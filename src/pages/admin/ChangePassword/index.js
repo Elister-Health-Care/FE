@@ -62,7 +62,6 @@ const AdminChangePasswordPage = () => {
                })
             }
          } catch (error) {
-            console.log(error.response.data.message)
             if (error.response.data.message === 'Validation errors') {
                setErrors({
                   new_password: 'Mật khẩu phải giống nhau',
@@ -119,7 +118,7 @@ const AdminChangePasswordPage = () => {
                      <div className="col-md-9">
                         <input
                            onChange={handleInputChange}
-                           defaultValue={password.new_password}
+                           value={password.new_password}
                            name="new_password"
                            type="password"
                            className="form-control"
@@ -141,7 +140,7 @@ const AdminChangePasswordPage = () => {
                      <div className="col-md-9">
                         <input
                            onChange={handleInputChange}
-                           defaultValue={password.new_password_confirmation}
+                           value={password.new_password_confirmation}
                            name="new_password_confirmation"
                            type="password"
                            className="form-control"
