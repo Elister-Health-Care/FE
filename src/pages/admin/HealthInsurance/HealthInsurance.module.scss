@@ -126,6 +126,27 @@
     float: left;
  }
 
-.modal-color-department {
+.modal-color-healthinsurance {
     background-color: #00000047;
+}
+
+// content 
+.content_html {
+    width: 500px;
+    padding: 0px !important;
+    margin: 0px !important;
+}
+.content_html div {
+    width: 100%;
+    padding: 20px;
+    max-width: 484px;
+    max-height: 200px;
+    overflow: hidden;
+    overflow-y: scroll;
+    border-radius: 6px;
+    margin: 6px;
+    border: 1px dotted silver;
+}
+.content_html div img {
+    max-width: 450px !important;
 }

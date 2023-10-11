@@ -38,6 +38,13 @@ function Menu({ children }) {
             setUlSelected('Chuyên khoa')
             setisOpenUl('Quản lý')
             break
+
+         case '/admin/health-insurance':
+            setSelected('Quản lý')
+            setUlSelected('Bảo hiểm')
+            setisOpenUl('Quản lý')
+            break
+
          case '/admin/service':
             setSelected('Quản lý')
             setUlSelected('Dịch vụ')
@@ -165,6 +172,15 @@ function Menu({ children }) {
                         className={cx(ulSeclect === 'Chuyên khoa' && 'active')}
                      >
                         Chuyên khoa
+                     </Link>
+                  </li>
+                  <li>
+                     <Link
+                        to="health-insurance"
+                        onClick={() => handleClickSelectUl('Bảo hiểm')}
+                        className={cx(ulSeclect === 'Bảo hiểm' && 'active')}
+                     >
+                        Bảo hiểm
                      </Link>
                   </li>
                   <li>

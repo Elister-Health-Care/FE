@@ -98,20 +98,16 @@ const AdminCategory = () => {
 				setLoadingTable(true)
 				const queryParams = `?search=${search.search}&page=${search.page}&paginate=${search.paginate}&sortname=${search.sortname}&sortlatest=${search.sortlatest}`
 				const response = await http.get('category' + queryParams)
-				if (response.status === 200) {
-					setCategories(response.data.data.data)
-					setPerPage(response.data.data.per_page)
-					setTotal(response.data.data.total)
-					console.log('Gọi API lấy users thành công')
-				}
+            setCategories(response.data.data.data)
+            setPerPage(response.data.data.per_page)
+            setTotal(response.data.data.total)
+            console.log('Gọi API lấy users thành công')
 			} catch (error) {
-				console.error('Lỗi kết nối đến API:', error)
+				toast.error('Lỗi kết nối đến API !', toastOptions);
 			} finally {
 				setLoadingTable(false)
-				console.log(categories)
 			}
 		}
-		console.log(search)
 		getUser()
 	}, [search, shouldReloadData]);
 
@@ -127,7 +123,6 @@ const AdminCategory = () => {
 	const handleChangeInput = (e) => {
 		const newSearchValue = e.target.value
 		updateSearchParams({ search: newSearchValue, page: 1 })
-		console.log(location)
 	};
 
 	const handleChangeSelectedName = (e) => {
@@ -174,15 +169,13 @@ const AdminCategory = () => {
 
 	// submit form 
 	const handleSubmit = async (e) => {
-		console.log(111);
 		e.preventDefault();
 		const formDataToSubmit = new FormData();
 		for (const key in formData) {
 			formDataToSubmit.append(key, formData[key]);
 		}
 		try {
-			console.log(formDataToSubmit);
-			const response = await http.post(config.URL + 'api/category/add', formDataToSubmit);
+			const response = await http.post('category/add', formDataToSubmit);
 			toast.success('Thêm danh mục thành công !', toastOptions);
 			// clear input 
 			setFormData({
@@ -192,7 +185,6 @@ const AdminCategory = () => {
 			// clear image  
 			setSelectedImage(null);
 			$(modalRef.current).modal('hide'); // close modal 
-			console.log(response.data.data);
 			// const newData = response.data.data;
 			setShouldReloadData(!shouldReloadData);
 			// setCategories((prevCategories) => [newData, ...prevCategories]); // thêm vào đầu mảng 
@@ -208,7 +200,7 @@ const AdminCategory = () => {
 	const handleDeleteSubmit = async (e) => {
 		e.preventDefault();
 		try {
-			const response = await http.delete(config.URL + 'api/category/delete/' + categoryDetail.id);
+			const response = await http.delete('category/delete/' + categoryDetail.id);
 			toast.success('Xóa danh mục thành công !', toastOptions);
 			$(modalDeleteRef.current).modal('hide');
 			setShouldReloadData(!shouldReloadData);
@@ -258,8 +250,7 @@ const AdminCategory = () => {
 		formDataToSubmit.append('name', categoryDetail['name']);
 		if (categoryDetail.thumbnail instanceof Object) formDataToSubmit.append('thumbnail', categoryDetail['thumbnail']);
 		try {
-			console.log(formDataToSubmit);
-			const response = await http.post(config.URL + 'api/category/update/' + categoryDetail.id, formDataToSubmit);
+			const response = await http.post('category/update/' + categoryDetail.id, formDataToSubmit);
 			toast.success('Chỉnh sửa danh mục thành công !', toastOptions);
 			setSelectedEditImage(null);
 			categories[categoryDetail.index] = response.data.data;
