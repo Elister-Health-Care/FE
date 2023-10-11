@@ -99,20 +99,15 @@ const AdminDepartment = () => {
 				setLoadingTable(true)
 				const queryParams = `?search=${search.search}&page=${search.page}&paginate=${search.paginate}&sortname=${search.sortname}&sortlatest=${search.sortlatest}`
 				const response = await http.get('department' + queryParams)
-				if (response.status === 200) {
-					setDepartments(response.data.data.data)
-					setPerPage(response.data.data.per_page)
-					setTotal(response.data.data.total)
-					console.log('Gọi API lấy users thành công')
-				}
+            setDepartments(response.data.data.data)
+            setPerPage(response.data.data.per_page)
+            setTotal(response.data.data.total)
 			} catch (error) {
-				console.error('Lỗi kết nối đến API:', error)
+            toast.error('Lỗi kết nối đến API !', toastOptions);
 			} finally {
 				setLoadingTable(false)
-				console.log(departments)
 			}
 		}
-		console.log(search)
 		getUser()
 	}, [search, shouldReloadData]);
 
@@ -128,7 +123,6 @@ const AdminDepartment = () => {
 	const handleChangeInput = (e) => {
 		const newSearchValue = e.target.value
 		updateSearchParams({ search: newSearchValue, page: 1 })
-		console.log(location)
 	};
 
 	const handleChangeSelectedName = (e) => {
@@ -182,8 +176,7 @@ const AdminDepartment = () => {
 			formDataToSubmit.append(key, formData[key]);
 		}
 		try {
-			console.log(formDataToSubmit);
-			const response = await http.post(config.URL + 'api/department/add', formDataToSubmit);
+			const response = await http.post('department/add', formDataToSubmit);
 			toast.success('Thêm chuyên khoa thành công !', toastOptions);
 			// clear input 
 			setFormData({
@@ -194,7 +187,6 @@ const AdminDepartment = () => {
 			// clear image  
 			setSelectedImage(null);
 			$(modalRef.current).modal('hide'); // close modal 
-			console.log(response.data.data);
 			// const newData = response.data.data;
 			setShouldReloadData(!shouldReloadData);
 			// setDepartments((prevdepartments) => [newData, ...prevdepartments]); // thêm vào đầu mảng 
@@ -210,7 +202,7 @@ const AdminDepartment = () => {
 	const handleDeleteSubmit = async (e) => {
 		e.preventDefault();
 		try {
-			const response = await http.delete(config.URL + 'api/department/delete/' + departmentDetail.id);
+			const response = await http.delete('department/delete/' + departmentDetail.id);
 			toast.success('Xóa chuyên khoa thành công !', toastOptions);
 			$(modalDeleteRef.current).modal('hide');
 			setShouldReloadData(!shouldReloadData);
@@ -261,8 +253,7 @@ const AdminDepartment = () => {
 		formDataToSubmit.append('description', departmentDetail['description']);
 		if (departmentDetail.thumbnail instanceof Object) formDataToSubmit.append('thumbnail', departmentDetail['thumbnail']);
 		try {
-			console.log(formDataToSubmit);
-			const response = await http.post(config.URL + 'api/department/update/' + departmentDetail.id, formDataToSubmit);
+			const response = await http.post('department/update/' + departmentDetail.id, formDataToSubmit);
 			toast.success('Chỉnh sửa chuyên khoa thành công !', toastOptions);
 			setSelectedEditImage(null);
 			departments[departmentDetail.index] = response.data.data;
@@ -337,8 +328,9 @@ const AdminDepartment = () => {
                            <tr>
                               <th>ID</th>
                               <th>Tên chuyên khoa</th>
+                              <th>Mô tả</th>
                               <th>Thumbnail</th>
-                              <th>Lượt tìm kiếm</th>
+                              <th colSpan={1}>Lượt tìm kiếm</th>
                               <th>Ngày tạo</th>
                               <th>Ngày cập nhật</th>
                               <th>Thao tác</th>
