@@ -427,7 +427,7 @@ const AdminCategory = () => {
                   <div className={`modal-dialog ${cx('modal-dialog-create')}`} role="document">
                      <div className="modal-content">
                         <div className="modal-header">
-                        <h5 className="modal-title" id="exampleModalLabel">Add Category</h5>
+                        <h5 className="modal-title" id="exampleModalLabel">Thêm mới Danh mục</h5>
                         <button type="button" className="close" data-dismiss="modal" aria-label="Close">
                            <span aria-hidden="true">&times;</span>
                         </button>
@@ -436,9 +436,9 @@ const AdminCategory = () => {
                            <div className="modal-body">
                               <div className="form-group row">
                                  <div className='col-8'>
-                                    <label htmlFor="inputPassword" className="col-sm-12 col-form-label">Name Category</label>
+                                    <label htmlFor="inputPassword" className="col-sm-12 col-form-label">Tên Danh mục</label>
                                     <div className="col-sm-12">
-                                       <input value={formData.name} onChange={handleInputChange} name='name' type="text" required className="form-control" id="inputPassword" placeholder="Name Category"/>
+                                       <input value={formData.name} onChange={handleInputChange} name='name' type="text" required className="form-control" id="inputPassword" placeholder="Tên Danh mục"/>
                                     </div>
                                  </div>
                                  <div className='col-4'>
@@ -500,7 +500,7 @@ const AdminCategory = () => {
                   <div className={`modal-dialog ${cx('modal-dialog-create')}`} role="document">
                      <div className="modal-content">
                         <div className="modal-header">
-                        <h5 className="modal-title" id="exampleModalLabel">Add Category</h5>
+                        <h5 className="modal-title" id="exampleModalLabel">Chỉnh sửa Danh mục</h5>
                         <button type="button" className="close" data-dismiss="modal" aria-label="Close">
                            <span aria-hidden="true">&times;</span>
                         </button>
@@ -509,9 +509,9 @@ const AdminCategory = () => {
                            <div className="modal-body">
                               <div className="form-group row">
                                  <div className='col-8'>
-                                    <label htmlFor="inputPassword" className="col-sm-12 col-form-label">Name Category</label>
+                                    <label htmlFor="inputPassword" className="col-sm-12 col-form-label">Tên Danh mục</label>
                                     <div className="col-sm-12">
-                                       <input value={categoryDetail.name} onChange={handleInputEditChange} name='name' type="text" required className="form-control" id="inputPassword" placeholder="Name Category"/>
+                                       <input value={categoryDetail.name} onChange={handleInputEditChange} name='name' type="text" required className="form-control" id="inputPassword" placeholder="Tên Danh mục"/>
                                     </div>
                                  </div>
                                  <div className='col-4'>
