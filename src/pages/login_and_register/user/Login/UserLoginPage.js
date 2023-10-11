@@ -196,7 +196,7 @@ const UserLoginPage = () => {
                                     <div className="social google">
                                        <a href="/google">
                                           <img
-                                             src="/blog/image/google.png"
+                                             src="/user/image/google.png"
                                              alt=""
                                           />{' '}
                                           Đăng nhập với Google
@@ -205,7 +205,7 @@ const UserLoginPage = () => {
                                     <div className="social github">
                                        <a href="/github">
                                           <img
-                                             src="/blog/image/github.png"
+                                             src="/user/image/github.png"
                                              alt=""
                                           />{' '}
                                           Đăng nhập với Github

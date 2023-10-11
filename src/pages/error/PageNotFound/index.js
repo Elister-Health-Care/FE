@@ -8,7 +8,7 @@ const PageNotFoundPage = () => {
       <div>
          <div id={cx('page_not_found')}>
             <h1>PAGE NOT FOUND !</h1>
-            <img src="/blog/image/404.jpg" alt="404" />
+            <img src="/user/image/404.jpg" alt="404" />
             <Link to="/user-login">
                <button className="btn btn-outline-dark">LOGIN</button>
             </Link>
