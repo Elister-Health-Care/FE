@@ -37,6 +37,16 @@ import AdminCategory from '~/pages/admin/Category'
 import AdminStatistical from '~/pages/admin/Statistical'
 import AdminManager from '~/pages/admin/AdminManager'
 
+//Import admin hospital pages
+import AdminHospitalLayout from '~/layouts/AdminHospitalLayout'
+import HospitalDepartmentPage from '~/pages/admin_hospital/Department'
+import HospitalDoctorPage from '~/pages/admin_hospital/Doctor'
+import HospitalSchudlePage from '~/pages/admin_hospital/Schedule'
+import HospitalServicePage from '~/pages/admin_hospital/Service'
+import HospitalInsurancePage from '~/pages/admin_hospital/Insurance'
+import HospitalProfilePage from '~/pages/admin_hospital/Profile'
+import HospitalChangepasswordPage from '~/pages/admin_hospital/ChangePassword'
+
 //Import Test
 
 const BigRoutes = () => (
@@ -63,6 +73,21 @@ const BigRoutes = () => (
          <Route path="view-infor" element={<UserViewInforPage />} />
          <Route path="change-password" element={<UserChangePasswordPage />} />
          <Route path="chat/:id" element={<ChatBox />} />
+      </Route>
+
+      {/* Private route hospital */}
+      <Route path="hospital" element={<AdminHospitalLayout />}>
+         <Route path="dashboard" element={<AdminDashboardPage />}></Route>
+         <Route path="doctor" element={<HospitalDoctorPage />}></Route>
+         <Route path="schedule" element={<HospitalSchudlePage />}></Route>
+         <Route path="service" element={<HospitalServicePage />}></Route>
+         <Route path="insurance" element={<HospitalInsurancePage />}></Route>
+         <Route path="department" element={<HospitalDepartmentPage />}></Route>
+         <Route path="profile" element={<HospitalProfilePage />}></Route>
+         <Route
+            path="change-password"
+            element={<HospitalChangepasswordPage />}
+         ></Route>
       </Route>
 
       {/* Private route admin */}
