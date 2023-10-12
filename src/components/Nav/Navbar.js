@@ -3,6 +3,7 @@ import { Navbar, Container, NavDropdown, Collapse, Nav } from "react-bootstrap";
 import logo from "../../Assets/logo.png";
 import "./Navbar.css";
 import config from "~/router/config";
+import { Link, useNavigate } from 'react-router-dom'
 
 import { useEffect, useState } from "react";
 
@@ -10,11 +11,13 @@ const Navbars = () => {
   const user = JSON.parse(localStorage.getItem("user"));
   const [avatar, setAvatar] = useState("/image/avatar_admin_default.png");
   useEffect(() => {
-    if (user.avatar) {
-      setAvatar(config.URL + user.avatar);
+    if(user)
+    {
+      if (user.avatar) {
+        setAvatar(config.URL + user.avatar);
+      }
     }
   }, []);
-  // console.log(user);
   return (
     <Navbar expand="lg" className="bg-body-tertiary">
       <div className="container-fluid">
@@ -71,7 +74,8 @@ const Navbars = () => {
                 }
                 id="basic-nav-dropdown"
               >
-                <NavDropdown.Item className="p-2" href="user/profile">
+                <NavDropdown.Item className="p-2">
+                  <Link to={"user/profile"} tag = {Link}>
                   <div className="d-flex info-user">
                     <img className="avatar" src={avatar} alt="user pic" />
                     <p className="ml-1">
@@ -84,6 +88,7 @@ const Navbars = () => {
                       </div>
                     </p>
                   </div>
+                  </Link>
                 </NavDropdown.Item>
                 <NavDropdown.Item className="p-2" href="#action/3.2">
                   Another action
@@ -97,14 +102,14 @@ const Navbars = () => {
                 </NavDropdown.Item>
               </NavDropdown>
             ) : (
-              <Nav.Link href="/user-login">
+                <Link to={"/user-login"} tag={Link}>
                 <button className="">
-                  Đăng nhậfa-pull-right
+                  Đăng nhập
                   <span>
                     <i className="fa-solid fa-chevron-right"></i>
                   </span>
                 </button>
-              </Nav.Link>
+                </Link>
             )}
           </Nav>
         </Navbar.Collapse>

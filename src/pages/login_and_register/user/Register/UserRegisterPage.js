@@ -151,7 +151,7 @@ function RegisterPage() {
                         </h3>
                         {/* <form method="POST" action="/api/user/register" encType="multipart/form-data" onSubmit={handleSubmit}> */}
                         <form onSubmit={handleSubmit}>
-                           <label for="fullname">
+                           <label className='d-flex' for="fullname">
                               Họ và tên: (<span className="text-danger">*</span>
                               )
                            </label>
@@ -180,7 +180,7 @@ function RegisterPage() {
                       required
                     />
                   </div> */}
-                           <label for="floatingInputEmail">
+                           <label className='d-flex' for="floatingInputEmail">
                               Email: (<span className="text-danger">*</span>)
                            </label>
                            <div className=" mb-2 ">
@@ -199,7 +199,7 @@ function RegisterPage() {
                            <div className=" mb-2 ">
                               <div className="row">
                                  <div className="col-6 mr-0 pr-1">
-                                    <label for="password">
+                                    <label className='d-flex' for="password">
                                        Mật khẩu: (
                                        <span className="text-danger">*</span>)
                                     </label>
@@ -215,7 +215,7 @@ function RegisterPage() {
                                     />
                                  </div>
                                  <div className="col-6 ml-0 pl-0">
-                                    <label for="password-confirmation">
+                                    <label className='d-flex' for="password-confirmation">
                                        Xác nhận mật khẩu: (
                                        <span className="text-danger">*</span>)
                                     </label>
@@ -277,7 +277,7 @@ function RegisterPage() {
                            <div className="col-sm-12 pt-2 mb-2">
                               <div className="row">
                                  <div className="col-lg-6 col-md-6 ml-0 pl-0">
-                                    <label for="">
+                                    <label className='d-flex' for="">
                                        Giới tính: (
                                        <span className="text-danger">*</span>)
                                     </label>
@@ -336,7 +336,7 @@ function RegisterPage() {
                                  </div>
                                  <div className="col-lg-6 ml-0 pl-0 col-md-6">
                                     <div className=" mb-2 ">
-                                       <label for="">
+                                       <label className='d-flex' for="">
                                           Ngày sinh: (
                                           <span className="text-danger">*</span>
                                           )
@@ -413,7 +413,7 @@ function RegisterPage() {
                      <div className="card-img-left d-none m-auto d-md-block col-lg-5 col-md-5">
                         <img
                            alt=""
-                           src="/blog/image/register-photo.png"
+                           src="/user/image/register-photo.png"
                            className="w-100 "
                         />
                      </div>
