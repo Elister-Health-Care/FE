@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useState } from 'react'
+import React, { memo, useCallback, useEffect, useState } from 'react'
 import { GoogleMap, Marker, useJsApiLoader } from '@react-google-maps/api'
 
 const containerStyle = {
@@ -17,10 +17,8 @@ function Map({ onChildData }) {
    // eslint-disable-next-line no-unused-vars
    const [map, setMap] = useState(null)
 
-   const [dataToSend, setDataToSend] = useState('')
-   const sendDataToParent = () => {
-      // Gọi hàm callback để truyền giá trị lên component cha
-      onChildData(dataToSend)
+   const sendDataToParent = (value) => {
+      onChildData(value)
    }
 
    const OPTIONS = {
@@ -54,8 +52,7 @@ function Map({ onChildData }) {
             console.log('longitude = ', ev.latLng.lng())
             setLat(ev.latLng.lat())
             setLng(ev.latLng.lng())
-            setDataToSend([ev.latLng.lat(), ev.latLng.lng()])
-            sendDataToParent()
+            sendDataToParent([ev.latLng.lat(), ev.latLng.lng()])
          }}
       >
          <Marker position={{ lat: lat, lng: lng }} animation={2} />
