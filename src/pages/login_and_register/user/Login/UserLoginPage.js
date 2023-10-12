@@ -10,9 +10,13 @@ const UserLoginPage = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const isAdminLoggedIn = localStorage.getItem("admin");
-    if (isAdminLoggedIn) {
-      navigate("/user/view-infor");
+    
+    const userLoggined = JSON.parse(localStorage.getItem("user"));
+    if (userLoggined.role == "user") {
+      navigate("/");
+    }
+    else {
+     navigate("/hospital/dashboard");
     }
   }, [navigate]);
 
@@ -60,12 +64,18 @@ const UserLoginPage = () => {
         userLogin
       );
       if (response.status === 200) {
-        console.log(response);
-        const updatedUser = response.data.user;
-        updatedUser.access_token = response.data.message.original.access_token;
+        const updatedUser = response.data.data;
         setUser(updatedUser); // Cập nhật giá trị của user bằng setUser
         localStorage.setItem("user", JSON.stringify(updatedUser)); // lưu vào localStorage
-        navigate("/home");
+        if (
+          response.data.data.role == "hospital" ||
+          response.data.data.role == "doctor"
+        ) {
+          navigate("/hospital/dashboard");
+        }
+        else {
+          navigate("/");
+        }
         console.log(updatedUser);
         console.log("Đăng nhập thành công");
       } else {
@@ -80,29 +90,27 @@ const UserLoginPage = () => {
 
   return (
     <div>
-      <div
-      className="login d-flex">
+      <div className="login d-flex">
         <div className="container m-auto ps-md-0">
-          <div className="row g-0 pt-3 pb-3 body-login"  
-          >
-            <div
-              className="d-none d-md-block col-md-5 col-lg-6"
-             >
-              <img src="/blog/image/doctor-main.png" className="w-100 h-auto" /> 
-             </div>
+          <div className="row g-0 pt-3 pb-3 body-login">
+            <div className="d-none d-md-block col-md-5 col-lg-6">
+              <img src="/blog/image/doctor-main.png" className="w-100 h-auto" />
+            </div>
             <div className="col-md-7 col-lg-6">
               <div className="d-flex align-items-center">
                 <div className="container">
                   <div className="row">
                     <div className="col-md-10 mx-auto">
-
-                        <NavLink
-                          className="nav-link-icon d-flex"
-                          to="/home"
-                          tag={Link}
-                        >
-                          <img src="/blog/image/logo.png" className="m-auto w-75" />
-                        </NavLink>
+                      <NavLink
+                        className="nav-link-icon d-flex"
+                        to="/home"
+                        tag={Link}
+                      >
+                        <img
+                          src="/blog/image/logo.png"
+                          className="m-auto w-75"
+                        />
+                      </NavLink>
                       <h3 className="login-heading mb-4 mt-4 text-center">
                         <b>Đăng nhập</b>
                       </h3>
@@ -111,7 +119,7 @@ const UserLoginPage = () => {
                         onSubmit={handleLogin}
                       >
                         <div className="form-group">
-                          <label for="email" >Email:</label>
+                          <label htmlFor="email">Email:</label>
                           <input
                             name="email"
                             onChange={handleInputChange}
@@ -125,7 +133,7 @@ const UserLoginPage = () => {
                         </div>
 
                         <div className="form-group">
-                        <label for="email" >Mật khẩu:</label>
+                          <label htmlFor="email">Mật khẩu:</label>
                           <input
                             name="password"
                             onChange={handleInputChange}
@@ -190,12 +198,14 @@ const UserLoginPage = () => {
                         <p className="mt-2 text-center">Hoặc</p>
                         <div className="social google">
                           <a href="/google">
-                            <img src="/blog/image/google.png" alt="" /> Đăng nhập với Google
+                            <img src="/blog/image/google.png" alt="" /> Đăng
+                            nhập với Google
                           </a>
                         </div>
                         <div className="social github">
                           <a href="/github">
-                            <img src="/blog/image/github.png" alt="" /> Đăng nhập với Github
+                            <img src="/blog/image/github.png" alt="" /> Đăng
+                            nhập với Github
                           </a>
                         </div>
                       </form>
