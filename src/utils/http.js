@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const API = axios.create({
-   baseURL: 'http://localhost/training/health/BE/public/api/',
+   baseURL: 'http://localhost:99',
    timeout: 100000,
 })
 
