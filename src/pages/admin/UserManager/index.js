@@ -62,7 +62,16 @@ const AdminAllUserPage = () => {
 
    const itemsPerPage = perPage
    const pageCount = Math.ceil(total / itemsPerPage)
-
+   const toastOptions = {
+      position: 'top-right',
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: 'colored',
+   }
    // const updateSearchParams = (newSearchParams) => {
    //    setSearch({
    //       ...search,
@@ -85,7 +94,6 @@ const AdminAllUserPage = () => {
    }
 
    useEffect(() => {
-      console.log(location)
       const getUser = async () => {
          try {
             setLoadingTable(true)
@@ -101,10 +109,8 @@ const AdminAllUserPage = () => {
             console.error('Lỗi kết nối đến API:', error)
          } finally {
             setLoadingTable(false)
-            console.log(users)
          }
       }
-      console.log(search)
       getUser()
       // eslint-disable-next-line react-hooks/exhaustive-deps
    }, [search])
@@ -117,11 +123,9 @@ const AdminAllUserPage = () => {
    const handleChangeInput = (e) => {
       const newSearchValue = e.target.value
       updateSearchParams({ search: newSearchValue, page: 1 })
-      console.log(location)
    }
 
    const handleChangeSelectedRole = (e) => {
-      console.log(e.target.value)
       if (e.target.value === '') {
          updateSearchParams({ role: '' })
       } else {
@@ -130,8 +134,6 @@ const AdminAllUserPage = () => {
    }
 
    const handleChangeSelectedAccpect = (e) => {
-      console.log(e.target.value)
-
       updateSearchParams({ is_accept: e.target.value })
    }
 
@@ -164,27 +166,9 @@ const AdminAllUserPage = () => {
          await http.post('admin/change-accept/' + id, data)
          console.log('Gọi API thành công')
          if (value === 2) {
-            toast.warning(' Đã khóa tài khoản có id ' + id, {
-               position: 'top-right',
-               autoClose: 4000,
-               hideProgressBar: false,
-               closeOnClick: true,
-               pauseOnHover: true,
-               draggable: true,
-               progress: undefined,
-               theme: 'light',
-            })
+            toast.warning(' Đã khóa tài khoản có id ' + id, toastOptions)
          } else {
-            toast.success(' Thành công', {
-               position: 'top-right',
-               autoClose: 4000,
-               hideProgressBar: false,
-               closeOnClick: true,
-               pauseOnHover: true,
-               draggable: true,
-               progress: undefined,
-               theme: 'light',
-            })
+            toast.success(' Thành công', toastOptions)
          }
          updateUser(id, value)
          console.log(setUsers)
@@ -397,6 +381,7 @@ const AdminAllUserPage = () => {
                      pageCount={pageCount}
                      previousLabel="< Previous"
                      renderOnZeroPageCount={null}
+                     forcePage={search.page - 1}
                   />
                </div>
             </div>
