@@ -9,13 +9,14 @@ import './UserLogin.css'
 const UserLoginPage = () => {
    const navigate = useNavigate()
   useEffect(() => {
-    
     const userLoggined = JSON.parse(localStorage.getItem("user"));
-    if (userLoggined.role == "user") {
-      navigate("/");
-    }
-    else {
-     navigate("/hospital/dashboard");
+    if(userLoggined ){
+      if (userLoggined.role == "user") {
+        navigate("/");
+      }
+      else {
+      navigate("/hospital/dashboard");
+      }
     }
   }, [navigate]);
 
@@ -93,7 +94,7 @@ const UserLoginPage = () => {
         <div className="container m-auto ps-md-0">
           <div className="row g-0 pt-3 pb-3 body-login">
             <div className="d-none d-md-block col-md-5 col-lg-6">
-              <img src="/blog/image/doctor-main.png" className="w-100 h-auto" />
+              <img src="/user/image/doctor-main.png" className="w-100 h-auto" />
             </div>
             <div className="col-md-7 col-lg-6">
               <div className="d-flex align-items-center">
@@ -102,11 +103,11 @@ const UserLoginPage = () => {
                     <div className="col-md-10 mx-auto">
                       <NavLink
                         className="nav-link-icon d-flex"
-                        to="/home"
+                        to="/"
                         tag={Link}
                       >
                         <img
-                          src="/blog/image/logo.png"
+                          src="/user/image/logo.png"
                           className="m-auto w-75"
                         />
                       </NavLink>
@@ -198,13 +199,13 @@ const UserLoginPage = () => {
                         <p className="mt-2 text-center">Hoặc</p>
                         <div className="social google">
                           <a href="/google">
-                            <img src="/blog/image/google.png" alt="" /> Đăng
+                            <img src="/user/image/google.png" alt="" /> Đăng
                             nhập với Google
                           </a>
                         </div>
                         <div className="social github">
                           <a href="/github">
-                            <img src="/blog/image/github.png" alt="" /> Đăng
+                            <img src="/user/image/github.png" alt="" /> Đăng
                             nhập với Github
                           </a>
                         </div>
