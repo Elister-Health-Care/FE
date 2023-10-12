@@ -1,5 +1,6 @@
 import classNames from 'classnames/bind'
 import { Link } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 
 import { useEffect, useState } from 'react'
 
@@ -9,7 +10,9 @@ import config from '~/router/config'
 const cx = classNames.bind(styles)
 function Header() {
    const [open, setOpen] = useState(false)
+   const admin = JSON.parse(localStorage.getItem('admin'))
    const [avatar, setAvatar] = useState('/image/avatar_admin_default.png')
+   const [name, setName] = useState(admin.name ? admin.name : 'admin')
    const handleOpen = () => {
       setOpen(!open)
    }
@@ -17,13 +20,19 @@ function Header() {
    const handleLogout = () => {
       localStorage.removeItem('admin')
    }
-   const admin = JSON.parse(localStorage.getItem('admin'))
+
+   const isAdminUpdated = useSelector((state) => state.admin.keyAdminUpdated)
+
    useEffect(() => {
-      if (admin.avatar) {
+      const admin = JSON.parse(localStorage.getItem('admin'))
+      if (admin && admin.avatar) {
          setAvatar(config.URL + admin.avatar)
       }
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-   }, [])
+      if (admin && admin.name) {
+         setName(admin.name)
+      }
+   }, [isAdminUpdated])
+
    function getLastWord(inputString) {
       const words = inputString.split(' ')
       if (words.length > 0) {
@@ -54,7 +63,7 @@ function Header() {
                   <button onClick={handleOpen}>
                      <img className={cx('avatar')} src={avatar} alt=""></img>
                      <span>
-                        {getLastWord(admin.name)}
+                        {getLastWord(name)}
                         <i className="mdi mdi-chevron-down"></i>
                      </span>
                   </button>
@@ -65,7 +74,7 @@ function Header() {
                         <i className="mdi mdi-home-import-outline"></i>
                         <span className={cx('icon_item')}>Trang chủ</span>
                      </Link>
-                     <Link to={'/'}>
+                     <Link to={'profile'}>
                         <i className="mdi mdi-account-outline"></i>
                         <span className={cx('icon_item')}>Profile</span>
                      </Link>

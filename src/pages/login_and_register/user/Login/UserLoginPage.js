@@ -1,14 +1,13 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
-import { Link, useNavigate } from "react-router-dom";
-import { NavLink } from "reactstrap";
+import React, { useState, useEffect } from 'react'
+import axios from 'axios'
+import { Link, useNavigate } from 'react-router-dom'
+import { NavLink } from 'reactstrap'
 
-import config from "~/router/config";
-import "./UserLogin.css";
+import config from '~/router/config'
+import './UserLogin.css'
 
 const UserLoginPage = () => {
-  const navigate = useNavigate();
-
+   const navigate = useNavigate()
   useEffect(() => {
     
     const userLoggined = JSON.parse(localStorage.getItem("user"));
@@ -20,41 +19,41 @@ const UserLoginPage = () => {
     }
   }, [navigate]);
 
-  const [userLogin, setUserLogin] = useState({
-    email: "",
-    password: "",
-  });
+   const [userLogin, setUserLogin] = useState({
+      email: '',
+      password: '',
+   })
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setUserLogin({
-      ...userLogin,
-      [name]: value,
-    });
-  };
+   const handleInputChange = (e) => {
+      const { name, value } = e.target
+      setUserLogin({
+         ...userLogin,
+         [name]: value,
+      })
+   }
 
-  // eslint-disable-next-line no-unused-vars
-  const [user, setUser] = useState({
-    id: null,
-    id_user: null,
-    is_accept: null,
-    role: null,
-    name: "",
-    username: "",
-    email: "",
-    phone: "",
-    google_id: null,
-    date_of_birth: null,
-    avatar: null,
-    gender: null,
-    address: "",
-    status: null,
-    access_token: "",
-    remember_token: null,
-    created_at: null,
-    updated_at: null,
-    email_verified_at: null,
-  });
+   // eslint-disable-next-line no-unused-vars
+   const [user, setUser] = useState({
+      id: null,
+      id_user: null,
+      is_accept: null,
+      role: null,
+      name: '',
+      username: '',
+      email: '',
+      phone: '',
+      google_id: null,
+      date_of_birth: null,
+      avatar: null,
+      gender: null,
+      address: '',
+      status: null,
+      access_token: '',
+      remember_token: null,
+      created_at: null,
+      updated_at: null,
+      email_verified_at: null,
+   })
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -177,23 +176,24 @@ const UserLoginPage = () => {
                         </div>
                       </div> */}
 
-                        <div className="d-grid mt-5">
-                          <button
-                            className="col-12 btn btn-lg btn-login text-uppercase fw-bold mb-2"
-                            type="submit"
-                          >
-                            Đăng nhập
-                          </button>
-                          <div className="text-center mt-2">
-                            <NavLink
-                              className="nav-link-icon small ml-2 mr-2"
-                              to="/user-register"
-                              tag={Link}
-                            >
-                              Bạn chưa có tài khoản? Đăng ký tại đây
-                            </NavLink>
-                          </div>
-                        </div>
+                                    <div className="d-grid mt-5">
+                                       <button
+                                          className="col-12 btn btn-lg btn-login text-uppercase fw-bold mb-2"
+                                          type="submit"
+                                       >
+                                          Đăng nhập
+                                       </button>
+                                       <div className="text-center mt-2">
+                                          <NavLink
+                                             className="nav-link-icon small ml-2 mr-2"
+                                             to="/user-register"
+                                             tag={Link}
+                                          >
+                                             Bạn chưa có tài khoản? Đăng ký tại
+                                             đây
+                                          </NavLink>
+                                       </div>
+                                    </div>
 
                         <p className="mt-2 text-center">Hoặc</p>
                         <div className="social google">
@@ -277,17 +277,17 @@ const UserLoginPage = () => {
                             </div>
                           </div>
                         </div>
-                      </div>
-                    </div>
+                     </div>
                   </div>
-                </div>
-              </div>
+               </div>
             </div>
-          </div>
-        </div>
+         </div>
       </div>
-    </div>
-  );
-};
+      </div>
+      </div>
+      </div>
+      </div>
+   )
+}
 
-export default UserLoginPage;
+export default UserLoginPage
