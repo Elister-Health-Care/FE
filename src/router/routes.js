@@ -1,6 +1,11 @@
 import React from 'react'
 import { Route, Routes } from 'react-router-dom'
-import { UserAuthCheck, AdminAuthCheck } from './AuthCheck'
+import {
+   UserAuthCheck,
+   AdminAuthCheck,
+   HospitalAuthCheck,
+   DoctorAuthCheck,
+} from './AuthCheck'
 
 // Page Not Found
 import PageNotFoundPage from '~/pages/error/PageNotFound'
@@ -41,17 +46,21 @@ import AdminManager from '~/pages/admin/AdminManager'
 import AdminHospitalLayout from '~/layouts/AdminHospitalLayout'
 import HospitalDepartmentPage from '~/pages/admin_hospital/Department'
 import HospitalDoctorPage from '~/pages/admin_hospital/Doctor'
-import HospitalSchudlePage from '~/pages/admin_hospital/Schedule'
+import HospitalArticlePage from '~/pages/admin_hospital/Article'
 import HospitalServicePage from '~/pages/admin_hospital/Service'
 import HospitalInsurancePage from '~/pages/admin_hospital/Insurance'
 import HospitalProfilePage from '~/pages/admin_hospital/Profile'
 import HospitalChangepasswordPage from '~/pages/admin_hospital/ChangePassword'
+import FakeLoginHospital from '~/pages/admin_hospital/FakeLoginHospital'
+import DoctorDasboardPage from '~/pages/doctor/Dashboard'
+import DoctorSchedulePage from '~/pages/doctor/Schedule'
+import DoctorArticlePage from '~/pages/doctor/Article'
 
 //Import Test
 
 const BigRoutes = () => (
    <Routes>
-      {/* Login route */}
+      {/* Login route **************************/}
       <Route path="user-login" element={<UserLoginPage />} />
       <Route path="user-update" element={<UserUpdateInfor />} />
       <Route path="user-register" element={<UserRegisterPage />} />
@@ -64,7 +73,7 @@ const BigRoutes = () => (
          <Route path="product/:id" element={<UserProductDetailPage />} />
       </Route>
 
-      {/* Private route user-hospital */}
+      {/* Private route user-hospital ********************/}
       <Route
          path="user-hospital"
          element={<UserAuthCheck component={UserLayout} />}
@@ -75,22 +84,51 @@ const BigRoutes = () => (
          <Route path="chat/:id" element={<ChatBox />} />
       </Route>
 
-      {/* Private route hospital */}
-      <Route path="hospital" element={<AdminHospitalLayout />}>
-         <Route path="dashboard" element={<AdminDashboardPage />}></Route>
-         <Route path="doctor" element={<HospitalDoctorPage />}></Route>
-         <Route path="schedule" element={<HospitalSchudlePage />}></Route>
-         <Route path="service" element={<HospitalServicePage />}></Route>
-         <Route path="insurance" element={<HospitalInsurancePage />}></Route>
-         <Route path="department" element={<HospitalDepartmentPage />}></Route>
+      {/* Private route hospital ***********************/}
+      <Route
+         path="hospital"
+         element={<HospitalAuthCheck component={AdminHospitalLayout} />}
+      >
+         <Route
+            path="dashboard"
+            element={<DoctorAuthCheck component={AdminDashboardPage} />}
+         ></Route>
+         <Route
+            path="doctor"
+            element={<DoctorAuthCheck component={HospitalDoctorPage} />}
+         ></Route>
+         <Route
+            path="service"
+            element={<DoctorAuthCheck component={HospitalServicePage} />}
+         ></Route>
+         <Route
+            path="insurance"
+            element={<DoctorAuthCheck component={HospitalInsurancePage} />}
+         ></Route>
+         <Route
+            path="department"
+            element={<DoctorAuthCheck component={HospitalDepartmentPage} />}
+         ></Route>
+         <Route
+            path="article"
+            element={<DoctorAuthCheck component={HospitalArticlePage} />}
+         ></Route>
+
          <Route path="profile" element={<HospitalProfilePage />}></Route>
          <Route
             path="change-password"
             element={<HospitalChangepasswordPage />}
          ></Route>
+         <Route
+            path="doctor-dashboard"
+            element={<DoctorDasboardPage />}
+         ></Route>
+         <Route path="doctor-schedule" element={<DoctorSchedulePage />}></Route>
+         <Route path="doctor-article" element={<DoctorArticlePage />}></Route>
       </Route>
+      <Route path="fake-login-hospital" element={<FakeLoginHospital />} />
 
-      {/* Private route admin */}
+      {/* Private route admin *************************/}
       <Route path="admin" element={<AdminAuthCheck component={AdminLayout} />}>
          <Route path="dashboard" element={<AdminDashboardPage />}></Route>
          <Route path="view-infor" element={<AdminViewInforPage />} />
@@ -105,8 +143,9 @@ const BigRoutes = () => (
          <Route path="statistical" element={<AdminStatistical />} />
       </Route>
 
-      {/* Error route */}
+      {/* Error route **********************************/}
       <Route path="*" element={<PageNotFoundPage />} />
+      <Route path="/page-not-found" element={<PageNotFoundPage />} />
    </Routes>
 )
 

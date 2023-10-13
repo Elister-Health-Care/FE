@@ -1,13 +1,13 @@
 import classNames from 'classnames/bind'
 import TitleAdmin from '~/components/TitleAdmin'
 
-import styles from './Schedule.module.scss'
+import styles from '~/pages/doctor/Doctor.module.scss'
 
 const cx = classNames.bind(styles)
-function HospitalSchudlePage() {
+function DoctorArticlePage() {
    return (
       <>
-         <TitleAdmin>Lịch trình </TitleAdmin>
+         <TitleAdmin>Bài viết của bạn </TitleAdmin>
          <div className={cx('card', 'shadow')}>
             <div className={cx('card_header')}>
                <span>button, tittle or filter here</span>
@@ -18,4 +18,4 @@ function HospitalSchudlePage() {
    )
 }
 
-export default HospitalSchudlePage
+export default DoctorArticlePage

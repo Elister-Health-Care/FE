@@ -8,6 +8,7 @@ const cx = classNames.bind(styles)
 function Header() {
    const location = useLocation()
 
+   const user = JSON.parse(localStorage.getItem('HealthCareUser'))
    const [navActive, setNavActive] = useState('')
    const [linkActive, setLinkActive] = useState('')
 
@@ -16,13 +17,22 @@ function Header() {
          case '/hospital/dashboard':
             setNavActive('dashboard')
             break
+         case '/hospital/doctor-dashboard':
+            setNavActive('doctor-dashboard')
+            break
+         case '/hospital/doctor-schedule':
+            setNavActive('doctor-schedule')
+            break
+         case '/hospital/doctor-article':
+            setNavActive('doctor-article')
+            break
          case '/hospital/doctor':
             setNavActive('hospital')
             setLinkActive('doctor')
             break
-         case '/hospital/schedule':
+         case '/hospital/article':
             setNavActive('hospital')
-            setLinkActive('schedule')
+            setLinkActive('article')
             break
          case '/hospital/service':
             setNavActive('category')
@@ -42,6 +52,10 @@ function Header() {
       }
       // eslint-disable-next-line react-hooks/exhaustive-deps
    }, [location.pathname])
+
+   const handleLogout = () => {
+      localStorage.removeItem('HealthCareUser')
+   }
    return (
       <header id={cx('topnav')}>
          <div className={cx('nav_custom')}>
@@ -102,7 +116,11 @@ function Header() {
 
                         <div className="dropdown-divider"></div>
 
-                        <Link className="dropdown-item notify-item">
+                        <Link
+                           to="/user-login"
+                           onClick={handleLogout}
+                           className="dropdown-item notify-item"
+                        >
                            <i className="mdi mdi-logout-variant"></i>
                            &ensp;&nbsp;
                            <span>Logout</span>
@@ -117,91 +135,133 @@ function Header() {
                   </Link>
                </div>
                {/* mennu */}
-               <ul className={cx('navigation-menu')}>
-                  <li className={cx('has-submenu')}>
-                     <Link
-                        to="dashboard"
-                        className={cx(
-                           navActive === 'dashboard' && 'nav_active'
-                        )}
-                     >
-                        <i className="ti-home"></i>&ensp;&nbsp;Dashboard
-                     </Link>
-                  </li>
+               {user.role === 'hospital' ? (
+                  <ul className={cx('navigation-menu')}>
+                     <li className={cx('has-submenu')}>
+                        <Link
+                           to="dashboard"
+                           className={cx(
+                              navActive === 'dashboard' && 'nav_active'
+                           )}
+                        >
+                           <i className="ti-home"></i>&ensp;&nbsp;Dashboard
+                        </Link>
+                     </li>
 
-                  <li className={cx('has-submenu')}>
-                     <Link
-                        className={cx(navActive === 'hospital' && 'nav_active')}
-                     >
-                        <i className="mdi mdi-hospital-building"></i>
-                        &ensp;&nbsp;Bệnh viện
-                     </Link>
-                     <ul className={cx('submenu')}>
-                        <li>
-                           <Link
-                              to="doctor"
-                              className={cx(
-                                 linkActive === 'doctor' && 'link_active'
-                              )}
-                           >
-                              <i className="mdi mdi-doctor"></i>&ensp; Bác sĩ
-                           </Link>
-                        </li>
-                        <li>
-                           <Link
-                              to="schedule"
-                              className={cx(
-                                 linkActive === 'schedule' && 'link_active'
-                              )}
-                           >
-                              <i className="mdi mdi-calendar-month-outline"></i>
-                              &ensp; Lịch trình
-                           </Link>
-                        </li>
-                     </ul>
-                  </li>
-                  <li className={cx('has-submenu')}>
-                     <Link
-                        className={cx(navActive === 'category' && 'nav_active')}
-                     >
-                        <i className="ti-menu-alt"></i>&ensp;&nbsp; Danh mục
-                     </Link>
-                     <ul className={cx('submenu')}>
-                        <li>
-                           <Link
-                              to="service"
-                              className={cx(
-                                 linkActive === 'service' && 'link_active'
-                              )}
-                           >
-                              <i className="mdi mdi-database"></i>&ensp; Dịch vụ
-                           </Link>
-                        </li>
-                        <li>
-                           <Link
-                              to="insurance"
-                              className={cx(
-                                 linkActive === 'insurance' && 'link_active'
-                              )}
-                           >
-                              <i className="mdi mdi-credit-card-plus-outline"></i>
-                              &ensp; Bảo hiểm
-                           </Link>
-                        </li>
-                        <li>
-                           <Link
-                              to="department"
-                              className={cx(
-                                 linkActive === 'department' && 'link_active'
-                              )}
-                           >
-                              <i className="mdi mdi-progress-alert"></i>&ensp;
-                              Chuyên khoa
-                           </Link>
-                        </li>
-                     </ul>
-                  </li>
-               </ul>
+                     <li className={cx('has-submenu')}>
+                        <Link
+                           className={cx(
+                              navActive === 'hospital' && 'nav_active'
+                           )}
+                        >
+                           <i className="mdi mdi-hospital-building"></i>
+                           &ensp;&nbsp;Bệnh viện
+                        </Link>
+                        <ul className={cx('submenu')}>
+                           <li>
+                              <Link
+                                 to="doctor"
+                                 className={cx(
+                                    linkActive === 'doctor' && 'link_active'
+                                 )}
+                              >
+                                 <i className="mdi mdi-doctor"></i>&ensp; Bác sĩ
+                              </Link>
+                           </li>
+                           <li>
+                              <Link
+                                 to="article"
+                                 className={cx(
+                                    linkActive === 'article' && 'link_active'
+                                 )}
+                              >
+                                 <i className="mdi mdi-calendar-month-outline"></i>
+                                 &ensp; Bài viết
+                              </Link>
+                           </li>
+                        </ul>
+                     </li>
+                     <li className={cx('has-submenu')}>
+                        <Link
+                           className={cx(
+                              navActive === 'category' && 'nav_active'
+                           )}
+                        >
+                           <i className="ti-menu-alt"></i>&ensp;&nbsp; Danh mục
+                        </Link>
+                        <ul className={cx('submenu')}>
+                           <li>
+                              <Link
+                                 to="service"
+                                 className={cx(
+                                    linkActive === 'service' && 'link_active'
+                                 )}
+                              >
+                                 <i className="mdi mdi-database"></i>&ensp; Dịch
+                                 vụ
+                              </Link>
+                           </li>
+                           <li>
+                              <Link
+                                 to="insurance"
+                                 className={cx(
+                                    linkActive === 'insurance' && 'link_active'
+                                 )}
+                              >
+                                 <i className="mdi mdi-credit-card-plus-outline"></i>
+                                 &ensp; Bảo hiểm
+                              </Link>
+                           </li>
+                           <li>
+                              <Link
+                                 to="department"
+                                 className={cx(
+                                    linkActive === 'department' && 'link_active'
+                                 )}
+                              >
+                                 <i className="mdi mdi-progress-alert"></i>
+                                 &ensp; Chuyên khoa
+                              </Link>
+                           </li>
+                        </ul>
+                     </li>
+                  </ul>
+               ) : (
+                  <ul className={cx('navigation-menu')}>
+                     <li className={cx('has-submenu')}>
+                        <Link
+                           to="doctor-dashboard"
+                           className={cx(
+                              navActive === 'doctor-dashboard' && 'nav_active'
+                           )}
+                        >
+                           <i className="ti-home"></i>&ensp;&nbsp;Dashboard
+                        </Link>
+                     </li>
+
+                     <li className={cx('has-submenu')}>
+                        <Link
+                           to="doctor-schedule"
+                           className={cx(
+                              navActive === 'doctor-schedule' && 'nav_active'
+                           )}
+                        >
+                           <i className="ti-calendar"></i>
+                           &ensp;&nbsp;Lịch trình
+                        </Link>
+                     </li>
+                     <li className={cx('has-submenu')}>
+                        <Link
+                           to="doctor-article"
+                           className={cx(
+                              navActive === 'doctor-article' && 'nav_active'
+                           )}
+                        >
+                           <i className="ti-write"></i>&ensp;&nbsp; Bài viết
+                        </Link>
+                     </li>
+                  </ul>
+               )}
             </div>
          </div>
       </header>
