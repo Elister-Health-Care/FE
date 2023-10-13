@@ -14,20 +14,25 @@ import UserLoginPage from '~/pages/login_and_register/user/Login/UserLoginPage'
 import UserUpdateInfor from '~/pages/login_and_register/user/UpdateInfor/UserUpdateInfor'
 import UserRegisterPage from '~/pages/login_and_register/user/Register/UserRegisterPage'
 
+// import UserRegisterPage from '~/pages/login_and_register/user/HospitalRegister'
 import HospitalRegisterPage from '~/pages/login_and_register/user/HospitalRegister'
 import AdminLoginPage from '~/pages/login_and_register/Admin'
+
 
 // Import main pages(public)
 import HomePage from '~/pages/main/Home'
 import UserProductDetailPage from '~/pages/main/Product'
 
 // Import user pages
+import UserMainLayout from '~/layouts/UserMainLayout'
 import UserLayout from '~/layouts/UserLayout'
 import UserViewInforPage from '~/pages/user/Infor'
 import UserChangePasswordPage from '~/pages/user/ChangePassword'
 import ChatBox from '~/pages/user/chat/ChatBox'
 import UserDashboardPage from '~/pages/user/Dashboard'
-
+import UserProfile from '~/pages/user/Profile'
+import UserEditProfile from '~/pages/user/Profile/edit'
+import FormEditProfile from '~/pages/user/Profile/form-edit'
 // Import admin pages
 import AdminLayout from '~/layouts/AdminLayout'
 import AdminDashboardPage from '~/pages/admin/Dashboard'
@@ -69,9 +74,17 @@ const BigRoutes = () => (
       <Route path="admin-login" element={<AdminLoginPage />} />
 
       {/* Public route */}
-      <Route path="/" element={<HomePage />}>
+      <Route path="/" element={<UserMainLayout/>}>
+         <Route path="" element={<HomePage />} />
          <Route path="product/:id" element={<UserProductDetailPage />} />
+         {/* private route user-main */}
+         <Route path="user" element={<UserAuthCheck component={UserProfile}/>}>
+            <Route path="profile" element={<UserEditProfile/>}/>
+            <Route path="edit-profile" element={<FormEditProfile/>} />  
+         </Route>
       </Route>
+      
+         
 
       {/* Private route user-hospital ********************/}
       <Route
