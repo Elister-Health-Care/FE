@@ -21,8 +21,10 @@ function AdminManager() {
    const adminLocal = JSON.parse(localStorage.getItem('admin'))
    const location = useLocation()
    const [loadingTable, setLoadingTable] = useState(false)
-   const [adminAccount, setAdminAccount] = useState([])
    const [shouldReloadData, setShouldReloadData] = useState(false)
+   const [roleShow, setRoleShow] = useState(true)
+   const [deleteShow, setDeleteShow] = useState(true)
+   const [adminAccount, setAdminAccount] = useState([])
    const [errors, setErrors] = useState({})
    const [adminDetail, setAdminDetail] = useState({
       id: '',
@@ -165,6 +167,9 @@ function AdminManager() {
 
    const handleChangeRole = async (id, e) => {
       console.log(e.target.value)
+      if (adminLocal.role !== 'manager') {
+         setRoleShow(false)
+      }
       try {
          const data = {
             role: e.target.value,
@@ -197,7 +202,7 @@ function AdminManager() {
             // clear input
             setFormData({
                name: '',
-               email: null,
+               email: '',
             })
 
             $(modalRef.current).modal('hide') // close modal
@@ -374,6 +379,7 @@ function AdminManager() {
                                     ? formatDateTime(admin.created_at)
                                     : 'N/A'}
                               </td>
+
                               <td>
                                  {admin.role === 'manager' ? (
                                     'Manager'
@@ -385,18 +391,20 @@ function AdminManager() {
                                    adminLocal.role === 'superadmin' ? (
                                     admin.role
                                  ) : (
-                                    <select
-                                       onChange={(e) =>
-                                          handleChangeRole(admin.id, e)
-                                       }
-                                       className={cx('custom_select')}
-                                       defaultValue={admin.role}
-                                    >
-                                       <option value={'admin'}>Admin</option>
-                                       <option value={'superadmin'}>
-                                          SuperAdmin
-                                       </option>
-                                    </select>
+                                    roleShow && (
+                                       <select
+                                          onChange={(e) =>
+                                             handleChangeRole(admin.id, e)
+                                          }
+                                          className={cx('custom_select')}
+                                          defaultValue={admin.role}
+                                       >
+                                          <option value={'admin'}>Admin</option>
+                                          <option value={'superadmin'}>
+                                             SuperAdmin
+                                          </option>
+                                       </select>
+                                    )
                                  )}
                               </td>
                               <td>
@@ -519,14 +527,16 @@ function AdminManager() {
                            </div>
                            <div className="modal-footer">
                               <button
-                                 onClick={handleSubmitAddAccount}
-                                 type="button"
                                  className="btn btn-secondary"
                                  data-dismiss="modal"
                               >
                                  Close
                               </button>
-                              <button type="submit" className="btn btn-primary">
+                              <button
+                                 onClick={handleSubmitAddAccount}
+                                 type="button"
+                                 className="btn btn-primary"
+                              >
                                  <i className="fa-solid fa-plus"></i> Add
                               </button>
                            </div>
