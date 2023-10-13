@@ -11,30 +11,16 @@ const UserAuthCheck = ({ component: Component }) => {
 }
 
 const AdminAuthCheck = ({ component: Component }) => {
-   const admin = JSON.parse(localStorage.getItem('HealthCareUser'))
-   if (admin) {
-      if (
-         admin.role === 'user' ||
-         admin.role === 'doctor' ||
-         admin.role === 'hospital'
-      ) {
-         return <Navigate to="/page-not-found" />
-      } else {
-         return <Component />
-      }
-   } else {
+   const admin = JSON.parse(localStorage.getItem('admin'))
+   if (!admin) {
       return <Navigate to="/admin-login" />
    }
+   return <Component />
 }
 const HospitalAuthCheck = ({ component: Component }) => {
    const hospital = JSON.parse(localStorage.getItem('HealthCareUser'))
    if (hospital) {
-      if (
-         hospital.role === 'user' ||
-         hospital.role === 'admin' ||
-         hospital.role === 'superadmin' ||
-         hospital.role === 'manager'
-      ) {
+      if (hospital.role === 'user') {
          return <Navigate to="/page-not-found" />
       } else {
          return <Component />

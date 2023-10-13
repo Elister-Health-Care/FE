@@ -10,12 +10,12 @@ import { useSelector } from 'react-redux'
 const cx = classNames.bind(styles)
 
 function Sidebar() {
-   const admin = JSON.parse(localStorage.getItem('HealthCareUser'))
+   const admin = JSON.parse(localStorage.getItem('admin'))
    const [avatar, setAvatar] = useState('/image/avatar_admin_default.png')
    const isAdminUpdated = useSelector((state) => state.admin.keyAdminUpdated)
    const [name, setName] = useState(admin.name ? admin.name : 'admin')
    useEffect(() => {
-      const admin = JSON.parse(localStorage.getItem('HealthCareUser'))
+      const admin = JSON.parse(localStorage.getItem('admin'))
       if (admin && admin.avatar) {
          setAvatar(config.URL + admin.avatar)
       }

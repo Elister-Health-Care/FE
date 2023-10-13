@@ -16,7 +16,7 @@ function AdminLoginPage() {
    const [errors, setErrors] = useState({})
 
    useEffect(() => {
-      const isAdminLoggedIn = localStorage.getItem('HealthCareUser')
+      const isAdminLoggedIn = localStorage.getItem('admin')
       if (isAdminLoggedIn) {
          navigate('/admin/dashboard')
       }
@@ -101,7 +101,7 @@ function AdminLoginPage() {
             console.log(response.data.data)
             const updatedAdmin = response.data.data
             // setAdmin(updatedAdmin) // Cập nhật giá trị của admin bằng setAdmin
-            localStorage.setItem('HealthCareUser', JSON.stringify(updatedAdmin)) // lưu vào localStorage
+            localStorage.setItem('admin', JSON.stringify(updatedAdmin)) // lưu vào localStorage
             navigate('/admin/dashboard')
             console.log(updatedAdmin)
             console.log('Đăng nhập thành công')
