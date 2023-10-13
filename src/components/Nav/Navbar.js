@@ -2,14 +2,30 @@ import React from "react";
 import { Navbar, Container, NavDropdown, Collapse, Nav } from "react-bootstrap";
 import logo from "../../Assets/logo.png";
 import "./Navbar.css";
+import { useSelector } from 'react-redux'
 import config from "~/router/config";
 import { Link, useNavigate } from 'react-router-dom'
 
 import { useEffect, useState } from "react";
 
 const Navbars = () => {
-  const user = JSON.parse(localStorage.getItem("user"));
+  const user = JSON.parse(localStorage.getItem("HealthCareUser"));
   const [avatar, setAvatar] = useState("/image/avatar_admin_default.png");
+  const [name, setName] = useState(user.name ? user.name : 'User')
+
+  const isUserUpdated = useSelector((state) => state.user.keyUserUpdated)
+
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem('HealthCareUser'))
+    if (user && user.avatar) {
+       setAvatar(config.URL + user.avatar)
+    }
+    if (user && user.name) {
+       setName(user.name)
+    }
+ }, [isUserUpdated])
+
+
   useEffect(() => {
     if(user)
     {
@@ -79,10 +95,10 @@ const Navbars = () => {
                   <div className="d-flex info-user">
                     <img className="avatar" src={avatar} alt="user pic" />
                     <p className="ml-1">
-                      {user.name}
+                      {name}
                       <div>
                         <small>
-                          Xem hồ sơ của bạn{" "}
+                          Xem hồ sơ của bạn
                           <i className="fa-solid fa-chevron-right"></i>
                         </small>
                       </div>

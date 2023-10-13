@@ -9,7 +9,7 @@ import './UserLogin.css'
 const UserLoginPage = () => {
    const navigate = useNavigate()
   useEffect(() => {
-    const userLoggined = JSON.parse(localStorage.getItem("user"));
+    const userLoggined = JSON.parse(localStorage.getItem("HealthCareUser"));
     if(userLoggined ){
       if (userLoggined.role == "user") {
         navigate("/");
@@ -66,7 +66,7 @@ const UserLoginPage = () => {
       if (response.status === 200) {
         const updatedUser = response.data.data;
         setUser(updatedUser); // Cập nhật giá trị của user bằng setUser
-        localStorage.setItem("user", JSON.stringify(updatedUser)); // lưu vào localStorage
+        localStorage.setItem("HealthCareUser", JSON.stringify(updatedUser)); // lưu vào localStorage
         if (
           response.data.data.role == "hospital" ||
           response.data.data.role == "doctor"

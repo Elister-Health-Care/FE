@@ -34,6 +34,8 @@ nav{
                     width: 40px;
                     height:40px;
                     border-radius: 50%;
+                    object-position: center;
+                    object-fit: cover;
                 }
                 span {
                     overflow: hidden;
@@ -48,6 +50,8 @@ nav{
                     width: 60px;
                     height:60px;
                     border-radius: 50%;
+                    object-position: center;
+                    object-fit: cover;
                 }
                 p {
                     margin: auto;
