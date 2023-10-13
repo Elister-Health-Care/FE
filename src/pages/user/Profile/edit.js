@@ -7,7 +7,7 @@ import {AiFillEdit} from 'react-icons/ai'
 import {BsCameraFill} from 'react-icons/bs'
 
 const UserEditProfile = () => {
-  const user = JSON.parse(localStorage.getItem("user"));
+  const user = JSON.parse(localStorage.getItem("HealthCareUser"));
   const [avatar, setAvatar] = useState("/image/avatar_admin_default.png");
   useEffect(() => {
     if (user.avatar) {
@@ -29,6 +29,7 @@ const UserEditProfile = () => {
         <input type="file" className="d-none" id="image"/>
         <div className="my-auto name ml-4">
           {user.name}
+          <br/>
           <span className="email">{user.email}</span>
         </div>
       </div>

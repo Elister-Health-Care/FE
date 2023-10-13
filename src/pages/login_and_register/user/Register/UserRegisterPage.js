@@ -62,7 +62,7 @@ function RegisterPage() {
             })
             console.log('Đăng ký thành công')
             setTimeout(() => {
-               navigate('/user-update')
+               navigate('/user-login')
             }, 1500)
          } else {
             console.log(response)

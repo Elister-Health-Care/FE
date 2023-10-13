@@ -3,7 +3,7 @@ import React from 'react'
 import { Navigate } from 'react-router-dom'
 
 const UserAuthCheck = ({ component: Component }) => {
-   const user = localStorage.getItem('user')
+   const user = localStorage.getItem('HealthCareUser')
    if (!user) {
       return <Navigate to="/user-login" />
    }

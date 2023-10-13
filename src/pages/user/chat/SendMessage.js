@@ -32,7 +32,7 @@ const SendMessage = ({ scroll }) => {
    })
 
    useEffect(() => {
-      setUser(JSON.parse(localStorage.getItem('user')))
+      setUser(JSON.parse(localStorage.getItem('HealthCareUser')))
    }, [])
 
    const currentURL = window.location.href

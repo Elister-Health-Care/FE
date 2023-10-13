@@ -37,6 +37,10 @@ nav .navbar-nav a .pull-left img {
   width: 40px;
   height: 40px;
   border-radius: 50%;
+  -o-object-position: center;
+     object-position: center;
+  -o-object-fit: cover;
+     object-fit: cover;
 }
 nav .navbar-nav a .pull-left span {
   overflow: hidden;
@@ -50,6 +54,10 @@ nav .navbar-nav a .info-user img {
   width: 60px;
   height: 60px;
   border-radius: 50%;
+  -o-object-position: center;
+     object-position: center;
+  -o-object-fit: cover;
+     object-fit: cover;
 }
 nav .navbar-nav a .info-user p {
   margin: auto;

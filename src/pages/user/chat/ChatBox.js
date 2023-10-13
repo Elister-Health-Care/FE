@@ -71,7 +71,7 @@ const ChatBox = () => {
    })
 
    useEffect(() => {
-      setUser(JSON.parse(localStorage.getItem('user')))
+      setUser(JSON.parse(localStorage.getItem('HealthCareUser')))
    }, [])
 
    useEffect(() => {

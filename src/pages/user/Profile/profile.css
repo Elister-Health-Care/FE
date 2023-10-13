@@ -33,6 +33,10 @@
   width: 100px;
   height: 100px;
   border-radius: 50%;
+  -o-object-position: center;
+     object-position: center;
+  -o-object-fit: cover;
+     object-fit: cover;
 }
 .info .edit-image .icon-change {
   background: var(--gradientColor);
@@ -89,4 +93,7 @@
 .main-form .item-form input {
   margin-top: 5px;
   padding: 23px 20px;
+}
+.main-form .item-form button:disabled {
+  cursor: not-allowed;
 }/*# sourceMappingURL=profile.css.map */
