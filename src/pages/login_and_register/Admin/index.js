@@ -1,14 +1,12 @@
 import classNames from 'classnames/bind'
 import { Link, useNavigate } from 'react-router-dom'
 import React, { useState, useEffect } from 'react'
-import axios from 'axios'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import styles from './AdminLogin.module.scss'
-import config from '~/router/config'
 import validateForm from '~/helpers/validation'
 import Loading from '~/components/Loading/LoadingPage'
-
+import http from '~/utils/http'
 const cx = classNames.bind(styles)
 
 function AdminLoginPage() {
@@ -18,7 +16,7 @@ function AdminLoginPage() {
    const [errors, setErrors] = useState({})
 
    useEffect(() => {
-      const isAdminLoggedIn = localStorage.getItem('admin')
+      const isAdminLoggedIn = localStorage.getItem('HealthCareUser')
       if (isAdminLoggedIn) {
          navigate('/admin/dashboard')
       }
@@ -39,23 +37,23 @@ function AdminLoginPage() {
       password: '',
    })
 
-   // eslint-disable-next-line no-unused-vars
-   const [admin, setAdmin] = useState({
-      id: null,
-      role: null,
-      name: '',
-      email: '',
-      phone: '',
-      date_of_birth: null,
-      avatar: null,
-      gender: null,
-      address: '',
-      access_token: '',
-      remember_token: null,
-      created_at: null,
-      updated_at: null,
-      email_verified_at: null,
-   })
+   // // eslint-disable-next-line no-unused-vars
+   // const [admin, setAdmin] = useState({
+   //    id: null,
+   //    role: null,
+   //    name: '',
+   //    email: '',
+   //    phone: '',
+   //    date_of_birth: null,
+   //    avatar: null,
+   //    gender: null,
+   //    address: '',
+   //    access_token: '',
+   //    remember_token: null,
+   //    created_at: null,
+   //    updated_at: null,
+   //    email_verified_at: null,
+   // })
 
    const handleInputChange = (e) => {
       const { name, value } = e.target
@@ -73,24 +71,13 @@ function AdminLoginPage() {
       console.log({ email })
       try {
          setLoading(true)
-         const response = await axios.post(
-            config.URL + 'api/admin/forgot-pw-sendcode',
-            { email }
-         )
+         await http.post('admin/forgot-pw-sendcode', { email })
 
-         if (response.status === 200) {
-            setErrors({
-               errors,
-               sendMailOk:
-                  'Email đã được gửi thành công! Vui lòng kiểm tra hộp thư đến của bạn !.',
-            })
-         } else {
-            const data = await response.json()
-            setErrors({
-               errors,
-               sendMail: `${data.message}`,
-            })
-         }
+         setErrors({
+            errors,
+            sendMailOk:
+               'Email đã được gửi thành công! Vui lòng kiểm tra hộp thư đến của bạn !.',
+         })
       } catch (error) {
          console.error(error)
          setErrors({
@@ -109,21 +96,15 @@ function AdminLoginPage() {
       if (Object.keys(validationErrors).length === 0) {
          try {
             setLoading(true)
-            const response = await axios.post(
-               config.URL + 'api/admin/login',
-               adminLogin
-            )
-            if (response.status === 200) {
-               console.log(response.data.data)
-               const updatedAdmin = response.data.data
-               setAdmin(updatedAdmin) // Cập nhật giá trị của admin bằng setAdmin
-               localStorage.setItem('admin', JSON.stringify(updatedAdmin)) // lưu vào localStorage
-               navigate('/admin/dashboard')
-               console.log(updatedAdmin)
-               console.log('Đăng nhập thành công')
-            } else {
-               console.log('aaa', response)
-            }
+            const response = await http.post('admin/login', adminLogin)
+
+            console.log(response.data.data)
+            const updatedAdmin = response.data.data
+            // setAdmin(updatedAdmin) // Cập nhật giá trị của admin bằng setAdmin
+            localStorage.setItem('HealthCareUser', JSON.stringify(updatedAdmin)) // lưu vào localStorage
+            navigate('/admin/dashboard')
+            console.log(updatedAdmin)
+            console.log('Đăng nhập thành công')
          } catch (error) {
             console.log(error)
             setErrors({

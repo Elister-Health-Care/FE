@@ -10,7 +10,7 @@ import config from '~/router/config'
 const cx = classNames.bind(styles)
 function Header() {
    const [open, setOpen] = useState(false)
-   const admin = JSON.parse(localStorage.getItem('admin'))
+   const admin = JSON.parse(localStorage.getItem('HealthCareUser'))
    const [avatar, setAvatar] = useState('/image/avatar_admin_default.png')
    const [name, setName] = useState(admin.name ? admin.name : 'admin')
    const handleOpen = () => {
@@ -18,13 +18,13 @@ function Header() {
    }
 
    const handleLogout = () => {
-      localStorage.removeItem('admin')
+      localStorage.removeItem('HealthCareUser')
    }
 
    const isAdminUpdated = useSelector((state) => state.admin.keyAdminUpdated)
 
    useEffect(() => {
-      const admin = JSON.parse(localStorage.getItem('admin'))
+      const admin = JSON.parse(localStorage.getItem('HealthCareUser'))
       if (admin && admin.avatar) {
          setAvatar(config.URL + admin.avatar)
       }

@@ -19,7 +19,7 @@ const UserEditProfile = () => {
     <div className="col-md-10 col-lg-10">
       <div className="title">
         <h3>Hồ sơ</h3>
-        <Link to={'edit-profile'} className="edit-link">Chỉnh sửa <AiFillEdit/></Link>
+        <Link to={'/user/edit-profile'} className="edit-link">Chỉnh sửa <AiFillEdit/></Link>
       </div>
       <div className="info mt-5">
         <label className="edit-image" htmlFor="image">

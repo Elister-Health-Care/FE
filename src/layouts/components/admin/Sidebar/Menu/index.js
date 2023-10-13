@@ -12,7 +12,7 @@ function Menu({ children }) {
    const [selected, setSelected] = useState('')
    const [ulSeclect, setUlSelected] = useState('')
    const [isOpenUl, setisOpenUl] = useState('')
-   const admin = JSON.parse(localStorage.getItem('admin'))
+   const admin = JSON.parse(localStorage.getItem('HealthCareUser'))
    useEffect(() => {
       switch (location.pathname) {
          case '/admin/dashboard':
