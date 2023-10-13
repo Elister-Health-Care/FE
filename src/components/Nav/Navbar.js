@@ -31,8 +31,7 @@ const Navbars = () => {
             setAvatar(config.URL + user.avatar)
          }
       }
-    }
-  }, []);
+    }, []);
   return (
     <Navbar expand="lg" className="bg-body-tertiary">
       <div className="container-fluid">
