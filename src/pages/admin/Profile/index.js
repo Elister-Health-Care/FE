@@ -128,15 +128,11 @@ function AdminProfilePage() {
          }
          setLoading(true)
          try {
-            const response = await http.post(
-               'admin/update/' + admin.id,
-               formDataToSubmit,
-               {
-                  headers: {
-                     'Content-Type': 'multipart/form-data',
-                  },
-               }
-            )
+            const response = await http.post('admin/update', formDataToSubmit, {
+               headers: {
+                  'Content-Type': 'multipart/form-data',
+               },
+            })
             if (response.status === 200) {
                console.log(response)
                handleUpdateUser()
