@@ -4,8 +4,7 @@ import styles from './HospitalRegister.module.scss'
 import { useEffect, useState } from 'react'
 import Map from '~/components/Map'
 import { Link } from 'react-router-dom'
-import axios from 'axios'
-import config from '~/router/config'
+import http from '~/utils/http'
 import validateForm from '~/helpers/validation'
 const cx = classNames.bind(styles)
 
@@ -78,11 +77,16 @@ function HospitalRegisterPage() {
    // Hàm callback để nhận giá trị từ component con
    const handleChildData = (data) => {
       setChildData(data)
+   }
+
+   useEffect(() => {
+      console.log('child: ' + childData)
       setHospitalData({
          ...hospitalData,
          location: childData,
       })
-   }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+   }, [childData])
 
    const handleChangeAvatar = (e) => {
       const file = e.target.files[0]
@@ -126,7 +130,7 @@ function HospitalRegisterPage() {
    //gọi api lấy provice
    useEffect(() => {
       try {
-         axios.get(config.URL + 'api/province').then((response) => {
+         http.get('province').then((response) => {
             setProvinvces(response.data.provinces)
          })
       } catch {
@@ -154,8 +158,8 @@ function HospitalRegisterPage() {
             JSON.stringify(hospitalData.location)
          )
          try {
-            const response = await axios.post(
-               config.URL + 'api/infor-hospital/register',
+            const response = await http.post(
+               'infor-hospital/register',
                formDataToSubmit,
                {
                   headers: {
@@ -163,21 +167,24 @@ function HospitalRegisterPage() {
                   },
                }
             )
-            if (response.status === 201) {
-               console.log(response)
-               console.log('Đăng ký thành công')
-            } else {
-               if (response.data.data.username) {
-                  setErrors({ ...errors, username: 'Tài khoản đã tồn tại' })
-               }
-               if (response.data.data.email) {
+
+            console.log(response)
+            console.log('Đăng ký thành công')
+         } catch (error) {
+            setErrors({ error: '' })
+            if (error.response.data.data) {
+               if (error.response.data.errors.email) {
                   setErrors({ ...errors, email: 'Email đã tồn tại' })
                }
-               console.log(errors)
+               if (error.response.data.errors.username) {
+                  setErrors({ ...errors, username: 'Tài khoản đã tồn tại' })
+                  console.log(error.response.data.errors.username)
+               }
+            } else {
+               setErrors({ ...errors, username: error.response.data.message })
             }
-         } catch (error) {
+
             console.log(error)
-            console.error('Lỗi kết nối đến API', error)
          }
       } else {
          setErrors(validationErrors)
@@ -407,7 +414,11 @@ function HospitalRegisterPage() {
                         type="button"
                         name="location"
                         className={cx('form_control', 'text_left', 'location')}
-                        value={childData ? childData : 'Chọn vị trí'}
+                        value={
+                           hospitalData.location
+                              ? hospitalData.location
+                              : 'Chọn vị trí'
+                        }
                      ></input>
                      {errors.location && (
                         <p className={cx('error')}>{errors.location}</p>
