@@ -3,26 +3,24 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import styles from './HospitalRegister.module.scss'
 import { useEffect, useState } from 'react'
 import Map from '~/components/Map'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import http from '~/utils/http'
 import validateForm from '~/helpers/validation'
+import { useAppContext } from '~/contexts/AppContext'
+
 const cx = classNames.bind(styles)
 
 function HospitalRegisterPage() {
+   const { handleToastRegisterSuccessTrue } = useAppContext()
+   const navigate = useNavigate()
    const [open, setOpen] = useState(false)
    const [childData, setChildData] = useState('')
    const [provinces, setProvinvces] = useState([])
    const [selectImage, setSelectImage] = useState('/image/default-avatar.png')
    const [errors, setErrors] = useState({})
 
-   const infrastructure = [
-      { id: 1, name: 'Giường bệnh' },
-      { id: 2, name: 'Xe cứu thương' },
-      { id: 3, name: 'Phòng nội soi' },
-      { id: 4, name: 'Phòng xét nghiệm' },
-      { id: 5, name: 'Siêu âm' },
-      { id: 6, name: 'X Quang' },
-   ]
+   const [infrastructure, setInfrastructure] = useState('')
+   const [infrastructures, setInfrastructures] = useState([])
 
    const [hospitalData, setHospitalData] = useState({
       name: '',
@@ -108,25 +106,46 @@ function HospitalRegisterPage() {
          [name]: value,
       })
    }
-
-   const handleChecked = (id) => {
-      setHospitalData((prevHospitalData) => {
-         const isCheck = prevHospitalData.infrastructure.includes(id)
-         if (isCheck) {
-            return {
-               ...prevHospitalData,
-               infrastructure: prevHospitalData.infrastructure.filter(
-                  (item) => item !== id
-               ),
-            }
-         } else {
-            return {
-               ...prevHospitalData,
-               infrastructure: [...prevHospitalData.infrastructure, id],
-            }
-         }
-      })
+   const handleInfrastructureChange = (e) => {
+      const value = e.target.value
+      setInfrastructure(value)
    }
+   const handleSubmitInfrastructure = () => {
+      setInfrastructures([...infrastructures, infrastructure])
+      console.log(infrastructures)
+   }
+   const handlekeyDownInfrastructure = (e) => {
+      if (e.key === 'Enter') {
+         setInfrastructures([...infrastructures, infrastructure])
+         e.preventDefault()
+      }
+   }
+   const handleClickDeleteInfrastructure = (value) => {
+      const updatedInfrastructures = [...infrastructures]
+      const indexToDelete = updatedInfrastructures.indexOf(value)
+      if (indexToDelete !== -1) {
+         updatedInfrastructures.splice(indexToDelete, 1)
+         setInfrastructures(updatedInfrastructures)
+      }
+   }
+   // const handleChecked = (id) => {
+   //    setHospitalData((prevHospitalData) => {
+   //       const isCheck = prevHospitalData.infrastructure.includes(id)
+   //       if (isCheck) {
+   //          return {
+   //             ...prevHospitalData,
+   //             infrastructure: prevHospitalData.infrastructure.filter(
+   //                (item) => item !== id
+   //             ),
+   //          }
+   //       } else {
+   //          return {
+   //             ...prevHospitalData,
+   //             infrastructure: [...prevHospitalData.infrastructure, id],
+   //          }
+   //       }
+   //    })
+   // }
    //gọi api lấy provice
    useEffect(() => {
       try {
@@ -151,7 +170,7 @@ function HospitalRegisterPage() {
          }
          formDataToSubmit.append(
             'infrastructure',
-            JSON.stringify(hospitalData.infrastructure)
+            JSON.stringify(infrastructures)
          )
          formDataToSubmit.append(
             'location',
@@ -167,7 +186,8 @@ function HospitalRegisterPage() {
                   },
                }
             )
-
+            handleToastRegisterSuccessTrue()
+            navigate('/user-login')
             console.log(response)
             console.log('Đăng ký thành công')
          } catch (error) {
@@ -190,6 +210,7 @@ function HospitalRegisterPage() {
          setErrors(validationErrors)
       }
    }
+
    return (
       <div className={cx('wrapper')}>
          <div className={cx('inner')}>
@@ -424,18 +445,45 @@ function HospitalRegisterPage() {
                         <p className={cx('error')}>{errors.location}</p>
                      )}
                   </div>
-                  <div className={cx('form_holder', 'mb_0')}>
+                  <div className={cx('form_holder')}>
                      <span>
                         <FontAwesomeIcon
                            icon="fa-solid fa-suitcase-medical"
                            className={cx('login_icon')}
                         />
                      </span>
-                     <label className={cx('form_control', 'label_csvc')}>
-                        Cơ sở vật chất
-                     </label>
+                     <input
+                        onKeyDown={handlekeyDownInfrastructure}
+                        onChange={handleInfrastructureChange}
+                        defaultValue={infrastructure}
+                        type="text"
+                        name="infrastructure"
+                        className={cx('form_control', 'text_left', 'tk')}
+                     />
+                     <button
+                        type="button"
+                        onClick={handleSubmitInfrastructure}
+                        className={cx('btn_add')}
+                     >
+                        <FontAwesomeIcon icon="fa-solid fa-plus" />
+                     </button>
                   </div>
-                  <div className={cx('form_holder', 'mb_0')}>
+                  <div className={cx('infrastructures', 'mb_0')}>
+                     {infrastructures.map((value, index) => (
+                        <button
+                           type="button"
+                           onClick={() =>
+                              handleClickDeleteInfrastructure(value)
+                           }
+                           className={cx('infrastructures_item')}
+                           key={index}
+                        >
+                           {value}&nbsp;
+                           <ti className="mdi mdi-close-circle" />
+                        </button>
+                     ))}
+                  </div>
+                  {/* <div className={cx('form_holder', 'mb_0')}>
                      {infrastructure.map((child) => (
                         <div className={cx('input_check')} key={child.id}>
                            <input
@@ -453,7 +501,7 @@ function HospitalRegisterPage() {
                            </label>
                         </div>
                      ))}
-                  </div>
+                  </div> */}
 
                   <button className={cx('btn_submit')} type="submit">
                      Đăng ký
