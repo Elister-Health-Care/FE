@@ -160,15 +160,17 @@ const AdminAllUserPage = () => {
 
       setUsers(updatedUsers)
    }
-   const handleChangeRole = async (id, value) => {
+   const handleChangeRole = async (id, value, status) => {
       try {
          const data = { is_accept: value }
          await http.post('admin/change-accept/' + id, data)
          console.log('Gọi API thành công')
-         if (value === 2) {
+         if (status === 2) {
             toast.warning(' Đã khóa tài khoản có id ' + id, toastOptions)
+         } else if (status === 1) {
+            toast.success('Duyệt tài khoản id' + id, toastOptions)
          } else {
-            toast.success(' Thành công', toastOptions)
+            toast.success('Mở khóa tài khoản id' + id, toastOptions)
          }
          updateUser(id, value)
          console.log(setUsers)
@@ -333,7 +335,7 @@ const AdminAllUserPage = () => {
                                        <Tippy content="Duyệt">
                                           <button
                                              onClick={() =>
-                                                handleChangeRole(user.id, 1)
+                                                handleChangeRole(user.id, 1, 1)
                                              }
                                              className="btn btn-info btn-sm sua"
                                              data-toggle="modal"
@@ -347,7 +349,7 @@ const AdminAllUserPage = () => {
                                     <Tippy content="Khóa">
                                        <button
                                           onClick={() =>
-                                             handleChangeRole(user.id, 2)
+                                             handleChangeRole(user.id, 2, 2)
                                           }
                                           className="btn btn-danger btn-sm mt-1"
                                        >
@@ -358,7 +360,7 @@ const AdminAllUserPage = () => {
                                     <Tippy content="Mở khóa">
                                        <button
                                           onClick={() =>
-                                             handleChangeRole(user.id, 1)
+                                             handleChangeRole(user.id, 1, 3)
                                           }
                                           className="btn btn-secondary btn-sm mt-1"
                                        >
