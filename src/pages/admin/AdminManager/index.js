@@ -22,8 +22,6 @@ function AdminManager() {
    const location = useLocation()
    const [loadingTable, setLoadingTable] = useState(false)
    const [shouldReloadData, setShouldReloadData] = useState(false)
-   const [roleShow, setRoleShow] = useState(true)
-   const [deleteShow, setDeleteShow] = useState(true)
    const [adminAccount, setAdminAccount] = useState([])
    const [errors, setErrors] = useState({})
    const [adminDetail, setAdminDetail] = useState({
@@ -148,6 +146,9 @@ function AdminManager() {
          updateSearchParams({ sortname: true })
       }
    }
+   const handleChangeSelectedRole = (e) => {
+      updateSearchParams({ role: e.target.value })
+   }
 
    // add category
    const [formData, setFormData] = useState({
@@ -164,12 +165,18 @@ function AdminManager() {
          [name]: value,
       })
    }
+   const updateAcount = (acountId, rule) => {
+      const updatedAcount = adminAccount.map((admin) => {
+         if (admin.id === acountId) {
+            return { ...admin, role: rule }
+         }
+         return admin
+      })
 
+      setAdminAccount(updatedAcount)
+   }
    const handleChangeRole = async (id, e) => {
       console.log(e.target.value)
-      if (adminLocal.role !== 'manager') {
-         setRoleShow(false)
-      }
       try {
          const data = {
             role: e.target.value,
@@ -178,12 +185,16 @@ function AdminManager() {
          console.log(response)
          if (e.target.value === 'superadmin') {
             toast.warning(
-               ' Đã thay đổi người dùng' + id + ' thành SuperAdmin ',
+               ' Thay đổi người dùng ' + id + ' thành SuperAdmin ',
                toastOptions
             )
          } else {
-            toast.success(' Thành công', toastOptions)
+            toast.success(
+               'Thay đổi người dùng ' + id + ' thành Admin ',
+               toastOptions
+            )
          }
+         updateAcount(id, e.target.value)
       } catch (error) {
          console.log('Đã có lỗi xảy ra')
       }
@@ -276,6 +287,27 @@ function AdminManager() {
                         placeholder="Search"
                      />
                   </div>
+               </div>
+               <div className={cx('filter_box')}>
+                  <select
+                     defaultValue={
+                        search.role === 'manager'
+                           ? 'manager'
+                           : search.sortname === 'superadmin'
+                           ? 'superadmin'
+                           : search.sortname === 'admin'
+                           ? 'admin'
+                           : ''
+                     }
+                     onChange={handleChangeSelectedRole}
+                     className={cx('custom-select', 'fontz_14')}
+                  >
+                     {' '}
+                     <option value="">Tất cả</option>
+                     <option value="manager">Manager</option>
+                     <option value="superadmin">SuperAdmin</option>
+                     <option value="admin">Admin</option>
+                  </select>
                </div>
                <div className={cx('filter_box')}>
                   <select
@@ -389,22 +421,20 @@ function AdminManager() {
                                     </span>
                                  ) : admin.role === 'superadmin' &&
                                    adminLocal.role === 'superadmin' ? (
-                                    admin.role
+                                    'SuperAdmin'
                                  ) : (
-                                    roleShow && (
-                                       <select
-                                          onChange={(e) =>
-                                             handleChangeRole(admin.id, e)
-                                          }
-                                          className={cx('custom_select')}
-                                          defaultValue={admin.role}
-                                       >
-                                          <option value={'admin'}>Admin</option>
-                                          <option value={'superadmin'}>
-                                             SuperAdmin
-                                          </option>
-                                       </select>
-                                    )
+                                    <select
+                                       onChange={(e) =>
+                                          handleChangeRole(admin.id, e)
+                                       }
+                                       className={cx('custom_select')}
+                                       defaultValue={admin.role}
+                                    >
+                                       <option value={'admin'}>Admin</option>
+                                       <option value={'superadmin'}>
+                                          SuperAdmin
+                                       </option>
+                                    </select>
                                  )}
                               </td>
                               <td>
