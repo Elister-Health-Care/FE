@@ -31,134 +31,102 @@ const Navbars = () => {
             setAvatar(config.URL + user.avatar)
          }
       }
-   }, [])
-   return (
-      <Navbar expand="lg" className="bg-body-tertiary">
-         <div className="container-fluid">
-            <Navbar.Brand href="#home">
-               <img src={logo} />
-            </Navbar.Brand>
-            <Navbar.Toggle aria-controls="basic-navbar-nav" />
-            <Navbar.Collapse
-               className="justify-content-end"
-               id="basic-navbar-nav"
-            >
-               <Nav className="me-auto">
-                  <NavDropdown title="Chuyên mục" id="basic-nav-dropdown">
-                     <NavDropdown.Item href="">About Us</NavDropdown.Item>
-                     <NavDropdown.Item href="">Our Team</NavDropdown.Item>
-                     <NavDropdown.Item href="">FAQ's</NavDropdown.Item>
-                     <NavDropdown.Item href="">Booking</NavDropdown.Item>
-                     <NavDropdown.Item href="">Error 404</NavDropdown.Item>
-                  </NavDropdown>
-                  <NavDropdown
-                     title="Kiểm tra sức khỏe"
-                     id="basic-nav-dropdown"
-                  >
-                     <NavDropdown.Item href="#action/3.1">
-                        Services
-                     </NavDropdown.Item>
-                     <NavDropdown.Item href="#action/3.3">
-                        Something
-                     </NavDropdown.Item>
-                     <NavDropdown.Divider />
-                     <NavDropdown.Item href="#action/3.4">
-                        Separated link
-                     </NavDropdown.Item>
-                  </NavDropdown>
-                  <NavDropdown
-                     title="Đặc lịch với bác sĩ"
-                     id="basic-nav-dropdown"
-                  >
-                     <NavDropdown.Item href="#action/3.1">
-                        Action
-                     </NavDropdown.Item>
-                     <NavDropdown.Item href="#action/3.2">
-                        Another action
-                     </NavDropdown.Item>
-                     <NavDropdown.Item href="#action/3.3">
-                        Something
-                     </NavDropdown.Item>
-                     <NavDropdown.Divider />
-                     <NavDropdown.Item href="#action/3.4">
-                        Separated link
-                     </NavDropdown.Item>
-                  </NavDropdown>
-                  <NavDropdown title="Cộng đồng" id="basic-nav-dropdown">
-                     <NavDropdown.Item href="#action/3.1">
-                        Action
-                     </NavDropdown.Item>
-                     <NavDropdown.Item href="#action/3.2">
-                        Another action
-                     </NavDropdown.Item>
-                     <NavDropdown.Item href="#action/3.3">
-                        Something
-                     </NavDropdown.Item>
-                     <NavDropdown.Divider />
-                     <NavDropdown.Item href="#action/3.4">
-                        Separated link
-                     </NavDropdown.Item>
-                  </NavDropdown>
-                  {user ? (
-                     <NavDropdown
-                        title={
-                           <div className="pull-left d-flex">
-                              <img
-                                 className="avatar"
-                                 src={avatar}
-                                 alt="user pic"
-                              />
-                              <span className="my-auto ml-1">{user.name}</span>
-                           </div>
-                        }
-                        id="basic-nav-dropdown"
-                     >
-                        <NavDropdown.Item className="p-2">
-                           <Link to={'user/profile'} tag={Link}>
-                              <div className="d-flex info-user">
-                                 <img
-                                    className="avatar"
-                                    src={avatar}
-                                    alt="user pic"
-                                 />
-                                 <p className="ml-1">
-                                    {name}
-                                    <div>
-                                       <small>
-                                          Xem hồ sơ của bạn
-                                          <i className="fa-solid fa-chevron-right"></i>
-                                       </small>
-                                    </div>
-                                 </p>
-                              </div>
-                           </Link>
-                        </NavDropdown.Item>
-                        <NavDropdown.Item className="p-2" href="#action/3.2">
-                           Another action
-                        </NavDropdown.Item>
-                        <NavDropdown.Item className="p-2" href="#action/3.3">
-                           Something
-                        </NavDropdown.Item>
-                        <NavDropdown.Divider />
-                        <NavDropdown.Item className="p-2" href="#action/3.4">
-                           Separated link
-                        </NavDropdown.Item>
-                     </NavDropdown>
-                  ) : (
-                     <Link to={'/user-login'} tag={Link}>
-                        <button className="">
-                           Đăng nhập
-                           <span>
-                              <i className="fa-solid fa-chevron-right"></i>
-                           </span>
-                        </button>
-                     </Link>
-                  )}
-               </Nav>
-            </Navbar.Collapse>
-         </div>
-      </Navbar>
-   )
-}
+    }
+  }, []);
+  return (
+    <Navbar expand="lg" className="bg-body-tertiary">
+      <div className="container-fluid">
+        <Navbar.Brand href="#home">
+          <img src={logo} />
+        </Navbar.Brand>
+        <Navbar.Toggle aria-controls="basic-navbar-nav" />
+        <Navbar.Collapse className="justify-content-end" id="basic-navbar-nav">
+          <Nav className="me-auto">
+            <NavDropdown title="Chuyên mục" id="basic-nav-dropdown">
+              <NavDropdown.Item href="">About Us</NavDropdown.Item>
+              <NavDropdown.Item href="">Our Team</NavDropdown.Item>
+              <NavDropdown.Item href="">FAQ's</NavDropdown.Item>
+              <NavDropdown.Item href="">Booking</NavDropdown.Item>
+              <NavDropdown.Item href="">Error 404</NavDropdown.Item>
+            </NavDropdown>
+            <NavDropdown title="Kiểm tra sức khỏe" id="basic-nav-dropdown">
+              <NavDropdown.Item href="#action/3.1">Services</NavDropdown.Item>
+              <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
+              <NavDropdown.Divider />
+              <NavDropdown.Item href="#action/3.4">
+                Separated link
+              </NavDropdown.Item>
+            </NavDropdown>
+            <NavDropdown title="Đặc lịch với bác sĩ" id="basic-nav-dropdown">
+              <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
+              <NavDropdown.Item href="#action/3.2">
+                Another action
+              </NavDropdown.Item>
+              <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
+              <NavDropdown.Divider />
+              <NavDropdown.Item href="#action/3.4">
+                Separated link
+              </NavDropdown.Item>
+            </NavDropdown>
+            <NavDropdown title="Cộng đồng" id="basic-nav-dropdown">
+              <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
+              <NavDropdown.Item href="#action/3.2">
+                Another action
+              </NavDropdown.Item>
+              <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
+              <NavDropdown.Divider />
+              <NavDropdown.Item href="#action/3.4">
+                Separated link
+              </NavDropdown.Item>
+            </NavDropdown>
+            {user ? (
+              <NavDropdown
+                title={
+                  <div className="pull-left d-flex">
+                    <img className="avatar" src={avatar} alt="user pic" />
+                    <span className="my-auto ml-1">{user.name}</span>
+                  </div>
+                }
+                id="basic-nav-dropdown"
+              >
+                <NavDropdown.Item className="p-2">
+                  <Link to={"user/profile"} tag = {Link}>
+                  <div className="d-flex info-user">
+                    <img className="avatar" src={avatar} alt="user pic" />
+                    <p className="ml-1">
+                      {name}
+                      <div>
+                        <small>
+                          Xem hồ sơ của bạn
+                          <i className="fa-solid fa-chevron-right"></i>
+                        </small>
+                      </div>
+                    </p>
+                  </div>
+                  </Link>
+                </NavDropdown.Item>
+                <div className="row mr-0 ml-0">
+                  <div className="col-lg-6 col-md-6">Sức khỏe</div>
+                  <div className="col-lg-6 col-md-6">Đã lưu</div>
+                  <div className="col-lg-6 col-md-6">Lịch sử đặt chỗ</div>
+                  <div className="col-lg-6 col-md-6">Đã tham gia</div>
+                </div>
+              </NavDropdown>
+            ) : (
+                <Link to={"/user-login"} tag={Link}>
+                <button className="">
+                  Đăng nhập
+                  <span>
+                    <i className="fa-solid fa-chevron-right"></i>
+                  </span>
+                </button>
+                </Link>
+            )}
+          </Nav>
+        </Navbar.Collapse>
+      </div>
+    </Navbar>
+  );
+};
 
 export default Navbars
