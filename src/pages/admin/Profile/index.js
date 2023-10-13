@@ -17,7 +17,7 @@ function AdminProfilePage() {
    const [errors, setErrors] = useState({})
    const [loading, setLoading] = useState(false)
    const [isButtonDisabled, setIsButtonDisabled] = useState(true)
-   const admin = JSON.parse(localStorage.getItem('HealthCareUser'))
+   const admin = JSON.parse(localStorage.getItem('admin'))
    const [users, setUsers] = useState({
       id: admin.id,
       email: admin.email,
@@ -104,7 +104,7 @@ function AdminProfilePage() {
                gender: profile.gender,
                avatar: profile.avatar,
             }
-            localStorage.setItem('HealthCareUser', JSON.stringify(updatedAdmin))
+            localStorage.setItem('admin', JSON.stringify(updatedAdmin))
             dispatch(updateAdmin())
             // window.location.reload()
          } else {

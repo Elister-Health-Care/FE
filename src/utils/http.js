@@ -14,7 +14,13 @@ API.interceptors.request.use((config) => {
          config.headers.Authorization = `Bearer ${token}`
       }
    }
-
+   const admin = JSON.parse(localStorage.getItem('admin'))
+   if (admin) {
+      const token = admin.access_token
+      if (token) {
+         config.headers.Authorization = `Bearer ${token}`
+      }
+   }
    return config
 })
 
