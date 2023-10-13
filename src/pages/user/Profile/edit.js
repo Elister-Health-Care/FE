@@ -24,9 +24,7 @@ const UserEditProfile = () => {
       <div className="info mt-5">
         <label className="edit-image" htmlFor="image">
             <img className="avatar" src={avatar} alt="user pic" />
-            <span className="icon-change"><BsCameraFill/></span>
         </label>
-        <input type="file" className="d-none" id="image"/>
         <div className="my-auto name ml-4">
           {user.name}
           <br/>
