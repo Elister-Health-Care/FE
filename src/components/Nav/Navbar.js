@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux'
 import config from "~/router/config";
 import { Link, useNavigate } from 'react-router-dom'
 
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react'
 
 const Navbars = () => {
   const user = JSON.parse(localStorage.getItem("HealthCareUser"));
@@ -134,4 +134,4 @@ const Navbars = () => {
   );
 };
 
-export default Navbars;
+export default Navbars

@@ -185,7 +185,7 @@ function AdminManager() {
    }
 
    // submit form
-   const handleSubmit = async (e) => {
+   const handleSubmitAddAccount = async (e) => {
       e.preventDefault()
       setErrors({})
       const validationErrors = validateForm(formData, rules)
@@ -462,7 +462,7 @@ function AdminManager() {
                               <span aria-hidden="true">&times;</span>
                            </button>
                         </div>
-                        <form onSubmit={handleSubmit}>
+                        <form>
                            <div className="modal-body">
                               <div className="form-group row">
                                  <div className="col-6">
@@ -519,6 +519,7 @@ function AdminManager() {
                            </div>
                            <div className="modal-footer">
                               <button
+                                 onClick={handleSubmitAddAccount}
                                  type="button"
                                  className="btn btn-secondary"
                                  data-dismiss="modal"
@@ -560,7 +561,7 @@ function AdminManager() {
                               <span aria-hidden="true">&times;</span>
                            </button>
                         </div>
-                        <form onSubmit={'handleDeleteSubmit'}>
+                        <form>
                            <div className="modal-body">
                               Cảnh báo ! Bạn sẽ có chắc chắn là xóa tài khoản{' '}
                               <strong>{adminDetail.name}</strong> khỏi hệ thống
