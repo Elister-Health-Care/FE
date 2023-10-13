@@ -106,7 +106,7 @@ const FormEditProfile = () => {
            gender: profile.gender,
            avatar: profile.avatar,
         }
-        localStorage.setItem('user', JSON.stringify(updatedUser))
+        localStorage.setItem('HealthCareUser', JSON.stringify(updatedUser))
         dispatch(updateUser())
      } else {
         console.log(errors)
