@@ -18,7 +18,7 @@ import LoadingTable from '~/components/Loading/LoadingTable'
 import validateForm from '~/helpers/validation'
 const cx = classNames.bind(styles)
 function AdminManager() {
-   const adminLocal = JSON.parse(localStorage.getItem('admin'))
+   const adminLocal = JSON.parse(localStorage.getItem('HealthCareUser'))
    const location = useLocation()
    const [loadingTable, setLoadingTable] = useState(false)
    const [adminAccount, setAdminAccount] = useState([])

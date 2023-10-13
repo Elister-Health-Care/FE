@@ -7,9 +7,9 @@ const API = axios.create({
 })
 
 API.interceptors.request.use((config) => {
-   const admin = JSON.parse(localStorage.getItem('admin'))
-   if (admin) {
-      const token = admin.access_token
+   const user = JSON.parse(localStorage.getItem('HealthCareUser'))
+   if (user) {
+      const token = user.access_token
       if (token) {
          config.headers.Authorization = `Bearer ${token}`
       }
