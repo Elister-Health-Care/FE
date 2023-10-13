@@ -10,7 +10,7 @@ import {IoShareSocialSharp} from 'react-icons/io5';
 import {AiOutlineHistory, AiOutlineLogout, AiFillSetting} from 'react-icons/ai';
 
 const handleLogout = () => {
-  localStorage.removeItem('user')
+  localStorage.removeItem('HealthCareUser')
 }
 
 const UserProfile = () => {

@@ -7,7 +7,7 @@ import { NavLink } from 'reactstrap'
 const SiderBar = () => {
    const navigate = useNavigate()
    const userLogout = () => {
-      localStorage.removeItem('user')
+      localStorage.removeItem('HealthCareUser')
       navigate('/user-login')
    }
 
@@ -34,7 +34,7 @@ const SiderBar = () => {
    })
 
    useEffect(() => {
-      setUser(JSON.parse(localStorage.getItem('user')))
+      setUser(JSON.parse(localStorage.getItem('HealthCareUser')))
    }, [])
 
    return (

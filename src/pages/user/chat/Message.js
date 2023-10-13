@@ -26,7 +26,7 @@ const Message = ({ message, userTo }) => {
    })
 
    useEffect(() => {
-      setUser(JSON.parse(localStorage.getItem('user')))
+      setUser(JSON.parse(localStorage.getItem('HealthCareUser')))
    }, [])
 
    return (
