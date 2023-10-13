@@ -133,16 +133,14 @@ const Navbars = () => {
                               </div>
                            </Link>
                         </NavDropdown.Item>
-                        <NavDropdown.Item className="p-2" href="#action/3.2">
-                           Another action
-                        </NavDropdown.Item>
-                        <NavDropdown.Item className="p-2" href="#action/3.3">
-                           Something
-                        </NavDropdown.Item>
-                        <NavDropdown.Divider />
-                        <NavDropdown.Item className="p-2" href="#action/3.4">
-                           Separated link
-                        </NavDropdown.Item>
+                        <div className="row mr-0 ml-0">
+                           <div className="col-lg-6 col-md-6">Sức khỏe</div>
+                           <div className="col-lg-6 col-md-6">Đã lưu</div>
+                           <div className="col-lg-6 col-md-6">
+                              Lịch sử đặt chỗ
+                           </div>
+                           <div className="col-lg-6 col-md-6">Đã tham gia</div>
+                        </div>
                      </NavDropdown>
                   ) : (
                      <Link to={'/user-login'} tag={Link}>
