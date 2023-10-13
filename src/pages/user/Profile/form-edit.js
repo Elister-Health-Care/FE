@@ -6,15 +6,27 @@ import config from "~/router/config";
 import { AiFillEdit } from "react-icons/ai";
 import { BsCameraFill } from "react-icons/bs";
 import { FormControl } from "react-bootstrap";
+import axios from 'axios'
 
 const FormEditProfile = () => {
   const user = JSON.parse(localStorage.getItem("user"));
+  const [provinces, setProvinvces] = useState([])
   const [avatar, setAvatar] = useState("/image/avatar_admin_default.png");
   useEffect(() => {
     if (user.avatar) {
       setAvatar(config.URL + user.avatar);
     }
   }, []);
+//gọi api lấy provice
+useEffect(() => {
+  try {
+     axios.get(config.URL + 'api/province').then((response) => {
+        setProvinvces(response.data.provinces)
+     })
+  } catch {
+     console.error('Lỗi kết nối đến API')
+  }
+}, [])
 
   return (
     <div className="col-md-10 col-lg-10">
@@ -96,7 +108,6 @@ const FormEditProfile = () => {
                 id="gridRadios1"
                 defaultValue="0"
                 defaultChecked
-                checked = {user.gender ==0 ? true : false}
                 required
               />
               <label className="form-check-label" htmlFor="gridRadios1">
@@ -110,7 +121,6 @@ const FormEditProfile = () => {
                 type="radio"
                 id="gridRadios2"
                 defaultValue="1"
-                checked = {user.gender ==1 ? true : false}
                 required
               />
               <label className="form-check-label" htmlFor="gridRadios2">
@@ -124,7 +134,6 @@ const FormEditProfile = () => {
                 type="radio"
                 id="gridRadios3"
                 defaultValue="2"
-                checked = {user.gender ==2 ? true : false}
                 required
               />
               <label className="form-check-label" htmlFor="gridRadios2">
@@ -134,20 +143,36 @@ const FormEditProfile = () => {
           </p>
         </div>
         <div className="item-form">
-          <span className="item-title">Quê quán</span>
-          <p className="item-content">{user.address}</p>
+          <span className="item-title">Quê quán:</span>
+          <select
+                        name="province_code"
+                        className="form-control"
+                     >
+                        <option value="">Chọn tỉnh/thành</option>
+                        {provinces.map((province) => (
+                           <option
+                              key={province.id}
+                              value={province.province_code}
+                           >
+                              {province.name}
+                           </option>
+                        ))}
+                     </select>
+                     
         </div>
         <div className="item-form">
-          <span className="item-title">Số điện thoại</span>
-          <p className="item-content">
-            {user.phone ? (
-              user.phone
-            ) : (
-              <span className="text-danger">
-                <b>--</b>
-              </span>
-            )}
-          </p>
+          <label className="item-title" for="phone">Số điện thoại:</label>
+          <FormControl
+            type="tel"
+            id="phone"
+            name="phone"
+            placeholder="Your Phone Number"
+            value={user.phone}
+          />
+        </div>
+        <div className="item-form">
+          <Link className="btn btn-outline-primary mr-2" to={'/user/profile'}>Hủy </Link>
+          <button className="btn btn-primary">Lưu thay đổi</button>
         </div>
       </div>
     </div>
