@@ -9,6 +9,10 @@ import {BiSolidHelpCircle} from 'react-icons/bi';
 import {IoShareSocialSharp} from 'react-icons/io5';
 import {AiOutlineHistory, AiOutlineLogout, AiFillSetting} from 'react-icons/ai';
 
+const handleLogout = () => {
+  localStorage.removeItem('user')
+}
+
 const UserProfile = () => {
   return (
     <div className="row mt-4">
@@ -37,7 +41,7 @@ const UserProfile = () => {
                   <Link to={'profile'}><BiSolidHelpCircle className="mr-1 text-dark"/> Trợ giúp</Link>
                 </ListGroup.Item>
                 <ListGroup.Item>
-                  <Link to={'profile'}><AiOutlineLogout className="mr-1 text-dark"/> Đăng xuất</Link>
+                  <Link to={'/user-login'} onClick={handleLogout}><AiOutlineLogout className="mr-1 text-dark"/> Đăng xuất</Link>
                 </ListGroup.Item>
             </ListGroup>    
         </div>
