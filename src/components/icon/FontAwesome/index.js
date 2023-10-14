@@ -30,6 +30,7 @@ import {
    faSuitcaseMedical,
    faHouse,
    faCheck,
+   faPlus,
 } from '@fortawesome/free-solid-svg-icons'
 
 library.add(
@@ -55,5 +56,6 @@ library.add(
    faLocation,
    faSuitcaseMedical,
    faHouse,
-   faCheck
+   faCheck,
+   faPlus
 )

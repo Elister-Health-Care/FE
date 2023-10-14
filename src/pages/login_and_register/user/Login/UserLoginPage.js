@@ -2,23 +2,26 @@ import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import { Link, useNavigate } from 'react-router-dom'
 import { NavLink } from 'reactstrap'
+import { ToastContainer, toast } from 'react-toastify'
+import { useAppContext } from '~/contexts/AppContext'
 
 import config from '~/router/config'
 import './UserLogin.css'
 
 const UserLoginPage = () => {
+   const { toastRegisterSuccess, handleToastRegisterSuccessFalse } =
+      useAppContext()
    const navigate = useNavigate()
-  useEffect(() => {
-    const userLoggined = JSON.parse(localStorage.getItem("HealthCareUser"));
-    if(userLoggined ){
-      if (userLoggined.role == "user") {
-        navigate("/");
+   useEffect(() => {
+      const userLoggined = JSON.parse(localStorage.getItem('HealthCareUser'))
+      if (userLoggined) {
+         if (userLoggined.role == 'user') {
+            navigate('/')
+         } else {
+            navigate('/hospital/dashboard')
+         }
       }
-      else {
-      navigate("/hospital/dashboard");
-      }
-    }
-  }, [navigate]);
+   }, [navigate])
 
    const [userLogin, setUserLogin] = useState({
       email: '',
@@ -56,118 +59,137 @@ const UserLoginPage = () => {
       email_verified_at: null,
    })
 
-  const handleLogin = async (e) => {
-    e.preventDefault();
-    try {
-      const response = await axios.post(
-        config.URL + "api/user/login",
-        userLogin
-      );
-      if (response.status === 200) {
-        const updatedUser = response.data.data;
-        setUser(updatedUser); // Cập nhật giá trị của user bằng setUser
-        localStorage.setItem("HealthCareUser", JSON.stringify(updatedUser)); // lưu vào localStorage
-        if (
-          response.data.data.role == "hospital" ||
-          response.data.data.role == "doctor"
-        ) {
-          navigate("/hospital/dashboard");
-        }
-        else {
-          navigate("/");
-        }
-        console.log(updatedUser);
-        console.log("Đăng nhập thành công");
-      } else {
-        console.log(response);
-        console.error("Đăng nhập thất bại");
+   const handleLogin = async (e) => {
+      e.preventDefault()
+      try {
+         const response = await axios.post(
+            config.URL + 'api/user/login',
+            userLogin
+         )
+         if (response.status === 200) {
+            const updatedUser = response.data.data
+            setUser(updatedUser) // Cập nhật giá trị của user bằng setUser
+            localStorage.setItem('HealthCareUser', JSON.stringify(updatedUser)) // lưu vào localStorage
+            if (
+               response.data.data.role == 'hospital' ||
+               response.data.data.role == 'doctor'
+            ) {
+               navigate('/hospital/dashboard')
+            } else {
+               navigate('/')
+            }
+            console.log(updatedUser)
+            console.log('Đăng nhập thành công')
+         } else {
+            console.log(response)
+            console.error('Đăng nhập thất bại')
+         }
+      } catch (error) {
+         console.log(error)
+         console.error('Lỗi kết nối đến API', error)
       }
-    } catch (error) {
-      console.log(error);
-      console.error("Lỗi kết nối đến API", error);
-    }
-  };
+   }
 
-  return (
-    <div>
-      <div className="login d-flex">
-        <div className="container m-auto ps-md-0">
-          <div className="row g-0 pt-3 pb-3 body-login">
-            <div className="d-none d-md-block col-md-5 col-lg-6">
-              <img src="/user/image/doctor-main.png" className="w-100 h-auto" />
-            </div>
-            <div className="col-md-7 col-lg-6">
-              <div className="d-flex align-items-center">
-                <div className="container">
-                  <div className="row">
-                    <div className="col-md-10 mx-auto">
-                      <NavLink
-                        className="nav-link-icon d-flex"
-                        to="/"
-                        tag={Link}
-                      >
-                        <img
-                          src="/user/image/logo.png"
-                          className="m-auto w-75"
-                        />
-                      </NavLink>
-                      <h3 className="login-heading mb-4 mt-4 text-center">
-                        <b>Đăng nhập</b>
-                      </h3>
-                      <form
-                        encType="multipart/form-data"
-                        onSubmit={handleLogin}
-                      >
-                        <div className="form-group">
-                          <label htmlFor="email">Email:</label>
-                          <input
-                            name="email"
-                            onChange={handleInputChange}
-                            defaultValue={userLogin.name}
-                            type="email"
-                            id="email"
-                            className="login-input"
-                            aria-describedby="emailHelp"
-                            placeholder="Email@example.com"
-                          />
-                        </div>
+   useEffect(() => {
+      if (toastRegisterSuccess) {
+         toast.success('Đăng ký thành công, vui lòng kiểm tra email', {
+            position: 'top-right',
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: 'colored',
+         })
+         handleToastRegisterSuccessFalse()
+      }
+   }, [toastRegisterSuccess])
+   return (
+      <div>
+         <ToastContainer />
+         <div className="login d-flex">
+            <div className="container m-auto ps-md-0">
+               <div className="row g-0 pt-3 pb-3 body-login">
+                  <div className="d-none d-md-block col-md-5 col-lg-6">
+                     <img
+                        alt=""
+                        src="/user/image/doctor-main.png"
+                        className="w-100 h-auto"
+                     />
+                  </div>
+                  <div className="col-md-7 col-lg-6">
+                     <div className="d-flex align-items-center">
+                        <div className="container">
+                           <div className="row">
+                              <div className="col-md-10 mx-auto">
+                                 <NavLink
+                                    className="nav-link-icon d-flex"
+                                    to="/"
+                                    tag={Link}
+                                 >
+                                    <img
+                                       src="/user/image/logo.png"
+                                       className="m-auto w-75"
+                                    />
+                                 </NavLink>
+                                 <h3 className="login-heading mb-4 mt-4 text-center">
+                                    <b>Đăng nhập</b>
+                                 </h3>
+                                 <form
+                                    encType="multipart/form-data"
+                                    onSubmit={handleLogin}
+                                 >
+                                    <div className="form-group">
+                                       <label htmlFor="email">Email:</label>
+                                       <input
+                                          name="email"
+                                          onChange={handleInputChange}
+                                          defaultValue={userLogin.name}
+                                          type="email"
+                                          id="email"
+                                          className="login-input"
+                                          aria-describedby="emailHelp"
+                                          placeholder="Email@example.com"
+                                       />
+                                    </div>
 
-                        <div className="form-group">
-                          <label htmlFor="email">Mật khẩu:</label>
-                          <input
-                            name="password"
-                            onChange={handleInputChange}
-                            defaultValue={userLogin.password}
-                            type="password"
-                            className="login-input"
-                            aria-describedby="emailHelp"
-                            placeholder="Password"
-                          />
-                        </div>
-                        <div className="mb-3 float-left">
-                          <input
-                            name="check-box"
-                            onChange={handleInputChange}
-                            defaultValue={userLogin.password}
-                            type="checkbox"
-                            aria-describedby="emailHelp"
-                            placeholder="Password"
-                          />{" "}
-                          Nhớ mật khẩu
-                        </div>
-                        <div className="mb-3">
-                          <div className="float-right">
-                            <Link
-                              className="small"
-                              data-toggle="modal"
-                              data-target="#modalForGotPassword"
-                              href="#"
-                            >
-                              Forgot password?
-                            </Link>
-                          </div>
-                        </div>
-                        {/* 
+                                    <div className="form-group">
+                                       <label htmlFor="email">Mật khẩu:</label>
+                                       <input
+                                          name="password"
+                                          onChange={handleInputChange}
+                                          defaultValue={userLogin.password}
+                                          type="password"
+                                          className="login-input"
+                                          aria-describedby="emailHelp"
+                                          placeholder="Password"
+                                       />
+                                    </div>
+                                    <div className="mb-3 float-left">
+                                       <input
+                                          name="check-box"
+                                          onChange={handleInputChange}
+                                          defaultValue={userLogin.password}
+                                          type="checkbox"
+                                          aria-describedby="emailHelp"
+                                          placeholder="Password"
+                                       />{' '}
+                                       Nhớ mật khẩu
+                                    </div>
+                                    <div className="mb-3">
+                                       <div className="float-right">
+                                          <Link
+                                             className="small"
+                                             data-toggle="modal"
+                                             data-target="#modalForGotPassword"
+                                             href="#"
+                                          >
+                                             Forgot password?
+                                          </Link>
+                                       </div>
+                                    </div>
+                                    {/* 
                       <div className="row mb-3">
                         <div className="col-7 p-0">
                           <div className="ml-3 g-recaptcha" data-sitekey={process.env.REACT_APP_GOOGLE_RECAPTCHA_KEY}></div>
@@ -196,97 +218,111 @@ const UserLoginPage = () => {
                                        </div>
                                     </div>
 
-                        <p className="mt-2 text-center">Hoặc</p>
-                        <div className="social google">
-                          <a href="/google">
-                            <img src="/user/image/google.png" alt="" /> Đăng
-                            nhập với Google
-                          </a>
-                        </div>
-                        <div className="social github">
-                          <a href="/github">
-                            <img src="/user/image/github.png" alt="" /> Đăng
-                            nhập với Github
-                          </a>
-                        </div>
-                      </form>
-                      {/* Modal */}
-                      <div
-                        className="modal fade"
-                        id="modalForGotPassword"
-                        tabIndex="-1"
-                        role="dialog"
-                        aria-labelledby="exampleModalLabel"
-                        aria-hidden="true"
-                      >
-                        <div className="modal-dialog" role="document">
-                          <div className="modal-content">
-                            <div className="modal-header">
-                              <h5
-                                className="modal-title"
-                                id="exampleModalLabel"
-                              >
-                                Forgot Password
-                              </h5>
-                              <button
-                                style={{ outline: "none" }}
-                                type="button"
-                                className="close"
-                                data-dismiss="modal"
-                                aria-label="Close"
-                              >
-                                <span aria-hidden="true">&times;</span>
-                              </button>
-                            </div>
-                            <div className="modal-body">
-                              <form
-                                method="POST"
-                                action="/forgot.sendcode"
-                                encType="multipart/form-data"
-                              >
-                                <div className="form-group row">
-                                  <label
-                                    htmlFor="staticEmail"
-                                    className="col-sm-2 col-form-label"
-                                  >
-                                    Email
-                                  </label>
-                                  <div className="col-sm-10">
-                                    <input
-                                      name="email"
-                                      type="email"
-                                      className="form-control"
-                                      id="staticEmail"
-                                      placeholder="email@example.com"
-                                      defaultValue=""
-                                    />
-                                  </div>
-                                </div>
-                              </form>
-                            </div>
-                            <div className="modal-footer">
-                              <button
-                                type="button"
-                                className="btn btn-secondary"
-                                data-dismiss="modal"
-                              >
-                                Close
-                              </button>
-                              <button type="submit" className="btn btn-primary">
-                                Submit
-                              </button>
-                            </div>
-                          </div>
+                                    <p className="mt-2 text-center">Hoặc</p>
+                                    <div className="social google">
+                                       <a href="/google">
+                                          <img
+                                             src="/user/image/google.png"
+                                             alt=""
+                                          />{' '}
+                                          Đăng nhập với Google
+                                       </a>
+                                    </div>
+                                    <div className="social github">
+                                       <a href="/github">
+                                          <img
+                                             src="/user/image/github.png"
+                                             alt=""
+                                          />{' '}
+                                          Đăng nhập với Github
+                                       </a>
+                                    </div>
+                                 </form>
+                                 {/* Modal */}
+                                 <div
+                                    className="modal fade"
+                                    id="modalForGotPassword"
+                                    tabIndex="-1"
+                                    role="dialog"
+                                    aria-labelledby="exampleModalLabel"
+                                    aria-hidden="true"
+                                 >
+                                    <div
+                                       className="modal-dialog"
+                                       role="document"
+                                    >
+                                       <div className="modal-content">
+                                          <div className="modal-header">
+                                             <h5
+                                                className="modal-title"
+                                                id="exampleModalLabel"
+                                             >
+                                                Forgot Password
+                                             </h5>
+                                             <button
+                                                style={{ outline: 'none' }}
+                                                type="button"
+                                                className="close"
+                                                data-dismiss="modal"
+                                                aria-label="Close"
+                                             >
+                                                <span aria-hidden="true">
+                                                   &times;
+                                                </span>
+                                             </button>
+                                          </div>
+                                          <div className="modal-body">
+                                             <form
+                                                method="POST"
+                                                action="/forgot.sendcode"
+                                                encType="multipart/form-data"
+                                             >
+                                                <div className="form-group row">
+                                                   <label
+                                                      htmlFor="staticEmail"
+                                                      className="col-sm-2 col-form-label"
+                                                   >
+                                                      Email
+                                                   </label>
+                                                   <div className="col-sm-10">
+                                                      <input
+                                                         name="email"
+                                                         type="email"
+                                                         className="form-control"
+                                                         id="staticEmail"
+                                                         placeholder="email@example.com"
+                                                         defaultValue=""
+                                                      />
+                                                   </div>
+                                                </div>
+                                             </form>
+                                          </div>
+                                          <div className="modal-footer">
+                                             <button
+                                                type="button"
+                                                className="btn btn-secondary"
+                                                data-dismiss="modal"
+                                             >
+                                                Close
+                                             </button>
+                                             <button
+                                                type="submit"
+                                                className="btn btn-primary"
+                                             >
+                                                Submit
+                                             </button>
+                                          </div>
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
                         </div>
                      </div>
                   </div>
                </div>
             </div>
          </div>
-      </div>
-      </div>
-      </div>
-      </div>
       </div>
    )
 }
