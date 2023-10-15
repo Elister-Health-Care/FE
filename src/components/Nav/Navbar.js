@@ -1,6 +1,6 @@
 import React from 'react'
 import { Navbar, Container, NavDropdown, Collapse, Nav } from 'react-bootstrap'
-import logo from '../../assets/logo.png'
+import logo from '../../Assets/logo.png'
 import './Navbar.css'
 import { useSelector } from 'react-redux'
 import config from '~/router/config'
