@@ -10,8 +10,14 @@ const UserEditProfile = () => {
   const user = JSON.parse(localStorage.getItem("HealthCareUser"));
   const [avatar, setAvatar] = useState("/image/avatar_admin_default.png");
   useEffect(() => {
-    if (user.avatar) {
-      setAvatar(config.URL + user.avatar);
+    if (user && user.avatar) {
+        var https_regex = /^(https)/;
+        if(https_regex.test(String(user.avatar).toLowerCase()) == true) {
+          setAvatar(user.avatar);
+        } 
+        else {
+          setAvatar(config.URL + user.avatar)
+        }
     }
   }, []);
 
@@ -31,7 +37,7 @@ const UserEditProfile = () => {
           <span className="email">{user.email}</span>
         </div>
       </div>
-      <div className="main mt-5 mb-5">
+      <div className="main-profile mt-5 mb-5">
         <div className="item-info">
             <span className="item-title">
                 Họ và tên

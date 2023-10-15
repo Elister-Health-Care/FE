@@ -14,10 +14,11 @@ import { FormControl } from "react-bootstrap";
 import { updateUser } from '~/redux/userSlice'
 import axios from 'axios';
 import { useSelector } from 'react-redux';
+import LoadingDot from '~/components/Loading/LoadingDot'
 
 const FormEditProfile = () => {
   const user = JSON.parse(localStorage.getItem("HealthCareUser"));
-  const [provinces, setProvinvces] = useState([]);
+  const [loading, setLoading] = useState(false)
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
   const [avatar, setAvatar] = useState("/image/avatar_admin_default.png");
   const [errors, setErrors] = useState({});
@@ -33,6 +34,17 @@ const FormEditProfile = () => {
     }
    }, [isUserUpdated])
 
+   const toastOptions = {
+		position: "top-right",
+		autoClose: 4000,
+		hideProgressBar: false,
+		closeOnClick: true,
+		pauseOnHover: true,
+		draggable: true,
+		progress: undefined,
+		theme: "colored",
+	};
+
   const rules = {
     name: {
        required: true,
@@ -41,7 +53,11 @@ const FormEditProfile = () => {
        required: true,
        email: true,
     },
+    gender: {
+      require: true,
+    },
     date_of_birth: {
+      require: true,
        date_of_birth: true,
     },
  }
@@ -56,11 +72,20 @@ const FormEditProfile = () => {
  })
   const dispatch = useDispatch()
   useEffect(() => {
-    if (user.avatar) {
-      setAvatar(config.URL + user.avatar);
+   if (user && user.avatar) {
+      var https_regex = /^(https)/;
+      if(https_regex.test(String(user.avatar).toLowerCase()) == true) {
+        setAvatar(user.avatar);
+      } 
+      else {
+        setAvatar(config.URL + user.avatar)
+      }
     }
   }, []);
-
+//   useEffect(() => {
+//       const validationErrors = validateForm(users, rules);
+//       setErrors(validationErrors);
+//   })
   const handleChangeInput = (e) => {
     if (isButtonDisabled === true) {
        setIsButtonDisabled(false)
@@ -121,11 +146,13 @@ const handleClickUpdateProfile = async (e) => {
 
   const validationErrors = validateForm(users, rules)
   if (Object.keys(validationErrors).length === 0) {
+      setErrors(validationErrors);
      const formDataToSubmit = new FormData()
 
      for (const key in users) {
         formDataToSubmit.append(key, users[key])
      }
+     setLoading(true)
      try {
         const response = await http.post(
            'infor-user/update',
@@ -136,48 +163,28 @@ const handleClickUpdateProfile = async (e) => {
               },
            }
         )
-        console.log('Cập nhật thành công')
-        if (response.status === 200) {
-           console.log(response)
-           handleUpdateUser()
-           toast.success(' Đổi thành công!', {
-              position: 'top-right',
-              autoClose: 4000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: 'light',
-           })
-           console.log('Cập nhật thành công')
-        } else {
-           console.log(errors)
-        }
+         handleUpdateUser()
+         toast.success(' Cập nhật thành công!', toastOptions)
      } catch (error) {
-        console.log(error)
+        toast.error(' Cập nhật thất bại!', toastOptions)
         console.error('Lỗi kết nối đến API', error)
      } finally {
         setIsButtonDisabled(true)
+        setLoading(false)
      }
   } else {
+     setIsButtonDisabled(true)
      setErrors(validationErrors)
+     toast.error(' Cập nhật thất bại!', toastOptions)
      console.log(errors)
   }
 }
-//gọi api lấy provice
-useEffect(() => {
-  try {
-     axios.get(config.URL + 'api/province').then((response) => {
-        setProvinvces(response.data.provinces)
-     })
-  } catch {
-     console.error('Lỗi kết nối đến API')
-  }
-}, [])
 
   return (
+   <>
+      <ToastContainer />
     <div className="col-md-10 col-lg-10">
+      {loading && <LoadingDot />}
       <div className="title">
         <h3>Hồ sơ</h3>
       </div>
@@ -195,7 +202,8 @@ useEffect(() => {
         </div>
       </div>
       <form>
-      <div className="main-form mt-3 mb-5">
+      <div className="
+      main-form mt-3 mb-5">
         <div className="item-form">
           <label htmlFor="name" className="item-title">
             Họ và tên:
@@ -207,7 +215,11 @@ useEffect(() => {
             name="name"
             placeholder="Full name"
             defaultValue={user.name}
+            className={errors.name && ( "border-danger" )}
           />
+         {errors.name && (
+            <p className="text-danger">{errors.name}</p>
+         )}
         </div>
         <div className="item-form">
           <label htmlFor="email" className="item-title">
@@ -220,7 +232,11 @@ useEffect(() => {
             name="email"
             placeholder="Your email"
             defaultValue={user.email}
-          />
+            className={errors.email && ( "border-danger" )}
+            />
+           {errors.email && (
+              <p className="text-danger">{errors.email}</p>
+           )}
         </div>
         <div className="item-form">
           <label htmlFor="username" className="item-title">
@@ -247,7 +263,11 @@ useEffect(() => {
               name="date_of_birth"
               placeholder="Your Birthday"
               defaultValue={user.date_of_birth}
-            />
+              className={errors.date_of_birth && ( "border-danger" )}
+              />
+             {errors.date_of_birth && (
+                <p className="text-danger">{errors.date_of_birth}</p>
+             )}
           </p>
         </div>
         <div className="item-form">
@@ -267,22 +287,15 @@ useEffect(() => {
             </div>
         </div>
         <div className="item-form">
-          <span className="item-title">Quê quán:</span>
-          <select
+          <span htmlFor="address" className="item-title">Quê quán:</span>
+          <FormControl
                         onChange={handleChangeInput}
-                        name="province_code"
+                        name="address"
+                        id="address"
                         className="form-control"
-                     >
-                        <option defaultValue="">Chọn tỉnh/thành</option>
-                        {provinces.map((province) => (
-                           <option
-                              key={province.id}
-                              value={province.province_code}
-                           >
-                              {province.name}
-                           </option>
-                        ))}
-                     </select>
+                        placeholder="Quê quán"
+                        defaultValue={user.address}
+                     />
                      
         </div>
         <div className="item-form">
@@ -305,6 +318,7 @@ useEffect(() => {
       </div>
       </form>
     </div>
+    </>
   );
 };
 export default FormEditProfile;

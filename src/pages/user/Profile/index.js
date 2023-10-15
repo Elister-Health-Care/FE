@@ -15,6 +15,7 @@ const handleLogout = () => {
 
 const UserProfile = () => {
   return (
+    <div className="container">
     <div className="row mt-4">
       <div className="col-lg-3 col-md-3">
         <div className="catalog">
@@ -29,7 +30,7 @@ const UserProfile = () => {
                   <Link to={'profile'}><BsFillSaveFill className="mr-1 text-success"/> Đã lưu </Link>
                 </ListGroup.Item>
                 <ListGroup.Item>
-                  <Link to={'profile'}><AiOutlineHistory className="mr-1 text-dark"/> Lịch sử đặt chỗ</Link>
+                  <Link to={'profile'}><AiOutlineHistory className="mr-1 text-dark"/> Quản lý đặt lịch</Link>
                 </ListGroup.Item>
                 <ListGroup.Item>
                   <Link to={'profile'}><IoShareSocialSharp className="mr-1 text-primary"/> Cộng đồng</Link>
@@ -49,6 +50,7 @@ const UserProfile = () => {
       <div className="col-lg-9 col-md-9">
            <Outlet/> 
       </div>
+    </div>
     </div>
   );
 };

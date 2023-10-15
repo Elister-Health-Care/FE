@@ -59,7 +59,6 @@
   /* border: 1px solid gray; */
   border-radius: 5px;
   /* text-transform: uppercase; */
-  display: flex;
   cursor: pointer;
   align-items: center;
   line-height: 40px;
@@ -80,6 +79,12 @@
   width: 100%;
   justify-content: center;
 }
+.social a .text-login {
+  font-size: 12px;
+}
+.social a .text-login span {
+  font-size: 20px;
+}
 .social a:hover {
   text-decoration: none;
   color: var(--whiteColor);
@@ -90,15 +95,15 @@
   width: auto;
   border-radius: 40px;
   background-color: var(--whiteColor);
-  margin-right: 20px;
+  margin-right: 10px;
 }
 
 .google {
-  background: var(--gradientColor);
+  background: var(--blackColor);
 }
 
-.github {
-  background-color: var(--blackColor);
+.facebook {
+  background-color: #3686d6;
 }
 
 .body-login {
