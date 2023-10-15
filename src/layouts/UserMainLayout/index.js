@@ -2,6 +2,7 @@ import React from 'react'
 import { Outlet } from 'react-router-dom'
 import Navbars from '~/components/Nav/Navbar'
 import { useEffect, useState } from 'react'
+import './user.css'
 
 const UserMainLayout = () => {
 
@@ -25,7 +26,7 @@ const UserMainLayout = () => {
          <div>
             <Navbars/>
          </div>
-         <div className="container">
+         <div>
             <Outlet />
          </div>
       </div>

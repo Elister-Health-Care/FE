@@ -1,11 +1,15 @@
 import React from "react";
 import { Navbar, Container, NavDropdown, Collapse, Nav } from "react-bootstrap";
-import logo from "../../Assets/logo.png";
+import logo from "~/Assets/logo.png";
 import "./Navbar.css";
 import { useSelector } from 'react-redux'
 import config from "~/router/config";
-import { Link, useNavigate } from 'react-router-dom'
-
+import { Link, useNavigate } from 'react-router-dom';
+import {BsFillSaveFill, BsChevronDown} from 'react-icons/bs';
+import {BiSolidHelpCircle} from 'react-icons/bi';
+import {IoShareSocialSharp} from 'react-icons/io5';
+import {AiOutlineHistory, AiOutlineLogout, AiFillSetting} from 'react-icons/ai';
+import {GiHealthNormal} from 'react-icons/gi';
 import { useEffect, useState } from 'react'
 
 const Navbars = () => {
@@ -15,42 +19,91 @@ const Navbars = () => {
 
   const isUserUpdated = useSelector((state) => state.user.keyUserUpdated)
 
+  const navigate = useNavigate()
+
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem('HealthCareUser'))
     if (user && user.avatar) {
-       setAvatar(config.URL + user.avatar)
+      var https_regex = /^(https)/;
+      if(https_regex.test(String(user.avatar).toLowerCase()) == true) {
+        setAvatar(user.avatar);
+      } 
+      else {
+        setAvatar(config.URL + user.avatar)
+      }
     }
     if (user && user.name) {
        setName(user.name)
     }
  }, [isUserUpdated])
+ const handleHome = () => {
+    navigate("/");
+ }
+ const handleLogout = () => {
+   localStorage.removeItem('HealthCareUser')
+ }
 
-
-  useEffect(() => {
-    if(user)
-    {
-      if (user.avatar) {
-        setAvatar(config.URL + user.avatar);
-      }
-    }
-  }, []);
   return (
     <Navbar expand="lg" className="bg-body-tertiary">
       <div className="container-fluid">
-        <Navbar.Brand href="#home">
+        <Navbar.Brand onClick={handleHome}>
           <img src={logo} />
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse className="justify-content-end" id="basic-navbar-nav">
           <Nav className="me-auto">
-            <NavDropdown title="Chuyên mục" id="basic-nav-dropdown">
-              <NavDropdown.Item href="">About Us</NavDropdown.Item>
-              <NavDropdown.Item href="">Our Team</NavDropdown.Item>
-              <NavDropdown.Item href="">FAQ's</NavDropdown.Item>
-              <NavDropdown.Item href="">Booking</NavDropdown.Item>
-              <NavDropdown.Item href="">Error 404</NavDropdown.Item>
+            <NavDropdown title={<div>Chuyên mục <BsChevronDown/></div>} className="has-megamenu" id="basic-nav-dropdown">
+              <Container>
+                <div className="row w-100">
+                  <div className="col-lg-3 col-md-5 border-right pt-2 pb-2">
+                     <h6><b>Chuyên mục sức khỏe</b></h6>
+                     <ul className="w-100 mt-3">
+                        <li>
+                          <img 
+                            className="icon" 
+                            src={require('~/Assets/Oral-Health.webp')}/> 
+                          <Link>Sức khỏe răng miệng</Link>
+                        </li>
+                        <li>
+                          <img 
+                            className="icon" 
+                            src={require('~/Assets/Oral-Health.webp')}/> 
+                            <Link>Dược liệu</Link>
+                        </li>
+                        <li>
+                          <img 
+                            className="icon" 
+                            src={require('~/Assets/Oral-Health.webp')}/> 
+                          <Link>Tâm lý - tâm thành</Link>
+                        </li>
+                        <li>
+                          <img 
+                            className="icon" 
+                            src={require('~/Assets/Oral-Health.webp')}/> 
+                          <Link>Thể dục thể thao</Link>
+                        </li>
+                        <li>
+                          <img 
+                            className="icon" 
+                            src={require('~/Assets/Oral-Health.webp')}/> 
+                            <Link>Lão hóa lành mạnh</Link>
+                        </li>
+                        <li>
+                          <img 
+                            className="icon" 
+                            src={require('~/Assets/Oral-Health.webp')}/> 
+                            <Link>Thói quen lành mạnh</Link>
+                          </li>
+                      </ul> 
+                      <Link className="btn btn-outline-primary w-100">Xem tất cả danh mục <i className="fa-solid fa-chevron-right"></i></Link>
+                  </div>
+                  <div className="col-lg-9 col-md-7">
+
+                  </div>
+                </div>
+              </Container>
             </NavDropdown>
-            <NavDropdown title="Kiểm tra sức khỏe" id="basic-nav-dropdown">
+            <NavDropdown title={<div>Kiểm tra sức khỏe <BsChevronDown/></div>}  id="basic-nav-dropdown">
               <NavDropdown.Item href="#action/3.1">Services</NavDropdown.Item>
               <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
               <NavDropdown.Divider />
@@ -58,7 +111,7 @@ const Navbars = () => {
                 Separated link
               </NavDropdown.Item>
             </NavDropdown>
-            <NavDropdown title="Đặc lịch với bác sĩ" id="basic-nav-dropdown">
+            <NavDropdown title={<div>Đặt lịch bác sĩ <BsChevronDown/></div>}  id="basic-nav-dropdown">
               <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
               <NavDropdown.Item href="#action/3.2">
                 Another action
@@ -69,7 +122,7 @@ const Navbars = () => {
                 Separated link
               </NavDropdown.Item>
             </NavDropdown>
-            <NavDropdown title="Cộng đồng" id="basic-nav-dropdown">
+            <NavDropdown title={<div>Cộng đồng <BsChevronDown/></div>} id="basic-nav-dropdown">
               <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
               <NavDropdown.Item href="#action/3.2">
                 Another action
@@ -81,7 +134,7 @@ const Navbars = () => {
               </NavDropdown.Item>
             </NavDropdown>
             {user ? (
-              <NavDropdown
+              <NavDropdown className="nav-info"
                 title={
                   <div className="pull-left d-flex">
                     <img className="avatar" src={avatar} alt="user pic" />
@@ -107,10 +160,38 @@ const Navbars = () => {
                   </Link>
                 </NavDropdown.Item>
                 <div className="row mr-0 ml-0">
-                  <div className="col-lg-6 col-md-6">Sức khỏe</div>
-                  <div className="col-lg-6 col-md-6">Đã lưu</div>
-                  <div className="col-lg-6 col-md-6">Lịch sử đặt chỗ</div>
-                  <div className="col-lg-6 col-md-6">Đã tham gia</div>
+                  <div className="col-lg-6 col-md-6">
+                     <div className="dropdown-info">
+                        <Link><BsFillSaveFill className="text-success"/><br/>Đã lưu</Link>
+                     </div>
+                  </div>
+                  <div className="col-lg-6 col-md-6">
+                     <div className="dropdown-info">
+                        <Link><AiOutlineHistory/><br/>Quản lý đặt lịch</Link>
+                     </div>
+                  </div>
+                  <div className="col-lg-6 col-md-6">
+                     <div className="dropdown-info">
+                        <Link><GiHealthNormal className="text-danger"/><br/>Sức khỏe</Link>
+                     </div>
+                  </div>
+                  <div className="col-lg-6 col-md-6">
+                     <div className="dropdown-info">
+                        <Link><IoShareSocialSharp className="text-primary"/><br/>Cộng đồng</Link>
+                     </div>
+                  </div>
+                </div>
+                <div className="row mr-0 ml-0">
+                  <div className="col-lg-12 col-md-12">
+                     <div className="dropdown-info">
+                     <Link 
+                        to={'/user-login'} 
+                        onClick={handleLogout}>
+                           <AiOutlineLogout className="mr-1 text-dark"/> 
+                           Đăng xuất
+                     </Link>
+                     </div>
+                  </div>
                 </div>
               </NavDropdown>
             ) : (

@@ -59,18 +59,18 @@
   color: var(--SecondaryColor);
 }
 
-.main {
+.main-profile {
   padding: 20px;
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
   border-radius: 10px;
 }
-.main .item-info .item-title {
+.main-profile .item-info .item-title {
   font-size: 13px;
   font-weight: 600;
   color: var(--blackColor);
   margin-bottom: 10px;
 }
-.main .item-info .item-content {
+.main-profile .item-info .item-content {
   color: var(--textColor);
 }
 
