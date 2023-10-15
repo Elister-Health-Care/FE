@@ -8,16 +8,8 @@ const API = axios.create({
 
 API.interceptors.request.use((config) => {
    const user = JSON.parse(localStorage.getItem('HealthCareUser'))
-   console.log(user)
    if (user) {
       const token = user.access_token
-      if (token) {
-         config.headers.Authorization = `Bearer ${token}`
-      }
-   }
-   const admin = JSON.parse(localStorage.getItem('admin'))
-   if (admin) {
-      const token = admin.access_token
       if (token) {
          config.headers.Authorization = `Bearer ${token}`
       }

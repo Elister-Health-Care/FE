@@ -17,7 +17,6 @@ import UserRegisterPage from '~/pages/login_and_register/user/Register/UserRegis
 import HospitalRegisterPage from '~/pages/login_and_register/user/HospitalRegister'
 import AdminLoginPage from '~/pages/login_and_register/Admin'
 
-
 // Import main pages(public)
 import HomePage from '~/pages/user/Home'
 import UserProductDetailPage from '~/pages/main/Product'
@@ -43,6 +42,7 @@ import AdminHealthInsurance from '~/pages/admin/HealthInsurance'
 import AdminAllUserPage from '~/pages/admin/UserManager'
 import AdminService from '~/pages/admin/Service'
 import AdminCategory from '~/pages/admin/Category'
+import AdminArticle from '~/pages/admin/Article'
 import AdminStatistical from '~/pages/admin/Statistical'
 import AdminManager from '~/pages/admin/AdminManager'
 
@@ -55,10 +55,10 @@ import HospitalServicePage from '~/pages/admin_hospital/Service'
 import HospitalInsurancePage from '~/pages/admin_hospital/Insurance'
 import HospitalProfilePage from '~/pages/admin_hospital/Profile'
 import HospitalChangepasswordPage from '~/pages/admin_hospital/ChangePassword'
-import FakeLoginHospital from '~/pages/admin_hospital/FakeLoginHospital'
 import DoctorDasboardPage from '~/pages/doctor/Dashboard'
 import DoctorSchedulePage from '~/pages/doctor/Schedule'
 import DoctorArticlePage from '~/pages/doctor/Article'
+import DoctorProfilePage from '~/pages/doctor/Profile'
 
 //Import Test
 
@@ -72,17 +72,15 @@ const BigRoutes = () => (
       <Route path="admin-login" element={<AdminLoginPage />} />
 
       {/* Public route */}
-      <Route path="/" element={<UserMainLayout/>}>
+      <Route path="/" element={<UserMainLayout />}>
          <Route path="" element={<HomePage />} />
          <Route path="product/:id" element={<UserProductDetailPage />} />
          {/* private route user-main */}
-         <Route path="user" element={<UserAuthCheck component={UserProfile}/>}>
-            <Route path="profile" element={<UserEditProfile/>}/>
-            <Route path="edit-profile" element={<FormEditProfile/>} />  
+         <Route path="user" element={<UserAuthCheck component={UserProfile} />}>
+            <Route path="profile" element={<UserEditProfile />} />
+            <Route path="edit-profile" element={<FormEditProfile />} />
          </Route>
       </Route>
-      
-         
 
       {/* Private route user-hospital ********************/}
       <Route
@@ -125,7 +123,10 @@ const BigRoutes = () => (
             element={<DoctorAuthCheck component={HospitalArticlePage} />}
          ></Route>
 
-         <Route path="profile" element={<HospitalProfilePage />}></Route>
+         <Route
+            path="profile"
+            element={<DoctorAuthCheck component={HospitalProfilePage} />}
+         ></Route>
          <Route
             path="change-password"
             element={<HospitalChangepasswordPage />}
@@ -136,8 +137,8 @@ const BigRoutes = () => (
          ></Route>
          <Route path="doctor-schedule" element={<DoctorSchedulePage />}></Route>
          <Route path="doctor-article" element={<DoctorArticlePage />}></Route>
+         <Route path="doctor-profile" element={<DoctorProfilePage />}></Route>
       </Route>
-      <Route path="fake-login-hospital" element={<FakeLoginHospital />} />
 
       {/* Private route admin *************************/}
       <Route path="admin" element={<AdminAuthCheck component={AdminLayout} />}>
@@ -150,7 +151,8 @@ const BigRoutes = () => (
          <Route path="department" element={<AdminDepartment />} />
          <Route path="health-insurance" element={<AdminHealthInsurance />} />
          <Route path="service" element={<AdminService />} />
-         <Route path="category" element={<AdminCategory />} />
+         <Route path="category" element={<AdminCategory/>} />
+         <Route path="article" element={<AdminArticle/>} />
          <Route path="statistical" element={<AdminStatistical />} />
       </Route>
 

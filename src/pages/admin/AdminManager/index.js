@@ -21,8 +21,8 @@ function AdminManager() {
    const adminLocal = JSON.parse(localStorage.getItem('admin'))
    const location = useLocation()
    const [loadingTable, setLoadingTable] = useState(false)
-   const [adminAccount, setAdminAccount] = useState([])
    const [shouldReloadData, setShouldReloadData] = useState(false)
+   const [adminAccount, setAdminAccount] = useState([])
    const [errors, setErrors] = useState({})
    const [adminDetail, setAdminDetail] = useState({
       id: '',
@@ -146,6 +146,9 @@ function AdminManager() {
          updateSearchParams({ sortname: true })
       }
    }
+   const handleChangeSelectedRole = (e) => {
+      updateSearchParams({ role: e.target.value })
+   }
 
    // add category
    const [formData, setFormData] = useState({
@@ -162,7 +165,16 @@ function AdminManager() {
          [name]: value,
       })
    }
+   const updateAcount = (acountId, rule) => {
+      const updatedAcount = adminAccount.map((admin) => {
+         if (admin.id === acountId) {
+            return { ...admin, role: rule }
+         }
+         return admin
+      })
 
+      setAdminAccount(updatedAcount)
+   }
    const handleChangeRole = async (id, e) => {
       console.log(e.target.value)
       try {
@@ -173,12 +185,16 @@ function AdminManager() {
          console.log(response)
          if (e.target.value === 'superadmin') {
             toast.warning(
-               ' Đã thay đổi người dùng' + id + ' thành SuperAdmin ',
+               ' Thay đổi người dùng ' + id + ' thành SuperAdmin ',
                toastOptions
             )
          } else {
-            toast.success(' Thành công', toastOptions)
+            toast.success(
+               'Thay đổi người dùng ' + id + ' thành Admin ',
+               toastOptions
+            )
          }
+         updateAcount(id, e.target.value)
       } catch (error) {
          console.log('Đã có lỗi xảy ra')
       }
@@ -197,7 +213,7 @@ function AdminManager() {
             // clear input
             setFormData({
                name: '',
-               email: null,
+               email: '',
             })
 
             $(modalRef.current).modal('hide') // close modal
@@ -271,6 +287,27 @@ function AdminManager() {
                         placeholder="Search"
                      />
                   </div>
+               </div>
+               <div className={cx('filter_box')}>
+                  <select
+                     defaultValue={
+                        search.role === 'manager'
+                           ? 'manager'
+                           : search.sortname === 'superadmin'
+                           ? 'superadmin'
+                           : search.sortname === 'admin'
+                           ? 'admin'
+                           : ''
+                     }
+                     onChange={handleChangeSelectedRole}
+                     className={cx('custom-select', 'fontz_14')}
+                  >
+                     {' '}
+                     <option value="">Tất cả</option>
+                     <option value="manager">Manager</option>
+                     <option value="superadmin">SuperAdmin</option>
+                     <option value="admin">Admin</option>
+                  </select>
                </div>
                <div className={cx('filter_box')}>
                   <select
@@ -374,6 +411,7 @@ function AdminManager() {
                                     ? formatDateTime(admin.created_at)
                                     : 'N/A'}
                               </td>
+
                               <td>
                                  {admin.role === 'manager' ? (
                                     'Manager'
@@ -383,7 +421,7 @@ function AdminManager() {
                                     </span>
                                  ) : admin.role === 'superadmin' &&
                                    adminLocal.role === 'superadmin' ? (
-                                    admin.role
+                                    'SuperAdmin'
                                  ) : (
                                     <select
                                        onChange={(e) =>
@@ -519,14 +557,16 @@ function AdminManager() {
                            </div>
                            <div className="modal-footer">
                               <button
-                                 onClick={handleSubmitAddAccount}
-                                 type="button"
                                  className="btn btn-secondary"
                                  data-dismiss="modal"
                               >
                                  Close
                               </button>
-                              <button type="submit" className="btn btn-primary">
+                              <button
+                                 onClick={handleSubmitAddAccount}
+                                 type="button"
+                                 className="btn btn-primary"
+                              >
                                  <i className="fa-solid fa-plus"></i> Add
                               </button>
                            </div>

@@ -9,7 +9,7 @@ import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
 const cx = classNames.bind(styles)
-const AdminChangePasswordPage = () => {
+const HospitalChangepasswordPage = () => {
    const [errors, setErrors] = useState({})
    const [password, setPassword] = useState({
       current_password: '',
@@ -166,4 +166,4 @@ const AdminChangePasswordPage = () => {
       </>
    )
 }
-export default AdminChangePasswordPage
+export default HospitalChangepasswordPage

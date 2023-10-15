@@ -33,12 +33,16 @@ function Menu({ children }) {
             setUlSelected('Danh mục')
             setisOpenUl('Quản lý')
             break
+         case '/admin/article':
+            setSelected('Quản lý')
+            setUlSelected('Bài viết')
+            setisOpenUl('Quản lý')
+            break
          case '/admin/department':
             setSelected('Quản lý')
             setUlSelected('Chuyên khoa')
             setisOpenUl('Quản lý')
             break
-
          case '/admin/health-insurance':
             setSelected('Quản lý')
             setUlSelected('Bảo hiểm')
@@ -163,6 +167,15 @@ function Menu({ children }) {
                         className={cx(ulSeclect === 'Danh mục' && 'active')}
                      >
                         Danh mục
+                     </Link>
+                  </li>
+                  <li>
+                     <Link
+                        to="article"
+                        onClick={() => handleClickSelectUl('Bài viết')}
+                        className={cx(ulSeclect === 'Bài viết' && 'active')}
+                     >
+                        Bài viết
                      </Link>
                   </li>
                   <li>

@@ -1,8 +1,6 @@
 import classNames from 'classnames/bind'
 import TitleAdmin from '~/components/TitleAdmin'
-import { ToastContainer, toast } from 'react-toastify'
 import { useDispatch } from 'react-redux'
-import 'react-toastify/dist/ReactToastify.css'
 
 import http from '~/utils/http'
 import styles from './Profile.module.scss'
@@ -11,11 +9,13 @@ import config from '~/router/config'
 import validateForm from '~/helpers/validation'
 import { updateAdmin } from '~/redux/adminSlice'
 import LoadingDot from '~/components/Loading/LoadingDot'
+import { Link } from 'react-router-dom'
 
 const cx = classNames.bind(styles)
 function AdminProfilePage() {
-   const [errors, setErrors] = useState({})
+   const [notify, setNotify] = useState({})
    const [loading, setLoading] = useState(false)
+
    const [isButtonDisabled, setIsButtonDisabled] = useState(true)
    const admin = JSON.parse(localStorage.getItem('admin'))
    const [users, setUsers] = useState({
@@ -108,7 +108,7 @@ function AdminProfilePage() {
             dispatch(updateAdmin())
             // window.location.reload()
          } else {
-            console.log(errors)
+            console.log(notify)
          }
       } catch (error) {
          console.log(error)
@@ -128,33 +128,17 @@ function AdminProfilePage() {
          }
          setLoading(true)
          try {
-            const response = await http.post(
-               'admin/update/' + admin.id,
-               formDataToSubmit,
-               {
-                  headers: {
-                     'Content-Type': 'multipart/form-data',
-                  },
-               }
-            )
-            if (response.status === 200) {
-               console.log(response)
-               handleUpdateUser()
-               toast.success(' Đổi thành công!', {
-                  position: 'top-right',
-                  autoClose: 4000,
-                  hideProgressBar: false,
-                  closeOnClick: true,
-                  pauseOnHover: true,
-                  draggable: true,
-                  progress: undefined,
-                  theme: 'light',
-               })
+            const response = await http.post('admin/update', formDataToSubmit, {
+               headers: {
+                  'Content-Type': 'multipart/form-data',
+               },
+            })
 
-               console.log('Cập nhật thành công')
-            } else {
-               console.log(errors)
-            }
+            console.log(response)
+            handleUpdateUser()
+            setNotify({ success: response.data.message })
+
+            console.log('Cập nhật thành công')
          } catch (error) {
             console.log(error)
             console.error('Lỗi kết nối đến API', error)
@@ -163,15 +147,13 @@ function AdminProfilePage() {
             setLoading(false)
          }
       } else {
-         setErrors(validationErrors)
-         console.log(errors)
+         setNotify(validationErrors)
+         console.log(notify)
       }
    }
 
    return (
       <>
-         <ToastContainer />
-
          <TitleAdmin>Profile</TitleAdmin>
          <div className="container bootstrap snippets bootdey">
             {loading && <LoadingDot />}
@@ -203,14 +185,20 @@ function AdminProfilePage() {
                </div>
 
                <div className="col-md-9 personal-info">
-                  {/* <div className="alert alert-info alert-dismissable">
-                     <Link className="panel-close close" data-dismiss="alert">
-                        ×
-                     </Link>
-                     <i className="fa fa-coffee"></i>
-                     This is an <strong>.alert</strong>. Use this to show
-                     important messages to the user.
-                  </div> */}
+                  {notify.success && (
+                     <div className="alert alert-info alert-dismissable">
+                        <Link
+                           className="panel-close close"
+                           onClick={() => {
+                              setNotify({})
+                           }}
+                        >
+                           ×
+                        </Link>
+                        <i class=" mdi mdi-check-underline"></i> &nbsp;
+                        {notify.success}
+                     </div>
+                  )}
                   <h3>Thông tin tài khoản</h3>
 
                   <form className="form-horizontal">
@@ -224,8 +212,8 @@ function AdminProfilePage() {
                               type="text"
                               defaultValue={admin.email}
                            />
-                           {errors.email && (
-                              <p className={cx('error')}>{errors.email}</p>
+                           {notify.email && (
+                              <p className={cx('error')}>{notify.email}</p>
                            )}
                         </div>
                      </div>
@@ -241,8 +229,8 @@ function AdminProfilePage() {
                               type="text"
                               defaultValue={admin.name}
                            />
-                           {errors.name && (
-                              <p className={cx('error')}>{errors.name}</p>
+                           {notify.name && (
+                              <p className={cx('error')}>{notify.name}</p>
                            )}
                         </div>
                      </div>
@@ -260,9 +248,9 @@ function AdminProfilePage() {
                                     className="form-control"
                                     type="date"
                                  />
-                                 {errors.date_of_birth && (
+                                 {notify.date_of_birth && (
                                     <p className={cx('error')}>
-                                       {errors.date_of_birth}
+                                       {notify.date_of_birth}
                                     </p>
                                  )}
                               </div>
@@ -299,8 +287,8 @@ function AdminProfilePage() {
                               type="text"
                               defaultValue={admin.address}
                            />
-                           {errors.address && (
-                              <p className={cx('error')}>{errors.address}</p>
+                           {notify.address && (
+                              <p className={cx('error')}>{notify.address}</p>
                            )}
                         </div>
                      </div>
@@ -316,8 +304,8 @@ function AdminProfilePage() {
                               type="text"
                               defaultValue={admin.phone}
                            />
-                           {errors.phone && (
-                              <p className={cx('error')}>{errors.phone}</p>
+                           {notify.phone && (
+                              <p className={cx('error')}>{notify.phone}</p>
                            )}
                         </div>
                      </div>

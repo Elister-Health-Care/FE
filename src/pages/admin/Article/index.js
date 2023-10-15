@@ -7,7 +7,7 @@ import 'tippy.js/dist/tippy.css'
 import styles from './Article.module.scss'
 import $ from 'jquery'
 import React, { useEffect, useState, useRef } from 'react'
-import http from '~/utils/httpUser'
+import http from '~/utils/http'
 import config from '~/router/config'
 import ReactPaginate from 'react-paginate'
 import LoadingTable from '~/components/Loading/LoadingTable'
@@ -19,9 +19,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import Editor from "~/components/EditorWithUseQuill";
 
 const cx = classNames.bind(styles)
-function HospitalArticlePage() {
-
-   const location = useLocation()
+const Article = () => {
+	const location = useLocation()
 	const [loadingTable, setLoadingTable] = useState(false)
 	const [articles, setArticles] = useState([])
 	const [shouldReloadData, setShouldReloadData] = useState(false);
@@ -127,7 +126,7 @@ function HospitalArticlePage() {
 				const queryParams = `?search=${search.search}&page=${search.page}&paginate=${search.paginate}
 				&sortname=${search.sortname}&sortlatest=${search.sortlatest}
 				&name_category=${search.name_category}&role=${search.role}&is_show=${search.is_show}`
-				const response = await http.get('article/hospital' + queryParams);
+				const response = await http.get('article/admin' + queryParams);
 				setArticles(response.data.data.data);
 				setPerPage(response.data.data.per_page);
 				setTotal(response.data.data.total);
@@ -391,7 +390,7 @@ function HospitalArticlePage() {
 			setSelectedArticles([]);
 		  } else {
 			const selectedIds = articles
-			  .filter(article => article.role_user === 'hospital')
+			  .filter(article => article.id_user === null)
 			  .map(article => article.id_article);
 			setSelectedArticles(selectedIds);
 		  }
@@ -411,7 +410,7 @@ function HospitalArticlePage() {
 		setSelectedArticles([]);
 	}
 
-   return (
+	return (
 		<>
 			<ToastContainer />
 			<TitleAdmin>Bài viết </TitleAdmin>
@@ -491,6 +490,7 @@ function HospitalArticlePage() {
 							className={cx('custom-select', 'fontz_14')}
 							>
 							<option value="">Tất cả</option> 
+							<option value="admin">Admin</option> 
 							<option value="hospital">Hospital</option> 
 							<option value="doctor">Doctor</option> 
 						</select>
@@ -553,7 +553,7 @@ function HospitalArticlePage() {
 									<tr key={index}>
 										<td>
 											{
-											article.role_user === 'hospital' ? 
+											article.id_user == null ? 
 											<span className='ml-3'>
 												<input 
 													ref={checkboxesRefs.current[index]}
@@ -580,15 +580,15 @@ function HospitalArticlePage() {
 												/>
 											</div>
 										</td>
-										<td>
-                                 <span>
-												{ article.role_user == 'doctor' 
-                                       ? <span className='mr-2'><i className="fa-solid fa-user-doctor"></i></span>
-                                       : <span className='mr-2'><i className="fa-solid fa-hospital"></i></span>
+										<td>{article.name_user 
+											? <span>
+												{
+												article.role_user == 'doctor' ? <span className='mr-2'><i className="fa-solid fa-user-doctor"></i></span>
+												: <span className='mr-2'><i className="fa-solid fa-hospital"></i></span>
 												}
 												{article.name_user} 
 											</span> 
-                              </td>
+											: <span className='mr-2'> <span><i className="fa-solid fa-user-shield"></i></span> <span>Admin</span></span>}</td>
 										<td>{article.search_number_article}</td>
 										<td>{article.name ? article.name : 'N/A'}</td>
 										{/* <td className='p-4'>
@@ -605,7 +605,7 @@ function HospitalArticlePage() {
 											<div className='row pl-3 pr-3'>
 												<div className='col-6 pl-0 pr-0 mx-0'>
 													<>
-														{article.role_user === 'hospital' && (
+														{article.id_user == null && (
 															<div className='pl-0 pr-0 mx-0'>
 															<Tippy content="Chỉnh sửa">
 																<button
@@ -820,7 +820,7 @@ function HospitalArticlePage() {
 									</button>
 								</div>
 								<h6 className='mt-2 ml-2'><i className="fa-solid fa-tags"></i> {articleDetail.name_category} 
-									<span className='ml-3'><i class="fa-solid fa-user-pen"></i> {articleDetail.name_user}</span>
+									<span className='ml-3'><i class="fa-solid fa-user-pen"></i> {articleDetail.name_user ? articleDetail.name_user : 'Admin'}</span>
 								</h6>
 								<div className={` ${cx('view-detail')}`} dangerouslySetInnerHTML={{ __html: articleDetail.content }} />  
 							</div>
@@ -904,7 +904,6 @@ function HospitalArticlePage() {
 			</div>
 		</>
 	)
-
 }
 
-export default HospitalArticlePage
+export default Article

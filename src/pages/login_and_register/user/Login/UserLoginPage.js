@@ -7,13 +7,17 @@ import Modal from 'react-bootstrap/Modal'
 import { auth } from "../../../../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { GoogleAuthProvider, FacebookAuthProvider, signInWithPopup } from "firebase/auth";
+import { ToastContainer, toast } from 'react-toastify'
+import { useAppContext } from '~/contexts/AppContext'
+
 import config from '~/router/config'
 import './UserLogin.css'
-import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import http from '~/utils/http';
 
 const UserLoginPage = () => {
+   const { toastRegisterSuccess, handleToastRegisterSuccessFalse } =
+      useAppContext()
    const navigate = useNavigate()
    const [show, setShow] = useState(false);
 
@@ -23,17 +27,16 @@ const UserLoginPage = () => {
       setShow(false)
     };
    const handleShow = () => setShow(true);
-  useEffect(() => {
-    const userLoggined = JSON.parse(localStorage.getItem("HealthCareUser"));
-    if(userLoggined ){
-      if (userLoggined.role == "user") {
-        navigate("/");
+   useEffect(() => {
+      const userLoggined = JSON.parse(localStorage.getItem('HealthCareUser'))
+      if (userLoggined) {
+         if (userLoggined.role == 'user') {
+            navigate('/')
+         } else {
+            navigate('/hospital/dashboard')
+         }
       }
-      else {
-      navigate("/hospital/dashboard");
-      }
-    }
-  }, [navigate]);
+   }, [navigate])
 
   const [userLogin, setUserLogin] = useState({
     email: '',
@@ -70,7 +73,6 @@ const UserLoginPage = () => {
         }   
       ).then(function (response) {
         const updatedUser = response.data.data;
-        console.log(updatedUser);
         setUser(updatedUser); // Cập nhật giá trị của user bằng setUser
         localStorage.setItem("HealthCareUser", JSON.stringify(updatedUser));
         if(response.data.data.have_password == false) 
@@ -230,42 +232,42 @@ const UserLoginPage = () => {
                           />
                         </div>
 
-                        <div className="form-group">
-                          <label htmlFor="email">Mật khẩu:</label>
-                          <input
-                            name="password"
-                            onChange={handleInputChange}
-                            defaultValue={userLogin.password}
-                            type="password"
-                            className="login-input"
-                            aria-describedby="emailHelp"
-                            placeholder="Password"
-                          />
-                        </div>
-                        <div className="mb-3 float-left">
-                          <input
-                            name="check-box"
-                            onChange={handleInputChange}
-                            defaultValue={userLogin.password}
-                            type="checkbox"
-                            aria-describedby="emailHelp"
-                            placeholder="Password"
-                          />{" "}
-                          Nhớ mật khẩu
-                        </div>
-                        <div className="mb-3">
-                          <div className="float-right">
-                            <Link
-                              className="small"
-                              data-toggle="modal"
-                              data-target="#modalForGotPassword"
-                              href="#"
-                            >
-                              Forgot password?
-                            </Link>
-                          </div>
-                        </div>
-                        {/* 
+                                    <div className="form-group">
+                                       <label htmlFor="email">Mật khẩu:</label>
+                                       <input
+                                          name="password"
+                                          onChange={handleInputChange}
+                                          defaultValue={userLogin.password}
+                                          type="password"
+                                          className="login-input"
+                                          aria-describedby="emailHelp"
+                                          placeholder="Password"
+                                       />
+                                    </div>
+                                    <div className="mb-3 float-left">
+                                       <input
+                                          name="check-box"
+                                          onChange={handleInputChange}
+                                          defaultValue={userLogin.password}
+                                          type="checkbox"
+                                          aria-describedby="emailHelp"
+                                          placeholder="Password"
+                                       />{' '}
+                                       Nhớ mật khẩu
+                                    </div>
+                                    <div className="mb-3">
+                                       <div className="float-right">
+                                          <Link
+                                             className="small"
+                                             data-toggle="modal"
+                                             data-target="#modalForGotPassword"
+                                             href="#"
+                                          >
+                                             Forgot password?
+                                          </Link>
+                                       </div>
+                                    </div>
+                                    {/* 
                       <div className="row mb-3">
                         <div className="col-7 p-0">
                           <div className="ml-3 g-recaptcha" data-sitekey={process.env.REACT_APP_GOOGLE_RECAPTCHA_KEY}></div>

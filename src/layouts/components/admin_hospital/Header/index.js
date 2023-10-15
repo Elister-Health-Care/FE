@@ -1,8 +1,10 @@
 import classNames from 'classnames/bind'
-
-import styles from './HeaderAdminHospital.module.scss'
 import { Link, useLocation } from 'react-router-dom'
 import { useEffect, useState } from 'react'
+import { useSelector } from 'react-redux'
+
+import styles from './HeaderAdminHospital.module.scss'
+import config from '~/router/config'
 
 const cx = classNames.bind(styles)
 function Header() {
@@ -11,7 +13,9 @@ function Header() {
    const user = JSON.parse(localStorage.getItem('HealthCareUser'))
    const [navActive, setNavActive] = useState('')
    const [linkActive, setLinkActive] = useState('')
-
+   const [avatar, setAvatar] = useState('/image/avatar_admin_default.png')
+   const [name, setName] = useState(user.name ? user.name : 'You')
+   const isAdminUpdated = useSelector((state) => state.admin.keyAdminUpdated)
    useEffect(() => {
       switch (location.pathname) {
          case '/hospital/dashboard':
@@ -52,6 +56,15 @@ function Header() {
       }
       // eslint-disable-next-line react-hooks/exhaustive-deps
    }, [location.pathname])
+   useEffect(() => {
+      const admin = JSON.parse(localStorage.getItem('HealthCareUser'))
+      if (admin && admin.avatar) {
+         setAvatar(config.URL + admin.avatar)
+      }
+      if (admin && admin.name) {
+         setName(admin.name)
+      }
+   }, [isAdminUpdated])
 
    const handleLogout = () => {
       localStorage.removeItem('HealthCareUser')
@@ -78,12 +91,12 @@ function Header() {
                         aria-expanded="false"
                      >
                         <img
-                           src="/image/avatar_admin_default.png"
+                           src={avatar}
                            alt={'avatar'}
                            className={cx('rounded-circle', 'avatar')}
                         />
                         <span className="pro-user-name d-none d-xl-inline-block ml-2">
-                           Maxine K <i className="mdi mdi-chevron-down"></i>
+                           {name} <i className="mdi mdi-chevron-down"></i>
                         </span>
                      </Link>
                      <div className="dropdown-menu dropdown-menu-right profile-dropdown ">
@@ -98,7 +111,11 @@ function Header() {
                         </Link>
 
                         <Link
-                           to="profile"
+                           to={
+                              user.role === 'hospital'
+                                 ? 'profile'
+                                 : 'doctor-profile'
+                           }
                            className="dropdown-item notify-item"
                         >
                            <i className="mdi mdi-account-outline"></i>

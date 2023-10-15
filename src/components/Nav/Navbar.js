@@ -13,9 +13,9 @@ import {GiHealthNormal} from 'react-icons/gi';
 import { useEffect, useState } from 'react'
 
 const Navbars = () => {
-  const user = JSON.parse(localStorage.getItem("HealthCareUser"));
-  const [avatar, setAvatar] = useState("/image/avatar_admin_default.png");
-  const [name, setName] = useState(user && user.name ? user.name : 'User')
+   const user = JSON.parse(localStorage.getItem('HealthCareUser'))
+   const [avatar, setAvatar] = useState('/image/avatar_admin_default.png')
+   const [name, setName] = useState(user && user.name ? user.name : 'User')
 
   const isUserUpdated = useSelector((state) => state.user.keyUserUpdated)
 
