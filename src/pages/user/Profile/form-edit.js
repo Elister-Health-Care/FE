@@ -117,7 +117,6 @@ const FormEditProfile = () => {
  const handleUpdateUser = async () => {
   try {
      const response = await http.get('infor-user/profile')
-     if (response.status === 200) {
         console.log('Get profile thành công')
         const profile = response.data.data
         const updatedUser = {
@@ -133,9 +132,6 @@ const FormEditProfile = () => {
         }
         localStorage.setItem('HealthCareUser', JSON.stringify(updatedUser))
         dispatch(updateUser())
-     } else {
-        console.log(errors)
-     }
   } catch (error) {
      console.log(error)
      console.error('Lỗi kết nối đến API', error)

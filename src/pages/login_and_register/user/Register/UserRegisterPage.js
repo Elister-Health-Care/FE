@@ -48,7 +48,6 @@ function RegisterPage() {
                },
             }
          )
-         if (response.status === 200) {
             console.log(response)
             toast.success('Đăng ký thành công', {
                position: 'top-right',
@@ -64,10 +63,6 @@ function RegisterPage() {
             setTimeout(() => {
                navigate('/user-login')
             }, 1500)
-         } else {
-            console.log(response)
-            console.error('Đăng ký thất bại')
-         }
       } catch (error) {
          console.log(error)
          console.error('Lỗi kết nối đến API', error)
