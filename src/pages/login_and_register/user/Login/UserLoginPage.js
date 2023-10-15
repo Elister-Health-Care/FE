@@ -162,7 +162,6 @@ const UserLoginPage = () => {
         config.URL + "api/user/login",
         userLogin
       );
-      if (response.status === 200) {
         const updatedUser = response.data.data;
         setUser(updatedUser); // Cập nhật giá trị của user bằng setUser
         localStorage.setItem("HealthCareUser", JSON.stringify(updatedUser)); // lưu vào localStorage
@@ -176,10 +175,6 @@ const UserLoginPage = () => {
         else {
           navigate("/");
         }
-        
-      } else {
-        toast.error('Đăng nhập thất bại', toastOptions);;
-      }
     } catch (error) {
       if (error.response.data.data) toast.error(error.response.data.data[0], toastOptions);
 			else toast.error(error.response.data.message, toastOptions);
