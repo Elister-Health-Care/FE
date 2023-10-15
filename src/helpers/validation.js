@@ -52,6 +52,14 @@ function validateForm(formData, rules) {
                errors[fieldName] = 'Trường tên tối thiểu 6 ký tự'
             }
          }
+         if (ruleName === 'new_password_confirmation' && formData[fieldName]) {
+            if (formData['new_password'] !== formData[fieldName])
+               errors[fieldName] = 'Mật khẩu phải giống nhau'
+         }
+         if (ruleName === 'new_password' && formData[fieldName]) {
+            if (formData['current_password'] === formData[fieldName])
+               errors[fieldName] = 'Mật khẩu mới phải khác mật khẩu cũ'
+         }
       }
    }
 

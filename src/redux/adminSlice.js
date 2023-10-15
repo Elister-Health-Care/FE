@@ -3,11 +3,11 @@ import { createSlice } from '@reduxjs/toolkit'
 const adminSlice = createSlice({
    name: 'admin',
    initialState: {
-      keyAdminUpdated: 1,
+      keyAdminUpdated: false,
    },
    reducers: {
       updateAdmin: (state) => {
-         state.keyAdminUpdated += 1
+         state.keyAdminUpdated = !state.keyAdminUpdated
       },
    },
 })

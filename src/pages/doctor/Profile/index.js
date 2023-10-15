@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import classNames from 'classnames/bind'
 import TitleAdmin from '~/components/TitleAdmin'
 import { useDispatch } from 'react-redux'
@@ -9,31 +10,25 @@ import validateForm from '~/helpers/validation'
 import { updateAdmin } from '~/redux/adminSlice'
 import LoadingDot from '~/components/Loading/LoadingDot'
 import { Link } from 'react-router-dom'
-import Map from '~/components/Map'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 const cx = classNames.bind(styles)
 function DoctorProfilePage() {
-   const user = JSON.parse(localStorage.getItem('HealthCareUser'))
    const [notify, setNotify] = useState({})
    const [loading, setLoading] = useState(false)
    const [isButtonDisabled, setIsButtonDisabled] = useState(true)
-   const [openLocation, setOpenLocation] = useState(false)
    const [provinces, setProvinces] = useState([])
    const [selectedProvince, setSelectedProvince] = useState('')
-   const [infrastructure, setInfrastructure] = useState('')
-   const [infrastructures, setInfrastructures] = useState(
-      JSON.parse(user.infrastructure)
-   )
+   const user = JSON.parse(localStorage.getItem('HealthCareUser'))
    const [users, setUsers] = useState({
       email: user.email,
       address: user.address,
+      date_of_birth: user.date_of_birth ? user.date_of_birth : '',
       phone: user.phone,
       name: user.name,
+      gender: user.gender ? user.gender : 2,
       province_code: user.province_code,
+      experience: user.experience,
       username: user.username,
-      location: user.location,
-      description: user.description,
    })
    const dispatch = useDispatch()
    const [selectImage, setSelectImage] = useState(
@@ -54,10 +49,14 @@ function DoctorProfilePage() {
          required: true,
          phone: true,
       },
-      username: {
+      date_of_birth: {
+         required: true,
+         date_of_birth: true,
+      },
+      experience: {
          required: true,
       },
-      description: {
+      username: {
          required: true,
       },
    }
@@ -73,7 +72,6 @@ function DoctorProfilePage() {
       }
 
       fetchData()
-      // eslint-disable-next-line react-hooks/exhaustive-deps
    }, [])
    useEffect(() => {
       if (user.avatar) {
@@ -108,41 +106,10 @@ function DoctorProfilePage() {
          })
       }
    }
-   const handleClickOpenLocation = () => {
-      setOpenLocation(!openLocation)
-   }
-   const handleChildData = (data) => {
-      setUsers({ ...users, location: data })
-   }
-   const handleClickDeleteInfrastructure = (value) => {
-      const updatedInfrastructures = [...infrastructures]
-      const indexToDelete = updatedInfrastructures.indexOf(value)
-      if (indexToDelete !== -1) {
-         updatedInfrastructures.splice(indexToDelete, 1)
-         setInfrastructures(updatedInfrastructures)
-      }
-      if (isButtonDisabled === true) {
-         setIsButtonDisabled(false)
-      }
-   }
-   const handlekeyDownInfrastructure = (e) => {
-      if (e.key === 'Enter') {
-         setInfrastructures([...infrastructures, infrastructure])
-         e.preventDefault()
-         if (isButtonDisabled === true) {
-            setIsButtonDisabled(false)
-         }
-         setInfrastructure('')
-      }
-   }
-   const handleInfrastructureChange = (e) => {
-      const value = e.target.value
-      console.log(value)
-      setInfrastructure(value)
-   }
+
    const handleUpdateUser = async () => {
       try {
-         const response = await httpUser.get('infor-hospital/profile')
+         const response = await httpUser.get('infor-doctor/profile')
          if (response.status === 200) {
             console.log('Get profile thành công')
             const profile = response.data.data
@@ -157,8 +124,6 @@ function DoctorProfilePage() {
                avatar: profile.avatar,
                experience: profile.experience,
                username: profile.username,
-               description: profile.description,
-               infrastructure: profile.infrastructure,
             }
             localStorage.setItem('HealthCareUser', JSON.stringify(updatedAdmin))
             dispatch(updateAdmin())
@@ -180,14 +145,10 @@ function DoctorProfilePage() {
          for (const key in users) {
             formDataToSubmit.append(key, users[key])
          }
-         formDataToSubmit.append(
-            'infrastructure',
-            JSON.stringify(infrastructures)
-         )
          setLoading(true)
          try {
             const response = await httpUser.post(
-               'infor-hospital/update',
+               'infor-doctor/update',
                formDataToSubmit,
                {
                   headers: {
@@ -218,7 +179,7 @@ function DoctorProfilePage() {
    return (
       <>
          <TitleAdmin>Profile</TitleAdmin>
-         <div className={cx('card', 'shadow', 'container_h')}>
+         <div className={cx('card', 'shadow', 'container')}>
             {loading && <LoadingDot />}
             <div className={cx('row')}>
                <div className="col-md-3">
@@ -250,10 +211,10 @@ function DoctorProfilePage() {
                   {notify.success && (
                      <div className="alert alert-info alert-dismissable">
                         <Link
+                           className="panel-close close"
                            onClick={() => {
                               setNotify({})
                            }}
-                           className="panel-close close"
                         >
                            ×
                         </Link>
@@ -273,7 +234,7 @@ function DoctorProfilePage() {
                         &ensp;{notify.api}
                      </div>
                   )}
-                  <h3>Thông tin bệnh viện</h3>
+                  <h3>Thông tin tài khoản</h3>
 
                   <form className="form-horizontal">
                      <div className="form-group">
@@ -320,7 +281,7 @@ function DoctorProfilePage() {
                      </div>
                      <div className="form-group">
                         <label className="col-lg-3 control-label">
-                           Tên bệnh viện:
+                           Họ tên:
                         </label>
                         <div className="col-lg-8">
                            <input
@@ -336,23 +297,46 @@ function DoctorProfilePage() {
                         </div>
                      </div>
                      <div className="form-group">
-                        <label className="col-lg-3 control-label">Mô tả:</label>
-                        <div className="col-lg-8">
-                           <textarea
-                              onChange={handleChangeInput}
-                              name="description"
-                              className="form-control"
-                              type="text"
-                              defaultValue={user.description}
-                           />
-                           {notify.description && (
-                              <p className={cx('error')}>
-                                 {notify.description}
-                              </p>
-                           )}
+                        <div className="row ml_0">
+                           <div className={cx('col-4', 'custom_two_colum')}>
+                              <label className="col-lg-12 control-label">
+                                 Ngày sinh:
+                              </label>
+                              <div className="col-lg-12">
+                                 <input
+                                    onChange={handleChangeInput}
+                                    name="date_of_birth"
+                                    defaultValue={user.date_of_birth}
+                                    className="form-control"
+                                    type="date"
+                                 />
+                                 {notify.date_of_birth && (
+                                    <p className={cx('error')}>
+                                       {notify.date_of_birth}
+                                    </p>
+                                 )}
+                              </div>
+                           </div>
+                           <div className={cx('col-4', 'custom_two_colum')}>
+                              <label className="col-lg-12 control-label">
+                                 Giới tính:
+                              </label>
+                              <div className="col-lg-12">
+                                 <select
+                                    onChange={handleChangeInput}
+                                    name="gender"
+                                    defaultValue={user.gender ? user.gender : 2}
+                                    className="form-control"
+                                    type="text"
+                                 >
+                                    <option value={1}>Nam</option>
+                                    <option value={0}>Nữ</option>
+                                    <option value={2}>Khác</option>
+                                 </select>
+                              </div>
+                           </div>
                         </div>
                      </div>
-
                      <div className="form-group">
                         <div className="row ml_0">
                            <div className={cx('col-4', 'custom_two_colum')}>
@@ -433,52 +417,24 @@ function DoctorProfilePage() {
                            </div>
                            <div className={cx('col-4', 'custom_two_colum')}>
                               <label className="col-lg-12 control-label">
-                                 Tọa độ:
+                                 Năm kinh nghiệm:
                               </label>
                               <div className="col-lg-12">
                                  <input
-                                    onClick={handleClickOpenLocation}
-                                    name="location"
+                                    onChange={handleChangeInput}
+                                    name="experience"
                                     className="form-control"
-                                    type="button"
-                                    defaultValue={users.location}
+                                    type="text"
+                                    defaultValue={user.experience}
                                  />
+                                 {notify.experience && (
+                                    <p className={cx('error')}>
+                                       {notify.experience}
+                                    </p>
+                                 )}
                               </div>
                            </div>
                         </div>
-                     </div>
-                     <div className="form-group">
-                        <label className="col-lg-3 control-label">
-                           Cơ sở vật chất:
-                        </label>
-                        <div className="col-lg-8">
-                           <input
-                              onKeyDown={handlekeyDownInfrastructure}
-                              onChange={handleInfrastructureChange}
-                              value={infrastructure}
-                              type="text"
-                              name="infrastructure"
-                              className={cx('form-control')}
-                           />
-                           {notify.name && (
-                              <p className={cx('error')}>{notify.name}</p>
-                           )}
-                        </div>
-                     </div>
-                     <div className={cx('infrastructures', 'mb_0')}>
-                        {infrastructures.map((value, index) => (
-                           <button
-                              type="button"
-                              onClick={() =>
-                                 handleClickDeleteInfrastructure(value)
-                              }
-                              className={cx('infrastructures_item')}
-                              key={index}
-                           >
-                              {value}&nbsp;
-                              <i className="mdi mdi-close-circle" />
-                           </button>
-                        ))}
                      </div>
                      <button
                         onClick={handleClickUpdateProfile}
@@ -490,16 +446,6 @@ function DoctorProfilePage() {
                      </button>
                   </form>
                </div>
-            </div>
-            <div className={cx('gg_map', openLocation && 'show')}>
-               <button className={cx('btn_close')}>
-                  <FontAwesomeIcon
-                     onClick={handleClickOpenLocation}
-                     icon="fa-regular fa-circle-xmark"
-                     className={cx('close_icon')}
-                  />
-               </button>
-               <Map onChildData={handleChildData}></Map>
             </div>
          </div>
       </>
