@@ -310,7 +310,9 @@ const AdminAllUserPage = () => {
                                     className={cx('avatar')}
                                     alt=""
                                     src={
-                                       user.avatar && config.URL + user.avatar
+                                       user.avatar
+                                          ? config.URL + user.avatar
+                                          : '/image/avatar_admin_default.png'
                                     }
                                  />
                               </td>
