@@ -6,7 +6,7 @@ import 'tippy.js/dist/tippy.css'
 
 import styles from './Article.module.scss'
 import $ from 'jquery'
-import { useEffect, useState, useRef } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import http from '~/utils/http'
 import config from '~/router/config'
 import ReactPaginate from 'react-paginate'
@@ -126,10 +126,11 @@ const Article = () => {
 				const queryParams = `?search=${search.search}&page=${search.page}&paginate=${search.paginate}
 				&sortname=${search.sortname}&sortlatest=${search.sortlatest}
 				&name_category=${search.name_category}&role=${search.role}&is_show=${search.is_show}`
-				const response = await http.get('article/admin' + queryParams)
-				setArticles(response.data.data.data)
-				setPerPage(response.data.data.per_page)
-				setTotal(response.data.data.total)
+				const response = await http.get('article/admin' + queryParams);
+				setArticles(response.data.data.data);
+				setPerPage(response.data.data.per_page);
+				setTotal(response.data.data.total);
+				resetDeleteMany();
 			} catch (error) {
 				toast.error('Lỗi kết nối đến API !', toastOptions);
 			} finally {
@@ -248,7 +249,7 @@ const Article = () => {
 	const handleDeleteSubmit = async (e) => {
 		e.preventDefault();
 		try {
-			const response = await http.delete('article/' + articleDetail.id_article);
+			const response = await http.delete('article/delete/' + articleDetail.id_article);
 			toast.success('Xóa Bài viết thành công !', toastOptions);
 			$(modalDeleteRef.current).modal('hide');
 			setShouldReloadData(!shouldReloadData);
@@ -336,7 +337,6 @@ const Article = () => {
 	};
 
 	// hideShow 
-
 	const handleHideShow = async (index, id, value) => {
 		try {
 			const data = { is_show: value }
@@ -353,12 +353,72 @@ const Article = () => {
 		}
 	} 
 
+	// delete Many 
+	const checkboxesRefs = useRef([]); 
+	checkboxesRefs.current = articles.map(article => React.createRef());
+	const [selectAllChecked, setSelectAllChecked] = useState(false);
+
+	const modalDeleteManyRef = useRef(null);
+	const [selectedArticles, setSelectedArticles] = useState([]);
+	const handleCheckboxChange = (articleId) => {
+		if (selectedArticles.includes(articleId)) {
+		  const updatedArticles = selectedArticles.filter(id => id !== articleId);
+		  setSelectedArticles(updatedArticles);
+		} else {
+		  setSelectedArticles([...selectedArticles, articleId]);
+		}
+	};
+
+	const handleDeleteManyArticles = async (e) => {
+		e.preventDefault();
+		try {
+			const response = await http.delete('article/deletes', {
+				data: { list_id: selectedArticles }
+			});
+			toast.success(response.data.message, toastOptions);
+			$(modalDeleteManyRef.current).modal('hide');
+			setShouldReloadData(!shouldReloadData);
+		} catch (error) {
+			if (error.response.data.data) toast.error(error.response.data.data[0], toastOptions);
+			else toast.error(error.response.data.message, toastOptions);
+		}
+	};
+
+	const selectAll = () => {
+		if (checkboxesRefs.current.length === articles.length) {
+		  if (selectAllChecked) {
+			setSelectedArticles([]);
+		  } else {
+			const selectedIds = articles
+			  .filter(article => article.id_user === null)
+			  .map(article => article.id_article);
+			setSelectedArticles(selectedIds);
+		  }
+	  
+		  setSelectAllChecked(!selectAllChecked);
+	  
+		  // Kiểm tra hoặc bỏ kiểm tra tất cả các ô input
+		  checkboxesRefs.current.forEach(ref => {
+			if (ref.current) {
+			  ref.current.checked = !selectAllChecked;
+			}
+		  });
+		}
+	};
+	const resetDeleteMany = () => {
+		setSelectAllChecked(false);
+		setSelectedArticles([]);
+	}
+
 	return (
 		<>
 			<ToastContainer />
 			<TitleAdmin>Bài viết </TitleAdmin>
 			<div className={cx('card', 'shadow')}>
 				<div className={cx('card_header')}>
+					<div className={cx('add_box')}>
+						<button data-toggle="modal" data-target="#deleteMany" type="button" className="btn btn-danger ml-2"><i class="fa-solid fa-trash"></i></button>
+					</div>
 					<div className={cx('add_box')}>
 						<button data-toggle="modal" data-target="#modalCreateHealthInsurace" type="button" className="btn btn-success ml-2"><i className="fa-solid fa-square-plus"></i></button>
 					</div>
@@ -455,6 +515,7 @@ const Article = () => {
 							<table className={cx('table', 'table_bordered')}>
 								<thead>
 									<tr>
+										<th><span className='ml-3'><input onClick={selectAll} className="form-check-input" type="checkbox" value="" /></span></th>
 										<th>ID</th>
 										<th>Tiêu đề</th>
 										<th>Thumbnail</th>
@@ -474,6 +535,7 @@ const Article = () => {
 						<table className={cx('table', 'table_bordered')}>
 							<thead>
 								<tr>
+								<th><span className='ml-3'><input onClick={selectAll} className="form-check-input" type="checkbox" value="" /></span></th>
 								<th>ID</th>
 								<th>Tiêu đề</th>
 								<th>Thumbnail</th>
@@ -489,6 +551,22 @@ const Article = () => {
 							<tbody>
 								{articles.map((article, index) => (
 									<tr key={index}>
+										<td>
+											{
+											article.id_user == null ? 
+											<span className='ml-3'>
+												<input 
+													ref={checkboxesRefs.current[index]}
+													value={article.id_article}
+													onChange={() => handleCheckboxChange(article.id_article)}
+													className="form-check-input" 
+													type="checkbox" 
+													checked={selectedArticles.includes(article.id_article)}
+												/>
+												</span> 
+											: ''
+										}
+										</td>
 										<td>{article.id_article}</td>
 										<td>{article.title}</td>
 										<td>
@@ -701,8 +779,38 @@ const Article = () => {
 						</div>
 					</div>
 
+					{/* delete Many */}
+					<div ref={modalDeleteManyRef} className={`modal fade ${cx('modal-color-bg')}`} id="deleteMany" tabIndex="-1" role="dialog" aria-labelledby="modalDelete" aria-hidden="true">
+						<div className={`modal-dialog ${cx('modal-dialog-delete-many')}`} role="document">
+							<div className="modal-content">
+								<div className="modal-header alert-warning modal-title m-0">
+									<h5 id="exampleModalLabel"><i className="fa-solid fa-triangle-exclamation"></i> Warning !</h5>
+									<button type="button" className="close" data-dismiss="modal" aria-label="Close">
+										<span aria-hidden="true">&times;</span>
+									</button>
+								</div>
+								<form onSubmit={handleDeleteManyArticles}>
+									<div className="modal-body">
+										Cảnh báo ! Bạn có chắc chắn là xóa những bài viết này khỏi hệ thống !
+										{
+											articles.map(article => {
+											if (selectedArticles.includes(article.id_article)) {
+												return <li key={article.id_article}>{article.title}</li>;
+											}
+											return null;
+										})}
+									</div>
+									<div className="modal-footer">
+										<button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
+										<button type="submit" className="btn btn-danger"><i className="fa-solid fa-trash"></i> Delete</button>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+
 				{/* Model Detail */}
-					<div ref={modalDeleteRef} className={`modal fade ${cx('modal-color-bg')}`} id="modalDetail" tabIndex="-1" role="dialog" aria-labelledby="modalDelete" aria-hidden="true">
+					<div className={`modal fade ${cx('modal-color-bg')}`} id="modalDetail" tabIndex="-1" role="dialog" aria-labelledby="modalDelete" aria-hidden="true">
 						<div className={`modal-dialog ${cx('modal-dialog-create')}`} role="document">
 							<div className="modal-content">
 								<div className="modal-header alert-info modal-title m-0">

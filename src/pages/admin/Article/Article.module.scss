@@ -43,7 +43,7 @@
 }
 
 .search_box {
-    width: 300px;
+    width: 250px;
     float: right;
 }
 
@@ -80,6 +80,13 @@
     background-color: #00000047;
 }
 
+.modal-dialog-delete-many {
+    max-width: 700px !important;
+}
+
+.modal-dialog-delete-many li {
+    font-weight: bold;
+}
 
 /* preview file */
 .dropbox * {
