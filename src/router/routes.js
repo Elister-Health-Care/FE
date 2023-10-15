@@ -44,6 +44,7 @@ import AdminHealthInsurance from '~/pages/admin/HealthInsurance'
 import AdminAllUserPage from '~/pages/admin/UserManager'
 import AdminService from '~/pages/admin/Service'
 import AdminCategory from '~/pages/admin/Category'
+import AdminArticle from '~/pages/admin/Article'
 import AdminStatistical from '~/pages/admin/Statistical'
 import AdminManager from '~/pages/admin/AdminManager'
 
@@ -152,7 +153,8 @@ const BigRoutes = () => (
          <Route path="department" element={<AdminDepartment />} />
          <Route path="health-insurance" element={<AdminHealthInsurance />} />
          <Route path="service" element={<AdminService />} />
-         <Route path="category" element={<AdminCategory />} />
+         <Route path="category" element={<AdminCategory/>} />
+         <Route path="article" element={<AdminArticle/>} />
          <Route path="statistical" element={<AdminStatistical />} />
       </Route>
 
