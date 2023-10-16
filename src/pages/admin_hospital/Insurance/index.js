@@ -111,7 +111,9 @@ function HospitalInsurancePage() {
          <TitleAdmin>Bảo hiểm</TitleAdmin>
          <div className={cx('card', 'shadow', 'left')}>
             <div className={cx('card_header')}>
-               <span>Bảo hiểm bệnh viện đã chấp thuận</span>
+               <span className={cx('title')}>
+                  Bảo hiểm bệnh viện đã chấp thuận
+               </span>
             </div>
             <div className={cx('card_body')}>
                {loadingTable ? (
@@ -182,7 +184,7 @@ function HospitalInsurancePage() {
 
          <div className={cx('card', 'shadow', 'right')}>
             <div className={cx('card_header')}>
-               <span>Tất cả bảo hiểm</span>
+               <span className={cx('title')}>Tất cả bảo hiểm</span>
             </div>
             <div className={cx('card_body')}>
                {loadingTable ? (
