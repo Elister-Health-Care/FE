@@ -2,8 +2,6 @@ import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import { Link, useNavigate } from 'react-router-dom'
 import { NavLink } from 'reactstrap'
-import Button from 'react-bootstrap/Button'
-import Modal from 'react-bootstrap/Modal'
 import { auth } from "../../../../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { GoogleAuthProvider, FacebookAuthProvider, signInWithPopup } from "firebase/auth";
@@ -19,14 +17,7 @@ const UserLoginPage = () => {
    const { toastRegisterSuccess, handleToastRegisterSuccessFalse } =
       useAppContext()
    const navigate = useNavigate()
-   const [show, setShow] = useState(false);
 
-   const handleClose = () => 
-    {
-      localStorage.removeItem('HealthCareUser')
-      setShow(false)
-    };
-   const handleShow = () => setShow(true);
    useEffect(() => {
       const userLoggined = JSON.parse(localStorage.getItem('HealthCareUser'))
       if (userLoggined) {
@@ -43,10 +34,6 @@ const UserLoginPage = () => {
     password: '',
  })
 
-   const [passwordCreated, setPassword] = useState({
-      new_password: '',
-      new_password_confirmation: '',
-   })
    const toastOptions = {
 		position: "top-right",
 		autoClose: 5000,
@@ -75,34 +62,13 @@ const UserLoginPage = () => {
         const updatedUser = response.data.data;
         setUser(updatedUser); // Cập nhật giá trị của user bằng setUser
         localStorage.setItem("HealthCareUser", JSON.stringify(updatedUser));
-        if(response.data.data.have_password == false) 
-        {
-          handleShow();  
-        }
-        else {
-          toast.success('Đăng nhập thành công !', toastOptions);
-          navigate("/");
-        }
+        toast.success(' Đăng nhập thành công !', toastOptions);
+        navigate("/");
       })
     } catch (error) {
       console.error("Đăng nhập bằng Google thất bại:", error);
     }
   };
-
-  const handleCreatePassword = async () => {
-      try {
-        const response = await http.post(
-          'infor-user/create-password',
-          passwordCreated
-        )
-        toast.success(' Tạo mật khẩu thành công!', toastOptions);
-        navigate("/");
-    } catch (error) {
-        toast.error(' Cập nhật thất bại!', toastOptions)
-        handleClose()
-        console.error('Lỗi kết nối đến API', error)
-    }
-  }
 
   // Login facebook
   const facebookSignIn = async () => {
@@ -124,14 +90,6 @@ const UserLoginPage = () => {
       })
    }
 
-   const handleInputPasswordChange = (e) => {
-    const { name, value } = e.target
-    setPassword({
-       ...passwordCreated,
-       [name]: value,
-    })
- }
-
    // eslint-disable-next-line no-unused-vars
    const [user, setUser] = useState({
       id: null,
@@ -149,6 +107,7 @@ const UserLoginPage = () => {
       address: '',
       status: null,
       access_token: '',
+      have_password:true,
       remember_token: null,
       created_at: null,
       updated_at: null,
@@ -391,47 +350,6 @@ const UserLoginPage = () => {
       </div>
       </div>
       </div>
-      <Modal show={show} onHide={handleClose}>
-        <Modal.Header closeButton>
-          <Modal.Title>Tạo mật khẩu</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <form>
-            <div className="form-group">
-              <label htmlFor="email">Mật khẩu:</label>
-              <input
-                name="new_password"
-                onChange={handleInputPasswordChange}
-                defaultValue={passwordCreated.new_password}
-                type="password"
-                className="login-input"
-                aria-describedby="emailHelp"
-                placeholder="Password"
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="email">Mật khẩu:</label>
-              <input
-                name="new_password_confirmation"
-                onChange={handleInputPasswordChange}
-                defaultValue={passwordCreated.new_password_confirmation}
-                type="password"
-                className="login-input"
-                aria-describedby="emailHelp"
-                placeholder="Password"
-              />
-            </div>           
-          </form>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            Đóng
-          </Button>
-          <Button variant="primary" onClick={handleCreatePassword}>
-            Tạo mật khẩu
-          </Button>
-        </Modal.Footer>
-      </Modal>
     </div>
    )
 }

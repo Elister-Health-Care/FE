@@ -31,6 +31,7 @@ import UserDashboardPage from '~/pages/user/Dashboard'
 import UserProfile from '~/pages/user/Profile'
 import UserEditProfile from '~/pages/user/Profile/edit'
 import FormEditProfile from '~/pages/user/Profile/form-edit'
+import UserPasswordSetting from '~/pages/user/Profile/password'
 // Import admin pages
 import AdminLayout from '~/layouts/AdminLayout'
 import AdminDashboardPage from '~/pages/admin/Dashboard'
@@ -79,6 +80,7 @@ const BigRoutes = () => (
          <Route path="user" element={<UserAuthCheck component={UserProfile} />}>
             <Route path="profile" element={<UserEditProfile />} />
             <Route path="edit-profile" element={<FormEditProfile />} />
+            <Route path="setting" element={<UserPasswordSetting />} />
          </Route>
       </Route>
 

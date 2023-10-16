@@ -710,7 +710,6 @@ const Article = () => {
 														onChange={handleChangeSelectCategory}
 														className={cx('custom-select', 'fontz_14')}
 														>
-														<option value="">Để trống</option>
 														{categories.map((category, index) => (
 															<option key={category.id} value={category.id}>{category.name}</option>
 														))}
