@@ -50,6 +50,9 @@ function Header() {
             setNavActive('category')
             setLinkActive('department')
             break
+         case '/hospital/calendar':
+            setNavActive('calendar')
+            break
          default:
             setNavActive('')
             break
@@ -192,7 +195,7 @@ function Header() {
                                     linkActive === 'article' && 'link_active'
                                  )}
                               >
-                                 <i className="mdi mdi-calendar-month-outline"></i>
+                                 <i className="mdi mdi-post-outline"></i>
                                  &ensp; Bài viết
                               </Link>
                            </li>
@@ -241,6 +244,17 @@ function Header() {
                               </Link>
                            </li>
                         </ul>
+                     </li>
+                     <li className={cx('has-submenu')}>
+                        <Link
+                           to="calendar"
+                           className={cx(
+                              navActive === 'calendar' && 'nav_active'
+                           )}
+                        >
+                           <i className="mdi mdi-calendar-month"></i>
+                           &ensp;&nbsp;Lịch làm việc
+                        </Link>
                      </li>
                   </ul>
                ) : (

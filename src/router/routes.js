@@ -55,6 +55,7 @@ import HospitalArticlePage from '~/pages/admin_hospital/Article'
 import HospitalServicePage from '~/pages/admin_hospital/Service'
 import HospitalInsurancePage from '~/pages/admin_hospital/Insurance'
 import HospitalProfilePage from '~/pages/admin_hospital/Profile'
+import HospitalCalendarPage from '~/pages/admin_hospital/Calendar'
 import HospitalChangepasswordPage from '~/pages/admin_hospital/ChangePassword'
 import DoctorDasboardPage from '~/pages/doctor/Dashboard'
 import DoctorSchedulePage from '~/pages/doctor/Schedule'
@@ -130,6 +131,10 @@ const BigRoutes = () => (
             element={<DoctorAuthCheck component={HospitalProfilePage} />}
          ></Route>
          <Route
+            path="calendar"
+            element={<DoctorAuthCheck component={HospitalCalendarPage} />}
+         ></Route>
+         <Route
             path="change-password"
             element={<HospitalChangepasswordPage />}
          ></Route>
@@ -153,8 +158,8 @@ const BigRoutes = () => (
          <Route path="department" element={<AdminDepartment />} />
          <Route path="health-insurance" element={<AdminHealthInsurance />} />
          <Route path="service" element={<AdminService />} />
-         <Route path="category" element={<AdminCategory/>} />
-         <Route path="article" element={<AdminArticle/>} />
+         <Route path="category" element={<AdminCategory />} />
+         <Route path="article" element={<AdminArticle />} />
          <Route path="statistical" element={<AdminStatistical />} />
       </Route>
 
