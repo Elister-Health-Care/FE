@@ -18,11 +18,12 @@ const cx = classNames.bind(styles)
 function HospitalDoctorPage() {
    const location = useLocation()
    const modalRef = useRef(null)
+   const user = JSON.parse(localStorage.getItem('HealthCareUser'))
    const [loadingTable, setLoadingTable] = useState(false)
    const [shouldReloadData, setShouldReloadData] = useState(false)
    const [doctors, setDoctors] = useState([])
    const [provinces, setProvinvces] = useState([])
-   const [allDepartment, setAllDepartment] = useState([])
+   const [departments, setDepartments] = useState([])
    const [errors, setErrors] = useState({})
    const [formData, setFormData] = useState({
       name: '',
@@ -66,7 +67,6 @@ function HospitalDoctorPage() {
       search: '',
       paginate: 5,
       page: 1,
-      role: '',
       is_confirm: 'both',
       is_accept: 'both',
       sortlatest: true,
@@ -87,7 +87,6 @@ function HospitalDoctorPage() {
             parseInt(searchParams.get('paginate')) ||
             defaultSearchParams.paginate,
          page: parseInt(searchParams.get('page')) || defaultSearchParams.page,
-         role: searchParams.get('role') || defaultSearchParams.role,
          is_accept:
             searchParams.get('is_accept') || defaultSearchParams.is_accept,
          sortlatest: searchParams.get('sortlatest') === 'true',
@@ -125,8 +124,11 @@ function HospitalDoctorPage() {
    const handleChangeSelectedAccpect = (e) => {
       updateSearchParams({ is_confirm: e.target.value })
    }
+   const handleChangeSearchKey = (e) => {
+      const newSearchValue = e.target.value
+      updateSearchParams({ search: newSearchValue, page: 1 })
+   }
    const handleInputChange = (e) => {
-      console.log(formData)
       const { name, value } = e.target
       setFormData({
          ...formData,
@@ -147,11 +149,10 @@ function HospitalDoctorPage() {
    const fetchDepartment = async () => {
       try {
          setLoadingTable(true)
-         const response = await httpUser.get('department', {
-            paginate: false,
-            sortname: true,
-         })
-         setAllDepartment(response.data.data)
+         const response = await httpUser.get(
+            'hospital-department/hospital/' + user.id_hospital
+         )
+         setDepartments(response.data.data)
       } catch (error) {
          console.error('Lỗi kết nối đến API', error)
       }
@@ -228,7 +229,7 @@ function HospitalDoctorPage() {
       const getUser = async () => {
          try {
             setLoadingTable(true)
-            const queryParams = `?search=${search.search}&page=${search.page}&paginate=${search.paginate}&role=${search.role}&sortname=${search.sortname}&sortlatest=${search.sortlatest}&is_accept=${search.is_accept}&name_department=${search.name_department}&is_confirm=${search.is_confirm}`
+            const queryParams = `?search=${search.search}&page=${search.page}&paginate=${search.paginate}&sortname=${search.sortname}&sortlatest=${search.sortlatest}&is_accept=${search.is_accept}&name_department=${search.name_department}&is_confirm=${search.is_confirm}`
             const response = await httpUser.get(
                'infor-hospital/all-doctor' + queryParams
             )
@@ -249,6 +250,7 @@ function HospitalDoctorPage() {
    useEffect(() => {
       fetchDepartment()
       fetchProvince()
+      // eslint-disable-next-line react-hooks/exhaustive-deps
    }, [])
    return (
       <>
@@ -275,7 +277,7 @@ function HospitalDoctorPage() {
                      </span>
                      <input
                         defaultValue={search.search}
-                        // onChange={handleChangeInput}
+                        onChange={handleChangeSearchKey}
                         type="text"
                         id="example-input1-group2"
                         className="form-control"
@@ -318,7 +320,7 @@ function HospitalDoctorPage() {
                      className={cx('custom-select', 'fontz_14')}
                   >
                      <option value="">Chuyên khoa</option>
-                     {allDepartment.map((department) => (
+                     {departments.map((department) => (
                         <option key={department.id} value={department.name}>
                            {department.name}
                         </option>
@@ -560,10 +562,10 @@ function HospitalDoctorPage() {
                                        <option value="">
                                           Chọn chuyên khoa
                                        </option>
-                                       {allDepartment.map((department) => (
+                                       {departments.map((department) => (
                                           <option
                                              key={department.id}
-                                             value={department.id}
+                                             value={department.id_department}
                                           >
                                              {department.name}
                                           </option>
