@@ -10,16 +10,31 @@ import {BiSolidHelpCircle} from 'react-icons/bi';
 import {IoShareSocialSharp} from 'react-icons/io5';
 import {AiOutlineHistory, AiOutlineLogout, AiFillSetting} from 'react-icons/ai';
 import {GiHealthNormal} from 'react-icons/gi';
-import { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react';
+import http from '~/utils/http'
 
 const Navbars = () => {
    const user = JSON.parse(localStorage.getItem('HealthCareUser'))
    const [avatar, setAvatar] = useState('/image/avatar_admin_default.png')
    const [name, setName] = useState(user && user.name ? user.name : 'User')
-
+   const [categories, setCategories] = useState([])
   const isUserUpdated = useSelector((state) => state.user.keyUserUpdated)
 
   const navigate = useNavigate()
+
+  useEffect(()  => {
+		const getCategory = async () => {
+			try {
+        const queryParams = `?page=1&paginate=6`
+				const response = await http.get('category'+queryParams)
+        setCategories(response.data.data.data)
+			} catch (error) {
+        console.log('Lỗi kết nối đến API !', error);
+			}
+		}
+    getCategory()
+    console.log(categories)  
+	}, []);
 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem('HealthCareUser'))
@@ -55,49 +70,24 @@ const Navbars = () => {
             <NavDropdown title={<div>Chuyên mục <BsChevronDown/></div>} className="has-megamenu" id="basic-nav-dropdown">
               <Container>
                 <div className="row w-100">
-                  <div className="col-lg-3 col-md-5 border-right pt-2 pb-2">
+                  <div className="col-lg-4 col-md-5 pt-2 pb-2 pr-3">
+                    <div className="border-right pr-3">
                      <h6><b>Chuyên mục sức khỏe</b></h6>
                      <ul className="w-100 mt-3">
+                     {categories.map((category, index) => (
                         <li>
                           <img 
                             className="icon" 
-                            src={require('~/Assets/Oral-Health.webp')}/> 
-                          <Link>Sức khỏe răng miệng</Link>
+                            src={ category.thumbnail && config.URL + category.thumbnail}/> 
+                          <Link>{ category.name }</Link>
                         </li>
-                        <li>
-                          <img 
-                            className="icon" 
-                            src={require('~/Assets/Oral-Health.webp')}/> 
-                            <Link>Dược liệu</Link>
-                        </li>
-                        <li>
-                          <img 
-                            className="icon" 
-                            src={require('~/Assets/Oral-Health.webp')}/> 
-                          <Link>Tâm lý - tâm thành</Link>
-                        </li>
-                        <li>
-                          <img 
-                            className="icon" 
-                            src={require('~/Assets/Oral-Health.webp')}/> 
-                          <Link>Thể dục thể thao</Link>
-                        </li>
-                        <li>
-                          <img 
-                            className="icon" 
-                            src={require('~/Assets/Oral-Health.webp')}/> 
-                            <Link>Lão hóa lành mạnh</Link>
-                        </li>
-                        <li>
-                          <img 
-                            className="icon" 
-                            src={require('~/Assets/Oral-Health.webp')}/> 
-                            <Link>Thói quen lành mạnh</Link>
-                          </li>
+                       )
+                      )} 
                       </ul> 
                       <Link className="btn btn-outline-primary w-100">Xem tất cả danh mục <i className="fa-solid fa-chevron-right"></i></Link>
+                      </div>  
                   </div>
-                  <div className="col-lg-9 col-md-7">
+                  <div className="col-lg-8 col-md-7">
 
                   </div>
                 </div>
@@ -162,7 +152,7 @@ const Navbars = () => {
                 <div className="row mr-0 ml-0">
                   <div className="col-lg-6 col-md-6">
                      <div className="dropdown-info">
-                        <Link><BsFillSaveFill className="text-success"/><br/>Đã lưu</Link>
+                        <Link to= {"user/setting"}><AiFillSetting className="text-secondary"/><br/>Thiết lập</Link>
                      </div>
                   </div>
                   <div className="col-lg-6 col-md-6">

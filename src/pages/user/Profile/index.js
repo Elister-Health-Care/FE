@@ -24,7 +24,10 @@ const UserProfile = () => {
                   <Link to={'profile'}><FaUserAlt className="mr-1"/> Hồ sơ</Link>
                 </ListGroup.Item>
                 <ListGroup.Item>
-                  <Link to={'profile'}><GiHealthNormal className="mr-1 text-danger"/>Sức khỏe của tôi</Link>
+                  <Link to={'setting'}><AiFillSetting className="mr-1 text-dark"/> Thiết lập tài khoản</Link>
+                </ListGroup.Item>
+                <ListGroup.Item>
+                  <Link to={'profile'}><GiHealthNormal className="mr-1 text-danger"/> Sức khỏe của tôi</Link>
                 </ListGroup.Item>
                 <ListGroup.Item>
                   <Link to={'profile'}><BsFillSaveFill className="mr-1 text-success"/> Đã lưu </Link>
@@ -34,9 +37,6 @@ const UserProfile = () => {
                 </ListGroup.Item>
                 <ListGroup.Item>
                   <Link to={'profile'}><IoShareSocialSharp className="mr-1 text-primary"/> Cộng đồng</Link>
-                </ListGroup.Item>
-                <ListGroup.Item>
-                  <Link to={'profile'}><AiFillSetting className="mr-1 text-dark"/> Thiết lập tài khoản</Link>
                 </ListGroup.Item>
                 <ListGroup.Item>
                   <Link to={'profile'}><BiSolidHelpCircle className="mr-1 text-dark"/> Trợ giúp</Link>
