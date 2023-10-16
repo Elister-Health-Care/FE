@@ -1,7 +1,7 @@
-import React from 'react'
-import { Navbar, Container, NavDropdown, Collapse, Nav } from 'react-bootstrap'
-import logo from '~/Assets/logo.png'
-import './Navbar.css'
+import React from "react";
+import { Navbar, Container, NavDropdown, Collapse, Nav } from "react-bootstrap";
+import logo from "~/Assets/logo.png";
+import "./Navbar.css";
 import { useSelector } from 'react-redux'
 import config from "~/router/config";
 import { Link, useNavigate } from 'react-router-dom';
@@ -13,17 +13,14 @@ import {GiHealthNormal} from 'react-icons/gi';
 import { useEffect, useState } from 'react';
 import http from '~/utils/http'
 
-
 const Navbars = () => {
    const user = JSON.parse(localStorage.getItem('HealthCareUser'))
    const [avatar, setAvatar] = useState('/image/avatar_admin_default.png')
    const [name, setName] = useState(user && user.name ? user.name : 'User')
-
    const [categories, setCategories] = useState([])
   const isUserUpdated = useSelector((state) => state.user.keyUserUpdated)
 
-
-   const navigate = useNavigate()
+  const navigate = useNavigate()
 
   useEffect(()  => {
 		const getCategory = async () => {
@@ -183,12 +180,25 @@ const Navbars = () => {
                            <AiOutlineLogout className="mr-1 text-dark"/> 
                            Đăng xuất
                      </Link>
-                  )}
-               </Nav>
-            </Navbar.Collapse>
-         </div>
-      </Navbar>
-   )
-}
+                     </div>
+                  </div>
+                </div>
+              </NavDropdown>
+            ) : (
+                <Link to={"/user-login"} tag={Link}>
+                <button className="">
+                  Đăng nhập
+                  <span>
+                    <i className="fa-solid fa-chevron-right"></i>
+                  </span>
+                </button>
+                </Link>
+            )}
+          </Nav>
+        </Navbar.Collapse>
+      </div>
+    </Navbar>
+  );
+};
 
 export default Navbars
