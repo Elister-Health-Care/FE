@@ -1,10 +1,13 @@
 export function formatDateTime(inputString) {
-   const indexOfT = inputString.indexOf('T')
-   if (indexOfT !== -1) {
-      return inputString.substring(0, indexOfT)
+   if (inputString) {
+      const indexOfT = inputString.indexOf('T')
+      if (indexOfT !== -1) {
+         return inputString.substring(0, indexOfT)
+      }
+      //hàm này đơn gản là cắt chuỗi ngày tháng
+      return inputString
    }
-   //hàm này đơn gản là cắt chuỗi ngày tháng
-   return inputString
+   return 'N/A'
 }
 
 export function pushSearchKeyToUrl(search, location) {
@@ -26,4 +29,10 @@ export function pushSearchKeyToUrl(search, location) {
 
    // Sử dụng window.history.replaceState để thay đổi URL mà không làm tải lại trang
    window.history.replaceState(null, '', newUrl)
+}
+
+export function formatGender(gender) {
+   if (gender === 0) return 'Nam'
+   else if (gender === 1) return 'Nữ'
+   else return 'Khác'
 }
