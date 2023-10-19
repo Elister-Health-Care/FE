@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react'
 import LoadingTable from '~/components/Loading/LoadingTable'
 import Tippy from '@tippyjs/react'
 import { ToastContainer, toast } from 'react-toastify'
+import Map from '~/components/MapForHospital'
 const cx = classNames.bind(styles)
 function HospitalInsurancePage() {
    const user = JSON.parse(localStorage.getItem('HealthCareUser'))
