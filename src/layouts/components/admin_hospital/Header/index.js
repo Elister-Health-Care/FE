@@ -52,6 +52,11 @@ function Header() {
             break
          case '/hospital/calendar':
             setNavActive('calendar')
+            setLinkActive('calendar')
+            break
+         case '/hospital/calendar-doctor':
+            setNavActive('calendar')
+            setLinkActive('calendar-doctor')
             break
          default:
             setNavActive('')
@@ -247,7 +252,6 @@ function Header() {
                      </li>
                      <li className={cx('has-submenu')}>
                         <Link
-                           to="calendar"
                            className={cx(
                               navActive === 'calendar' && 'nav_active'
                            )}
@@ -255,6 +259,31 @@ function Header() {
                            <i className="mdi mdi-calendar-month"></i>
                            &ensp;&nbsp;Lịch làm việc
                         </Link>
+                        <ul className={cx('submenu')}>
+                           <li>
+                              <Link
+                                 to="calendar"
+                                 className={cx(
+                                    linkActive === 'calendar' && 'link_active'
+                                 )}
+                              >
+                                 <i className="mdi mdi-database"></i>&ensp; Lịch
+                                 bệnh viện
+                              </Link>
+                           </li>
+                           <li>
+                              <Link
+                                 to="calendar-doctor"
+                                 className={cx(
+                                    linkActive === 'calendar-doctor' &&
+                                       'link_active'
+                                 )}
+                              >
+                                 <i className="mdi mdi-credit-card-plus-outline"></i>
+                                 &ensp; Lịch bác sĩ
+                              </Link>
+                           </li>
+                        </ul>
                      </li>
                   </ul>
                ) : (

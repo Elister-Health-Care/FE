@@ -61,6 +61,7 @@ import DoctorDasboardPage from '~/pages/doctor/Dashboard'
 import DoctorSchedulePage from '~/pages/doctor/Schedule'
 import DoctorArticlePage from '~/pages/doctor/Article'
 import DoctorProfilePage from '~/pages/doctor/Profile'
+import HospitalCalendarDoctorPage from '~/pages/admin_hospital/CalendarDoctor'
 
 //Import Test
 
@@ -133,6 +134,10 @@ const BigRoutes = () => (
          <Route
             path="calendar"
             element={<DoctorAuthCheck component={HospitalCalendarPage} />}
+         ></Route>
+         <Route
+            path="calendar-doctor"
+            element={<DoctorAuthCheck component={HospitalCalendarDoctorPage} />}
          ></Route>
          <Route
             path="change-password"
