@@ -8,7 +8,6 @@ const API = axios.create({
 
 API.interceptors.request.use((config) => {
    const user = JSON.parse(localStorage.getItem('HealthCareUser'))
-   console.log(user)
    if (user) {
       const token = user.access_token
       if (token) {

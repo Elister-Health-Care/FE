@@ -23,7 +23,7 @@ const UserMainLayout = () => {
 
    return (
       <div>
-         <div>
+         <div className='custom-navbar'>
             <Navbars/>
          </div>
          <div>

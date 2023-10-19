@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link, Outlet } from "react-router-dom";
 import "./home.css";
 import { Container } from "reactstrap";
@@ -7,10 +7,47 @@ import { ReactComponent as Care } from "~/Assets/care.svg";
 import { ReactComponent as Discover } from "~/Assets/discover.svg";
 import { ReactComponent as HealthTools } from "~/Assets/health-tools.svg";
 import { BsFillBookmarkFill } from "react-icons/bs";
+import http from '~/utils/http';
+import config from "~/router/config";
+import LoadingDot from '~/components/Loading/LoadingDot'
 
 const HomePage = () => {
+  const [loading, setLoading] = useState(false)
+  const [articles, setArticles] = useState([]);
+  const [type_get_article, setTypeGetArticle] = useState(true);
+  const [active,setActive] = useState(1);
+  useEffect(() => {
+		const getArticle = async () => {
+			try {
+        setLoading(true)
+        let queryFilter = `&sort_search_number=true`;
+        if(type_get_article==false) {
+          queryFilter = `&sortlatest=true`;
+        }
+        console.log(type_get_article);
+				const queryParams = `?&page=1&paginate=7`+queryFilter;
+				const response = await http.get('/article'+queryParams);
+				setArticles(response.data.data.data);
+			} catch (error) {
+				console.log('Lỗi kết nối đến API !', error);
+			} finally {
+        setLoading(false)
+      }
+		}
+		getArticle()
+	}, [active, type_get_article]);
+
+  const handleNewestArticle = () => {
+    setTypeGetArticle(false);
+    setActive(2)
+  }
+  const handleFeaturedArticle = () => {
+    setTypeGetArticle(true);
+    setActive(1)
+  }
   return (
     <div className="home">
+      {loading && <LoadingDot />}
       <div className="w-100 banner">
         <Container>
           <div className="row">
@@ -62,132 +99,133 @@ const HomePage = () => {
         </div>
         <div className="featured-article">
           <div className="top-section">
-            <Link to={""}>Bài viết nổi bật</Link>
-            <Link to={""}>Bài viết mới nhất</Link>
+            <button className={active==1 && "active"} onClick={handleFeaturedArticle} >Bài viết nổi bật</button>
+            <button className={active==2 && "active"} onClick={handleNewestArticle} >Bài viết mới nhất</button>
           </div>
           <div className="row main-section">
             <div className="col-lg-7 col-md-7 section-left">
-              <article className="article">
-                <div className="banner-article">
-                  <span>
-                    <img src="https://cdn.hellobacsi.com/wp-content/uploads/2021/08/thuoc-ngua-dot-quy.jpg?w=1920&q=75" />
-                  </span>
-                </div>
-                <div className="content">
-                  <div className="inner-content">
-                    <p className="category-name">
-                      <Link className="name">Đột quỵ và phình mạch não</Link>
-                      <Link className="bookmark">
-                        <BsFillBookmarkFill />
-                      </Link>
-                    </p>
-                    <h4 className="title-article">
-                      <Link>
-                        Thuốc ngừa đột quỵ và các biện pháp phòng ngừa đột quỵ
-                        tái phát
-                      </Link>
-                    </h4>
-                    <p>
-                      Sau điều trị đột quỵ, thiếu máu thoáng qua, dù các triệu
-                      chứng đã hết nhưng nguy cơ tái phát vẫn rất cao, nhất là
-                      trong 90 ngày đầu. Do đó, người bệnh cần tuân thủ việc
-                      dùng thuốc ngừa đột quỵ theo đúng hướng dẫn, không tự ý
-                      ngưng thuốc khi chưa có sự Sau điều trị đột quỵ, thiếu máu
-                      thoáng qua, dù các triệu chứng đã hết nhưng nguy cơ tái
-                      phát vẫn rất cao, nhất là trong 90 ngày đầu. Do đó, người
-                      bệnh cần tuân thủ việc dùng thuốc ngừa đột quỵ theo đúng
-                      hướng dẫn, không tự ý ngưng thuốc khi chưa có sự
-                    </p>
-                    <div className="footer-article d-flex">
-                      <img
-                        className="img-doctor"
-                        src="https://cdn.hellobacsi.com/wp-content/uploads/2022/08/bsnguyenthuonghanh-150x150.png?w=32&q=75"
-                      />
-                      <p>
-                        Tham vấn y khoa:
-                        <span className="name-doctor ml-1">
-                          Bác sĩ Nguyễn Thường Hanh
-                        </span>
+            {articles.map((article, index) => {
+              if(index===0) {
+              return(
+                <article className="article">
+                  <div className="banner-article">
+                    <span>
+                      <img src={article.thumbnail_article && config.URL + article.thumbnail_article} />
+                    </span>
+                  </div>
+                  <div className="content">
+                    <div className="inner-content">
+                      <p className="category-name">
+                        <Link className="name">{article.name_category}</Link>
+                        <Link className="bookmark">
+                          <BsFillBookmarkFill />
+                        </Link>
                       </p>
+                      <h4 className="title-article">
+                        <Link>
+                          {article.title}
+                        </Link>
+                      </h4>
+                      {/* <div dangerouslySetInnerHTML={{ __html: article.content }}/> */}
+                      <div className="footer-article d-flex">
+                        <img
+                          className="img-doctor"
+                          src={article.avatar_user && config.URL + article.avatar_user}
+                        />
+                        <p>
+                          Tham vấn y khoa:
+                          <span className="name-doctor ml-1">
+                            {article.name_user}
+                          </span>
+                        </p>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </article>
+                </article>
+ 
+                )}}
+              )}
             </div>
             <div className="col-lg-5 col-md-5 section-right">
+            {articles.map((article, index) => {
+              if(index===1) {
+              return(
               <article className="article">
                 <div className="banner-article">
                   <span>
-                    <img src="https://cdn.hellobacsi.com/wp-content/uploads/2021/08/thuoc-ngua-dot-quy.jpg?w=1920&q=75" />
+                    <img src={article.thumbnail_article && config.URL + article.thumbnail_article} />
                   </span>
                 </div>
                 <div className="content">
-                  <div className="inner-content">
-                    <p className="category-name">
-                      <Link className="name">Đột quỵ và phình mạch não</Link>
-                      <Link className="bookmark">
-                        <BsFillBookmarkFill />
-                      </Link>
-                    </p>
-                    <h5 className="title-article">
-                      <Link>
-                        Thuốc ngừa đột quỵ và các biện pháp phòng ngừa đột quỵ
-                        tái phát
-                      </Link>
-                    </h5>
-                    <div className="footer-article d-flex">
-                      <img
-                        className="img-doctor"
-                        src="https://cdn.hellobacsi.com/wp-content/uploads/2022/08/bsnguyenthuonghanh-150x150.png?w=32&q=75"
-                      />
-                      <p>
-                        Tham vấn y khoa:
-                        <span className="name-doctor ml-1">
-                          Bác sĩ Nguyễn Thường Hanh
-                        </span>
+                    <div className="inner-content">
+                      <p className="category-name">
+                        <Link className="name">{article.name_category}</Link>
+                        <Link className="bookmark">
+                          <BsFillBookmarkFill />
+                        </Link>
                       </p>
+                      <h5 className="title-article">
+                        <Link>
+                          {article.title}
+                        </Link>
+                      </h5>
+                      <div className="footer-article d-flex">
+                        <img
+                          className="img-doctor"
+                          src={article.avatar_user && config.URL + article.avatar_user}
+                        />
+                        <p>
+                          Tham vấn y khoa:
+                          <span className="name-doctor ml-1">
+                            {article.name_user}
+                          </span>
+                        </p>
+                      </div>
                     </div>
                   </div>
-                </div>
               </article>
+              )}})}
               <div className="justify-content-center hr">
                 <hr />
               </div>
+              {articles.map((article, index) => {
+              if(index===2) {
+              return(
               <article className="article row">
                 <div className="content col-lg-7 col-md-7">
                   <div className="inner-content">
-                    <p className="category-name">
-                      <Link className="name">Đột quỵ và phình mạch não</Link>
-                      <Link className="bookmark">
-                        <BsFillBookmarkFill />
-                      </Link>
-                    </p>
-                    <h5 className="title-article">
-                      <Link>
-                        Thuốc ngừa đột quỵ và các biện pháp phòng ngừa đột quỵ
-                        tái phát
-                      </Link>
-                    </h5>
-                    <div className="footer-article d-flex">
-                      <img
-                        className="img-doctor"
-                        src="https://cdn.hellobacsi.com/wp-content/uploads/2022/08/bsnguyenthuonghanh-150x150.png?w=32&q=75"
-                      />
-                      <p>
-                        Tham vấn y khoa:
-                        <span className="name-doctor ml-1">
-                          Bác sĩ Nguyễn Thường Hanh
-                        </span>
+                      <p className="category-name">
+                        <Link className="name">{article.name_category}</Link>
+                        <Link className="bookmark">
+                          <BsFillBookmarkFill />
+                        </Link>
                       </p>
+                      <h5 className="title-article">
+                        <Link>
+                          {article.title}
+                        </Link>
+                      </h5>
+                      <div className="footer-article d-flex">
+                        <img
+                          className="img-doctor"
+                          src={article.avatar_user && config.URL + article.avatar_user}
+                        />
+                        <p>
+                          Tham vấn y khoa:
+                          <span className="name-doctor ml-1">
+                            {article.name_user}
+                          </span>
+                        </p>
+                      </div>
                     </div>
-                  </div>
                 </div>
                 <div className="banner-article horizontal col-lg-5 col-md-5">
                   <span>
-                    <img src="https://cdn.hellobacsi.com/wp-content/uploads/2021/08/thuoc-ngua-dot-quy.jpg?w=1920&q=75" />
+                    <img src={article.thumbnail_article && config.URL + article.thumbnail_article} />
                   </span>
                 </div>
               </article>
+              )}})}
             </div>
           </div>
           <div className="justify-content-center hr">
@@ -195,154 +233,46 @@ const HomePage = () => {
           </div>
           {/* List Article */}
           <div className="row main-section">
+          {articles.map((article, index) => {
+              if(index >=3) {
+              return(
             <div className="col-lg-3 col-md-3 list-article">
               <article className="article">
                 <div className="banner-article">
                   <span>
-                    <img src="https://cdn.hellobacsi.com/wp-content/uploads/2021/08/thuoc-ngua-dot-quy.jpg?w=1920&q=75" />
+                    <img src={article.thumbnail_article && config.URL + article.thumbnail_article} />
                   </span>
                 </div>
                 <div className="content">
-                  <div className="inner-content">
-                    <p className="category-name">
-                      <Link className="name">Đột quỵ và phình mạch não</Link>
-                      <Link className="bookmark">
-                        <BsFillBookmarkFill />
-                      </Link>
-                    </p>
-                    <h5 className="title-article">
-                      <Link>
-                        Thuốc ngừa đột quỵ và các biện pháp phòng ngừa đột quỵ
-                        tái phát
-                      </Link>
-                    </h5>
-                    <div className="footer-article d-flex">
-                      <img
-                        className="img-doctor"
-                        src="https://cdn.hellobacsi.com/wp-content/uploads/2022/08/bsnguyenthuonghanh-150x150.png?w=32&q=75"
-                      />
-                      <p>
-                        Tham vấn y khoa:
-                        <span className="name-doctor ml-1">
-                          Bác sĩ Nguyễn Thường Hanh
-                        </span>
+                    <div className="inner-content">
+                      <p className="category-name">
+                        <Link className="name">{article.name_category}</Link>
+                        <Link className="bookmark">
+                          <BsFillBookmarkFill />
+                        </Link>
                       </p>
+                      <h5 className="title-article">
+                        <Link>
+                          {article.title}
+                        </Link>
+                      </h5>
+                      <div className="footer-article d-flex">
+                        <img
+                          className="img-doctor"
+                          src={article.avatar_user && config.URL + article.avatar_user}
+                        />
+                        <p>
+                          Tham vấn y khoa:
+                          <span className="name-doctor ml-1">
+                            {article.name_user}
+                          </span>
+                        </p>
+                      </div>
                     </div>
                   </div>
-                </div>
               </article>
             </div>
-            <div className="col-lg-3 col-md-3 list-article">
-              <article className="article">
-                <div className="banner-article">
-                  <span>
-                    <img src="https://cdn.hellobacsi.com/wp-content/uploads/2021/08/thuoc-ngua-dot-quy.jpg?w=1920&q=75" />
-                  </span>
-                </div>
-                <div className="content">
-                  <div className="inner-content">
-                    <p className="category-name">
-                      <Link className="name">Đột quỵ và phình mạch não</Link>
-                      <Link className="bookmark">
-                        <BsFillBookmarkFill />
-                      </Link>
-                    </p>
-                    <h5 className="title-article">
-                      <Link>
-                        Thuốc ngừa đột quỵ và các biện pháp phòng ngừa đột quỵ
-                        tái phát
-                      </Link>
-                    </h5>
-                    <div className="footer-article d-flex">
-                      <img
-                        className="img-doctor"
-                        src="https://cdn.hellobacsi.com/wp-content/uploads/2022/08/bsnguyenthuonghanh-150x150.png?w=32&q=75"
-                      />
-                      <p>
-                        Tham vấn y khoa:
-                        <span className="name-doctor ml-1">
-                          Bác sĩ Nguyễn Thường Hanh
-                        </span>
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </article>
-            </div>
-            <div className="col-lg-3 col-md-3 list-article">
-              <article className="article">
-                <div className="banner-article">
-                  <span>
-                    <img src="https://cdn.hellobacsi.com/wp-content/uploads/2021/08/thuoc-ngua-dot-quy.jpg?w=1920&q=75" />
-                  </span>
-                </div>
-                <div className="content">
-                  <div className="inner-content">
-                    <p className="category-name">
-                      <Link className="name">Đột quỵ và phình mạch não</Link>
-                      <Link className="bookmark">
-                        <BsFillBookmarkFill />
-                      </Link>
-                    </p>
-                    <h5 className="title-article">
-                      <Link>
-                        Thuốc ngừa đột quỵ và các biện pháp phòng ngừa đột quỵ
-                        tái phát
-                      </Link>
-                    </h5>
-                    <div className="footer-article d-flex">
-                      <img
-                        className="img-doctor"
-                        src="https://cdn.hellobacsi.com/wp-content/uploads/2022/08/bsnguyenthuonghanh-150x150.png?w=32&q=75"
-                      />
-                      <p>
-                        Tham vấn y khoa:
-                        <span className="name-doctor ml-1">
-                          Bác sĩ Nguyễn Thường Hanh
-                        </span>
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </article>
-            </div>
-            <div className="col-lg-3 col-md-3 list-article">
-              <article className="article">
-                <div className="banner-article">
-                  <span>
-                    <img src="https://cdn.hellobacsi.com/wp-content/uploads/2021/08/thuoc-ngua-dot-quy.jpg?w=1920&q=75" />
-                  </span>
-                </div>
-                <div className="content">
-                  <div className="inner-content">
-                    <p className="category-name">
-                      <Link className="name">Đột quỵ và phình mạch não</Link>
-                      <Link className="bookmark">
-                        <BsFillBookmarkFill />
-                      </Link>
-                    </p>
-                    <h5 className="title-article">
-                      <Link>
-                        Thuốc ngừa đột quỵ và các biện pháp phòng ngừa đột quỵ
-                        tái phát
-                      </Link>
-                    </h5>
-                    <div className="footer-article d-flex">
-                      <img
-                        className="img-doctor"
-                        src="https://cdn.hellobacsi.com/wp-content/uploads/2022/08/bsnguyenthuonghanh-150x150.png?w=32&q=75"
-                      />
-                      <p>
-                        Tham vấn y khoa:
-                        <span className="name-doctor ml-1">
-                          Bác sĩ Nguyễn Thường Hanh
-                        </span>
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </article>
-            </div>
+              )}})}
           </div>
         </div>
       </div>

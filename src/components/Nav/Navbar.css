@@ -1,3 +1,12 @@
+.custom-navbar {
+  --header-z-index: 305;
+  top: 0px;
+  z-index: var(--header-z-index);
+  --amp-site-wide-closed: 2px;
+  transform: translateZ(0px);
+  position: sticky !important;
+}
+
 nav {
   background-color: #fff;
   width: 100%;
@@ -20,8 +29,110 @@ nav .has-megamenu .dropdown-menu {
   box-shadow: rgba(33, 35, 38, 0.1) 0px 10px 10px -10px;
 }
 nav .has-megamenu .dropdown-menu .icon {
-  width: 35px;
+  width: 30px;
+  height: 30px;
   margin-right: 10px;
+  border-radius: 50%;
+  -o-object-fit: cover;
+     object-fit: cover;
+  -o-object-position: center;
+     object-position: center;
+}
+nav .has-megamenu .dropdown-menu .hospitals-list .list-title {
+  margin: 10px -15px;
+  display: flex;
+}
+nav .has-megamenu .dropdown-menu .hospitals-list .list-title h2 {
+  font-weight: 600;
+  font-size: 16px;
+  letter-spacing: 0;
+  line-height: 24px;
+}
+nav .has-megamenu .dropdown-menu .hospitals-list .hospital {
+  text-decoration: none;
+  border-radius: 4px;
+  background: rgb(255, 255, 255);
+  position: relative;
+  overflow: hidden;
+  padding: 166px 16px 16px;
+  display: flex;
+  box-shadow: rgba(0, 0, 0, 0.04) 0px 4px 8px, rgba(0, 0, 0, 0.06) 0px 0px 2px, rgba(0, 0, 0, 0.04) 0px 0px 1px;
+}
+nav .has-megamenu .dropdown-menu .hospitals-list .hospital .bg-banner {
+  width: 100%;
+  max-width: 245px;
+  height: 100%;
+  top: 0px;
+  right: -40px;
+  position: absolute;
+}
+nav .has-megamenu .dropdown-menu .hospitals-list .hospital .banner {
+  height: 152px;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  z-index: 3;
+  overflow: hidden;
+  border-radius: 4px;
+  padding: 16px 16px 0px 16px;
+  width: 100%;
+}
+nav .has-megamenu .dropdown-menu .hospitals-list .hospital .banner img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+nav .has-megamenu .dropdown-menu .hospitals-list .hospital .hospital-content {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+  flex: 1 1 0%;
+  z-index: 1;
+}
+nav .has-megamenu .dropdown-menu .hospitals-list .hospital .hospital-content .hospital-name {
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.6;
+  color: rgb(38, 38, 38);
+  margin-bottom: 0px;
+}
+nav .has-megamenu .dropdown-menu .hospitals-list .hospital .hospital-content .hospital-desc {
+  font-size: 14px;
+  line-height: 1.6;
+  font-weight: 400;
+  color: rgb(89, 89, 89);
+  height: 40px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  margin-bottom: auto;
+}
+nav .has-megamenu .dropdown-menu .hospitals-list .hospital .hospital-content .hospital-more {
+  display: flex;
+}
+nav .has-megamenu .dropdown-menu .hospitals-list .list-footer {
+  padding-top: 1rem;
+  display: flex;
+  pointer-events: auto;
+  width: 100%;
+}
+nav .has-megamenu .dropdown-menu .hospitals-list .list-footer .view-book {
+  margin-left: auto;
+  border-radius: 6px;
+  cursor: pointer;
+  width: auto;
+}
+nav .has-megamenu .dropdown-menu .hospitals-list .list-footer .view-book button {
+  font-weight: 700;
+}
+nav .has-megamenu .dropdown-menu .hospitals-list .list-footer .view-book button i {
+  font-size: 10px;
+  margin-left: 10px;
 }
 nav .navbar-nav .dropdown-menu {
   right: 0 !important;
@@ -163,7 +274,8 @@ nav .navbar-nav .dropdown-menu a:hover {
 nav .navbar-nav .dropdown-menu li {
   width: 100%;
   position: relative;
-  padding: 5px 0px;
+  padding: 10px 0px;
+  display: flex;
 }
 nav .navbar-nav .dropdown-menu li ::before {
   position: absolute;
@@ -184,7 +296,7 @@ nav .navbar-nav .dropdown-menu li a {
 nav .navbar-nav .dropdown-menu li:hover ::before {
   width: 100%;
 }
-nav .navbar-nav button {
+nav .navbar-nav .btn-login {
   background: var(--gradientColor);
   color: var(--whiteColor);
   border: 1px solid var(--SecondaryColor);
@@ -198,7 +310,7 @@ nav .navbar-nav button {
   font-size: 15px;
   transition: 0.3s ease all;
 }
-nav .navbar-nav button span {
+nav .navbar-nav .btn-login span {
   background-color: #fff;
   color: var(--SecondaryColor);
   margin-left: 25px;
@@ -209,10 +321,10 @@ nav .navbar-nav button span {
   border-radius: 4px;
   font-weight: 600;
 }
-nav .navbar-nav button:hover {
+nav .navbar-nav .btn-login:hover {
   background: var(--gradientColorChange);
 }
-nav .navbar-nav button:hover span {
+nav .navbar-nav .btn-login:hover span {
   color: var(--mainColor);
 }
 nav .navbar-brand img {
