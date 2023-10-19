@@ -13,8 +13,6 @@ const containerStyle = {
 }
 
 function Map({ latT, lngT, hospital_name }) {
-   const [lat, setLat] = useState(latT)
-   const [lng, setLng] = useState(lngT)
    // eslint-disable-next-line no-unused-vars
    const [map, setMap] = useState(null)
 
@@ -24,7 +22,7 @@ function Map({ latT, lngT, hospital_name }) {
    }
 
    const options_marker = {
-      minZoom: 4,
+      minZoom: 8,
       maxZoom: 18,
    }
    const options_infor = { closeBoxURL: '', enableEventPropagation: true }
@@ -49,12 +47,8 @@ function Map({ latT, lngT, hospital_name }) {
          options={options_marker}
          onLoad={onLoad}
          onUnmount={onUnmount}
-         onClick={(ev) => {
-            setLat(ev.latLng.lat())
-            setLng(ev.latLng.lng())
-         }}
       >
-         <Marker position={{ lat: lat, lng: lng }} animation={2}>
+         <Marker position={{ lat: latT, lng: lngT }} animation={2}>
             <InfoBox options={options_infor}>
                <>
                   <div
