@@ -27,13 +27,13 @@ const UserProfile = () => {
                   <Link to={'setting'}><AiFillSetting className="mr-1 text-dark"/> Thiết lập tài khoản</Link>
                 </ListGroup.Item>
                 <ListGroup.Item>
-                  <Link to={'profile'}><GiHealthNormal className="mr-1 text-danger"/> Sức khỏe của tôi</Link>
+                  <Link  to={'/user/schedule'}><AiOutlineHistory className="mr-1 text-dark"/> Quản lý đặt lịch</Link>
                 </ListGroup.Item>
                 <ListGroup.Item>
                   <Link to={'profile'}><BsFillSaveFill className="mr-1 text-success"/> Đã lưu </Link>
                 </ListGroup.Item>
                 <ListGroup.Item>
-                  <Link to={'profile'}><AiOutlineHistory className="mr-1 text-dark"/> Quản lý đặt lịch</Link>
+                <Link to={'profile'}><GiHealthNormal className="mr-1 text-danger"/> Sức khỏe của tôi</Link>
                 </ListGroup.Item>
                 <ListGroup.Item>
                   <Link to={'profile'}><IoShareSocialSharp className="mr-1 text-primary"/> Cộng đồng</Link>
