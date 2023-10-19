@@ -10,13 +10,81 @@ import http from '~/utils/http'
 import config from '~/router/config'
 import ReactPaginate from 'react-paginate'
 import LoadingTable from '~/components/Loading/LoadingTable'
-import { formatDateTime, pushSearchKeyToUrl } from '~/helpers/utils'
+import {
+   formatDateTime,
+   pushSearchKeyToUrl,
+   formatGender,
+} from '~/helpers/utils'
 import { ToastContainer, toast } from 'react-toastify'
+import { data } from 'jquery'
+import MapForHospital from '~/components/MapForHospital'
 const cx = classNames.bind(styles)
 const AdminAllUserPage = () => {
    const location = useLocation()
    const [loadingTable, setLoadingTable] = useState(false)
+   const [role, setRole] = useState('user')
    const [users, setUsers] = useState([])
+   const [userDetail, setUserDetail] = useState({
+      id: '',
+      email: '',
+      username: '',
+      name: '',
+      phone: '',
+      address: '',
+      avatar: '',
+      is_accept: '',
+      role: '',
+      email_verified_at: '',
+      created_at: '',
+      updated_at: '',
+      id_user: '',
+      date_of_birth: '',
+      google_id: '',
+      gender: '',
+   })
+   const [hospitalDetail, setHospitalDetail] = useState({
+      id: '',
+      email: '',
+      username: '',
+      name: '',
+      phone: '',
+      address: '',
+      avatar: '',
+      is_accept: '',
+      role: '',
+      email_verified_at: '',
+      created_at: '',
+      updated_at: '',
+      id_hospital: '',
+      province_code: '',
+      infrastructure: '',
+      description: '',
+      location: '',
+      search_number: '',
+   })
+   const [doctorDetail, setDoctorDetail] = useState({
+      id: '',
+      email: '',
+      username: '',
+      name: '',
+      phone: '',
+      address: '',
+      avatar: '',
+      is_accept: '',
+      role: '',
+      email_verified_at: '',
+      created_at: '',
+      updated_at: '',
+      id_doctor: '',
+      id_department: '',
+      id_hospital: '',
+      is_confirm: '',
+      province_code: '',
+      date_of_birth: '',
+      experience: '',
+      gender: '',
+      search_number: '',
+   })
 
    const defaultSearchParams = {
       search: '',
@@ -48,7 +116,15 @@ const AdminAllUserPage = () => {
          sortname: searchParams.get('sortname') === 'true',
       }
    }
-
+   const convertStringToArray = (string) => {
+      return JSON.parse(string)
+   }
+   const checkAvatar = (avatar) => {
+      if (!avatar) {
+         return '/image/avatar_admin_default.png'
+      }
+      return config.URL + avatar
+   }
    const [search, setSearch] = useState(parseSearchParams())
 
    // Sử dụng useEffect để cập nhật search khi location.search thay đổi
@@ -99,12 +175,11 @@ const AdminAllUserPage = () => {
             setLoadingTable(true)
             const queryParams = `?search=${search.search}&page=${search.page}&paginate=${search.paginate}&role=${search.role}&sortname=${search.sortname}&sortlatest=${search.sortlatest}&is_accept=${search.is_accept}`
             const response = await http.get('admin/all-user' + queryParams)
-            if (response.status === 200) {
-               setUsers(response.data.data.data)
-               setPerPage(response.data.data.per_page)
-               setTotal(response.data.data.total)
-               console.log('Gọi API lấy users thành công')
-            }
+
+            setUsers(response.data.data.data)
+            setPerPage(response.data.data.per_page)
+            setTotal(response.data.data.total)
+            console.log('Gọi API lấy users thành công')
          } catch (error) {
             console.error('Lỗi kết nối đến API:', error)
          } finally {
@@ -178,11 +253,37 @@ const AdminAllUserPage = () => {
          console.log('Đã có lỗi xảy ra')
       }
    }
-
+   const getUser = async (id, role) => {
+      try {
+         const response = await http.get('user/infor-user/' + id)
+         if (role === 'user') {
+            setRole('user')
+            setUserDetail(response.data.data)
+         } else if (role === 'hospital') {
+            setRole('hospital')
+            setHospitalDetail(response.data.data)
+         } else {
+            setRole('doctor')
+            setDoctorDetail(response.data.data)
+         }
+      } catch (error) {
+         console.log('Đã có lỗi xảy ra, quá trình get infor user', error)
+      }
+   }
+   const handleClickViewInfor = (id, role) => {
+      if (role === 'user') {
+         setRole('user')
+      } else if (role === 'hospital') {
+         setRole('hospital')
+      } else {
+         setRole('doctor')
+      }
+      getUser(id, role)
+   }
    return (
       <>
          <ToastContainer />
-         <TitleAdmin>Tài khoản bệnh viện </TitleAdmin>
+         <TitleAdmin>Tài khoản người dùng</TitleAdmin>
          <div className={cx('card', 'shadow')}>
             <div className={cx('card_header')}>
                <div className={cx('search_box')}>
@@ -322,7 +423,7 @@ const AdminAllUserPage = () => {
                                     : 'Bác sĩ'}
                               </td>
                               <td>
-                                 {user.email_verified_at === 0
+                                 {user.email_verified_at
                                     ? 'Đã xác nhận'
                                     : 'Chưa xác nhận'}
                               </td>
@@ -346,29 +447,78 @@ const AdminAllUserPage = () => {
                                              <i className="ti-check-box" />
                                           </button>
                                        </Tippy>
+                                       <Tippy content="Xem">
+                                          <button
+                                             onClick={() =>
+                                                handleClickViewInfor(
+                                                   user.id,
+                                                   user.role
+                                                )
+                                             }
+                                             className="btn btn-success btn-sm mt-1"
+                                             data-toggle="modal"
+                                             data-target="#modalView"
+                                          >
+                                             <i className="mdi mdi-eye" />
+                                          </button>
+                                       </Tippy>
                                     </>
                                  ) : user.is_accept === 1 ? (
-                                    <Tippy content="Khóa">
-                                       <button
-                                          onClick={() =>
-                                             handleChangeRole(user.id, 2, 2)
-                                          }
-                                          className="btn btn-danger btn-sm mt-1"
-                                       >
-                                          <i className="ti-lock" />
-                                       </button>
-                                    </Tippy>
+                                    <>
+                                       <Tippy content="Khóa">
+                                          <button
+                                             onClick={() =>
+                                                handleChangeRole(user.id, 2, 2)
+                                             }
+                                             className="btn btn-danger btn-sm mt-1"
+                                          >
+                                             <i className="ti-lock" />
+                                          </button>
+                                       </Tippy>
+                                       <Tippy content="Xem">
+                                          <button
+                                             onClick={() =>
+                                                handleClickViewInfor(
+                                                   user.id,
+                                                   user.role
+                                                )
+                                             }
+                                             className="btn btn-success btn-sm mt-1"
+                                             data-toggle="modal"
+                                             data-target="#modalView"
+                                          >
+                                             <i className="mdi mdi-eye" />
+                                          </button>
+                                       </Tippy>
+                                    </>
                                  ) : (
-                                    <Tippy content="Mở khóa">
-                                       <button
-                                          onClick={() =>
-                                             handleChangeRole(user.id, 1, 3)
-                                          }
-                                          className="btn btn-secondary btn-sm mt-1"
-                                       >
-                                          <i className="ti-unlock" />
-                                       </button>
-                                    </Tippy>
+                                    <>
+                                       <Tippy content="Mở khóa">
+                                          <button
+                                             onClick={() =>
+                                                handleChangeRole(user.id, 1, 3)
+                                             }
+                                             className="btn btn-secondary btn-sm mt-1"
+                                          >
+                                             <i className="ti-unlock" />
+                                          </button>
+                                       </Tippy>
+                                       <Tippy content="Xem">
+                                          <button
+                                             onClick={() =>
+                                                handleClickViewInfor(
+                                                   user.id,
+                                                   user.role
+                                                )
+                                             }
+                                             className="btn btn-success btn-sm mt-1"
+                                             data-toggle="modal"
+                                             data-target="#modalView"
+                                          >
+                                             <i className="mdi mdi-eye" />
+                                          </button>
+                                       </Tippy>
+                                    </>
                                  )}
                               </td>
                            </tr>
@@ -387,6 +537,366 @@ const AdminAllUserPage = () => {
                      renderOnZeroPageCount={null}
                      forcePage={search.page - 1}
                   />
+               </div>
+            </div>
+            <div
+               className={`modal fade ${cx('modal-color-category')}`}
+               id="modalView"
+               tabIndex="-1"
+               role="dialog"
+               aria-labelledby="exampleModalLabel"
+               aria-hidden="true"
+            >
+               <div
+                  className={`modal-dialog ${cx(
+                     'modal-dialog-create',
+                     'up_width'
+                  )}`}
+                  role="document"
+               >
+                  <div className={cx('modal-content', 'up_width')}>
+                     <div className="modal-header">
+                        <h5 className="modal-title" id="exampleModalLabel">
+                           Thông tin người dùng
+                        </h5>
+                        <button
+                           type="button"
+                           className="close"
+                           data-dismiss="modal"
+                           aria-label="Close"
+                        >
+                           <span aria-hidden="true">&times;</span>
+                        </button>
+                     </div>
+
+                     <div className={cx('modal-body')}>
+                        <div className="container mt-5">
+                           <div className="row">
+                              <div className="col-md-4">
+                                 <div className="card">
+                                    <img
+                                       src={
+                                          role === 'user' && userDetail
+                                             ? checkAvatar(userDetail.avatar)
+                                             : role === 'hospital' &&
+                                               hospitalDetail
+                                             ? checkAvatar(
+                                                  hospitalDetail.avatar
+                                               )
+                                             : role === 'doctor' && doctorDetail
+                                             ? checkAvatar(doctorDetail.avatar)
+                                             : '/image/default_avatar.png'
+                                       }
+                                       className="card-img-top"
+                                       alt="User Avatar"
+                                    />
+                                    <div className="card-body">
+                                       <h5
+                                          className={cx(
+                                             'card-title',
+                                             'text_center'
+                                          )}
+                                       >
+                                          {role === 'user'
+                                             ? 'Người dùng'
+                                             : role === 'hospital'
+                                             ? 'Bệnh viện'
+                                             : 'Bác sĩ'}
+                                       </h5>
+                                    </div>
+                                 </div>
+                              </div>
+                              <div className="col-md-8">
+                                 <div className="card">
+                                    <div className="card-body">
+                                       <div className="row">
+                                          <div className="col-md-6">
+                                             <ul className="list-group list-group-flush">
+                                                <li className="list-group-item">
+                                                   <strong>ID:</strong>&ensp;
+                                                   {role === 'user' &&
+                                                   userDetail
+                                                      ? userDetail.id
+                                                      : role === 'hospital' &&
+                                                        hospitalDetail
+                                                      ? hospitalDetail.id
+                                                      : role === 'doctor' &&
+                                                        doctorDetail
+                                                      ? doctorDetail.id
+                                                      : ''}
+                                                </li>
+                                                <li className="list-group-item">
+                                                   <strong>Email:</strong>{' '}
+                                                   {role === 'user' &&
+                                                   userDetail
+                                                      ? userDetail.email
+                                                      : role === 'hospital' &&
+                                                        hospitalDetail
+                                                      ? hospitalDetail.email
+                                                      : role === 'doctor' &&
+                                                        doctorDetail
+                                                      ? doctorDetail.email
+                                                      : ''}
+                                                </li>
+                                                <li className="list-group-item">
+                                                   <strong>Username:</strong>{' '}
+                                                   {role === 'user' &&
+                                                   userDetail
+                                                      ? userDetail.username
+                                                      : role === 'hospital' &&
+                                                        hospitalDetail
+                                                      ? hospitalDetail.username
+                                                      : role === 'doctor' &&
+                                                        doctorDetail
+                                                      ? doctorDetail.username
+                                                      : ''}
+                                                </li>
+                                                <li className="list-group-item">
+                                                   <strong>Tên:</strong>&ensp;
+                                                   {role === 'user' &&
+                                                   userDetail
+                                                      ? userDetail.name
+                                                      : role === 'hospital' &&
+                                                        hospitalDetail
+                                                      ? hospitalDetail.name
+                                                      : role === 'doctor' &&
+                                                        doctorDetail
+                                                      ? doctorDetail.name
+                                                      : ''}
+                                                </li>
+                                                <li className="list-group-item">
+                                                   <strong>Phone:</strong>{' '}
+                                                   {role === 'user' &&
+                                                   userDetail
+                                                      ? userDetail.phone
+                                                      : role === 'hospital' &&
+                                                        hospitalDetail
+                                                      ? hospitalDetail.phone
+                                                      : role === 'doctor' &&
+                                                        doctorDetail
+                                                      ? doctorDetail.phone
+                                                      : ''}
+                                                </li>
+                                                <li className="list-group-item">
+                                                   <strong>Ngày tạo:</strong>{' '}
+                                                   {role === 'user' &&
+                                                   userDetail
+                                                      ? formatDateTime(
+                                                           userDetail.created_at
+                                                        )
+                                                      : role === 'hospital' &&
+                                                        hospitalDetail
+                                                      ? formatDateTime(
+                                                           hospitalDetail.created_at
+                                                        )
+                                                      : role === 'doctor' &&
+                                                        doctorDetail
+                                                      ? formatDateTime(
+                                                           doctorDetail.created_at
+                                                        )
+                                                      : ''}
+                                                </li>
+                                                {role === 'hospital' &&
+                                                hospitalDetail ? (
+                                                   <li className="list-group-item">
+                                                      <strong>
+                                                         Lượt tìm kiếm:
+                                                      </strong>{' '}
+                                                      {
+                                                         hospitalDetail.search_number
+                                                      }
+                                                   </li>
+                                                ) : role === 'doctor' &&
+                                                  doctorDetail ? (
+                                                   <li className="list-group-item">
+                                                      <strong>
+                                                         Lượt tìm kiếm:
+                                                      </strong>{' '}
+                                                      {
+                                                         doctorDetail.search_number
+                                                      }
+                                                   </li>
+                                                ) : (
+                                                   ''
+                                                )}
+                                             </ul>
+                                          </div>
+                                          <div className="col-md-6">
+                                             <ul className="list-group list-group-flush">
+                                                <li className="list-group-item">
+                                                   <strong>Address:</strong>{' '}
+                                                   {role === 'user' &&
+                                                   userDetail
+                                                      ? userDetail.address
+                                                      : role === 'hospital' &&
+                                                        hospitalDetail
+                                                      ? hospitalDetail.address
+                                                      : role === 'doctor' &&
+                                                        doctorDetail
+                                                      ? doctorDetail.address
+                                                      : ''}
+                                                </li>
+                                                <li className="list-group-item">
+                                                   <strong>Quyền:</strong>{' '}
+                                                   {role === 'user'
+                                                      ? 'Người dùng'
+                                                      : role === 'hospital'
+                                                      ? 'Bệnh viện'
+                                                      : 'Bác sĩ'}
+                                                </li>
+                                                <li className="list-group-item">
+                                                   <strong>Giới tính:</strong>{' '}
+                                                   {role === 'user' &&
+                                                   userDetail
+                                                      ? formatGender(
+                                                           userDetail.gender
+                                                        )
+                                                      : role === 'hospital' &&
+                                                        hospitalDetail
+                                                      ? formatGender(
+                                                           hospitalDetail.address
+                                                        )
+                                                      : role === 'doctor' &&
+                                                        doctorDetail
+                                                      ? formatGender(
+                                                           doctorDetail.address
+                                                        )
+                                                      : ''}
+                                                </li>
+                                                <li className="list-group-item">
+                                                   <strong>Ngày sinh:</strong>{' '}
+                                                   {role === 'user' &&
+                                                   userDetail
+                                                      ? userDetail.date_of_birth
+                                                      : role === 'hospital' &&
+                                                        hospitalDetail
+                                                      ? hospitalDetail.date_of_birth
+                                                      : role === 'doctor' &&
+                                                        doctorDetail
+                                                      ? doctorDetail.date_of_birth
+                                                      : ''}
+                                                </li>
+                                                <li className="list-group-item">
+                                                   <strong>
+                                                      Email Verified At:
+                                                   </strong>{' '}
+                                                   {role === 'user' &&
+                                                   userDetail
+                                                      ? formatDateTime(
+                                                           userDetail.email_verified_at
+                                                        )
+                                                      : role === 'hospital' &&
+                                                        hospitalDetail
+                                                      ? formatDateTime(
+                                                           hospitalDetail.email_verified_at
+                                                        )
+                                                      : role === 'doctor' &&
+                                                        doctorDetail
+                                                      ? formatDateTime(
+                                                           doctorDetail.email_verified_at
+                                                        )
+                                                      : ''}
+                                                </li>
+                                                <li className="list-group-item">
+                                                   <strong>Cập nhật:</strong>{' '}
+                                                   {role === 'user' &&
+                                                   userDetail
+                                                      ? formatDateTime(
+                                                           userDetail.updated_at
+                                                        )
+                                                      : role === 'hospital' &&
+                                                        hospitalDetail
+                                                      ? formatDateTime(
+                                                           hospitalDetail.updated_at
+                                                        )
+                                                      : role === 'doctor' &&
+                                                        doctorDetail
+                                                      ? formatDateTime(
+                                                           doctorDetail.updated_at
+                                                        )
+                                                      : ''}
+                                                </li>
+                                                {role === 'doctor' &&
+                                                doctorDetail ? (
+                                                   <li className="list-group-item">
+                                                      <strong>
+                                                         Kinh nghiệm:
+                                                      </strong>{' '}
+                                                      {doctorDetail.experience +
+                                                         ' Năm'}
+                                                   </li>
+                                                ) : (
+                                                   ''
+                                                )}
+                                             </ul>
+                                          </div>
+                                       </div>
+                                       <div className="row">
+                                          <div className="col-md-12">
+                                             {role === 'hospital' ? (
+                                                <ul className="list-group list-group-flush">
+                                                   <li className="list-group-item">
+                                                      <strong>Mô tả:</strong>{' '}
+                                                      {
+                                                         hospitalDetail.description
+                                                      }
+                                                   </li>
+                                                   <li className="list-group-item">
+                                                      <strong>
+                                                         Cơ sở vật chất:
+                                                      </strong>{' '}
+                                                      {JSON.parse(
+                                                         hospitalDetail.infrastructure
+                                                      ).map(
+                                                         (value, index) =>
+                                                            value + ', '
+                                                      )}
+                                                   </li>
+                                                   <li className="list-group-item">
+                                                      <strong>Vị trí:</strong>{' '}
+                                                      <div
+                                                         className={cx('map')}
+                                                      >
+                                                         <MapForHospital
+                                                            latT={
+                                                               convertStringToArray(
+                                                                  hospitalDetail.location
+                                                               )[0]
+                                                            }
+                                                            lngT={
+                                                               convertStringToArray(
+                                                                  hospitalDetail.location
+                                                               )[1]
+                                                            }
+                                                            hospital_name={
+                                                               hospitalDetail.name
+                                                            }
+                                                         />
+                                                      </div>
+                                                      {hospitalDetail.location}
+                                                   </li>
+                                                </ul>
+                                             ) : (
+                                                ''
+                                             )}
+                                          </div>
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                     <div className="modal-footer">
+                        <button
+                           type="button"
+                           className="btn btn-secondary"
+                           data-dismiss="modal"
+                        >
+                           Close
+                        </button>
+                     </div>
+                  </div>
                </div>
             </div>
          </div>

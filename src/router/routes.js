@@ -57,14 +57,14 @@ import HospitalArticlePage from '~/pages/admin_hospital/Article'
 import HospitalServicePage from '~/pages/admin_hospital/Service'
 import HospitalInsurancePage from '~/pages/admin_hospital/Insurance'
 import HospitalProfilePage from '~/pages/admin_hospital/Profile'
+import HospitalCalendarPage from '~/pages/admin_hospital/Calendar'
 import HospitalChangepasswordPage from '~/pages/admin_hospital/ChangePassword'
 import DoctorDasboardPage from '~/pages/doctor/Dashboard'
 import DoctorSchedulePage from '~/pages/doctor/Schedule'
 import DoctorArticlePage from '~/pages/doctor/Article'
 import DoctorProfilePage from '~/pages/doctor/Profile'
-import HospitalService from '~/pages/user/Hospital/service'
-import HospitalDoctor from '~/pages/user/Hospital/doctors'
 import ActiveComponent from './ActiveComponent'
+import HospitalCalendarDoctorPage from '~/pages/admin_hospital/CalendarDoctor'
 
 //Import Test
 
@@ -139,6 +139,14 @@ const BigRoutes = () => (
             element={<DoctorAuthCheck component={HospitalProfilePage} />}
          ></Route>
          <Route
+            path="calendar"
+            element={<DoctorAuthCheck component={HospitalCalendarPage} />}
+         ></Route>
+         <Route
+            path="calendar-doctor"
+            element={<DoctorAuthCheck component={HospitalCalendarDoctorPage} />}
+         ></Route>
+         <Route
             path="change-password"
             element={<HospitalChangepasswordPage />}
          ></Route>
@@ -162,8 +170,8 @@ const BigRoutes = () => (
          <Route path="department" element={<AdminDepartment />} />
          <Route path="health-insurance" element={<AdminHealthInsurance />} />
          <Route path="service" element={<AdminService />} />
-         <Route path="category" element={<AdminCategory/>} />
-         <Route path="article" element={<AdminArticle/>} />
+         <Route path="category" element={<AdminCategory />} />
+         <Route path="article" element={<AdminArticle />} />
          <Route path="statistical" element={<AdminStatistical />} />
       </Route>
 

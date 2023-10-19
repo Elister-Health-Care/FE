@@ -50,6 +50,14 @@ function Header() {
             setNavActive('category')
             setLinkActive('department')
             break
+         case '/hospital/calendar':
+            setNavActive('calendar')
+            setLinkActive('calendar')
+            break
+         case '/hospital/calendar-doctor':
+            setNavActive('calendar')
+            setLinkActive('calendar-doctor')
+            break
          default:
             setNavActive('')
             break
@@ -192,7 +200,7 @@ function Header() {
                                     linkActive === 'article' && 'link_active'
                                  )}
                               >
-                                 <i className="mdi mdi-calendar-month-outline"></i>
+                                 <i className="mdi mdi-post-outline"></i>
                                  &ensp; Bài viết
                               </Link>
                            </li>
@@ -238,6 +246,41 @@ function Header() {
                               >
                                  <i className="mdi mdi-progress-alert"></i>
                                  &ensp; Chuyên khoa
+                              </Link>
+                           </li>
+                        </ul>
+                     </li>
+                     <li className={cx('has-submenu')}>
+                        <Link
+                           className={cx(
+                              navActive === 'calendar' && 'nav_active'
+                           )}
+                        >
+                           <i className="mdi mdi-calendar-month"></i>
+                           &ensp;&nbsp;Lịch làm việc
+                        </Link>
+                        <ul className={cx('submenu')}>
+                           <li>
+                              <Link
+                                 to="calendar"
+                                 className={cx(
+                                    linkActive === 'calendar' && 'link_active'
+                                 )}
+                              >
+                                 <i className="mdi mdi-database"></i>&ensp; Lịch
+                                 bệnh viện
+                              </Link>
+                           </li>
+                           <li>
+                              <Link
+                                 to="calendar-doctor"
+                                 className={cx(
+                                    linkActive === 'calendar-doctor' &&
+                                       'link_active'
+                                 )}
+                              >
+                                 <i className="mdi mdi-credit-card-plus-outline"></i>
+                                 &ensp; Lịch bác sĩ
                               </Link>
                            </li>
                         </ul>
