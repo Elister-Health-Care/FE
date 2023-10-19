@@ -1,5 +1,5 @@
 import React from 'react'
-import { Route, Routes } from 'react-router-dom'
+import { Route, Routes} from 'react-router-dom'
 import {
    UserAuthCheck,
    AdminAuthCheck,
@@ -32,6 +32,8 @@ import UserProfile from '~/pages/user/Profile'
 import UserEditProfile from '~/pages/user/Profile/edit'
 import FormEditProfile from '~/pages/user/Profile/form-edit'
 import UserPasswordSetting from '~/pages/user/Profile/password'
+import HospitalDetail from '~/pages/user/Hospital/detail'
+import HospitalInformation from '~/pages/user/Hospital/info'
 // Import admin pages
 import AdminLayout from '~/layouts/AdminLayout'
 import AdminDashboardPage from '~/pages/admin/Dashboard'
@@ -61,6 +63,7 @@ import DoctorDasboardPage from '~/pages/doctor/Dashboard'
 import DoctorSchedulePage from '~/pages/doctor/Schedule'
 import DoctorArticlePage from '~/pages/doctor/Article'
 import DoctorProfilePage from '~/pages/doctor/Profile'
+import ActiveComponent from './ActiveComponent'
 import HospitalCalendarDoctorPage from '~/pages/admin_hospital/CalendarDoctor'
 
 //Import Test
@@ -83,6 +86,10 @@ const BigRoutes = () => (
             <Route path="profile" element={<UserEditProfile />} />
             <Route path="edit-profile" element={<FormEditProfile />} />
             <Route path="setting" element={<UserPasswordSetting />} />
+         </Route>
+         <Route path="hospital/:id" element={<HospitalDetail/>} >
+            <Route path="" element={<HospitalInformation />} />
+            <Route path=":tab" element={<ActiveComponent/>} />
          </Route>
       </Route>
 

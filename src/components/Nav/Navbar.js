@@ -18,10 +18,11 @@ const Navbars = () => {
    const [avatar, setAvatar] = useState('/image/avatar_admin_default.png')
    const [name, setName] = useState(user && user.name ? user.name : 'User')
    const [categories, setCategories] = useState([])
-  const isUserUpdated = useSelector((state) => state.user.keyUserUpdated)
-
-  const navigate = useNavigate()
-
+   const [departments, setDepartments] = useState([])
+   const [hospitals, setHospitals] = useState([])
+   const isUserUpdated = useSelector((state) => state.user.keyUserUpdated)
+   const navigate = useNavigate()
+// get categories
   useEffect(()  => {
 		const getCategory = async () => {
 			try {
@@ -33,9 +34,34 @@ const Navbars = () => {
 			}
 		}
     getCategory()
-    console.log(categories)  
 	}, []);
-
+// Get Department
+useEffect(()  => {
+  const getDepartments= async () => {
+    try {
+      const queryParams = `?page=1&paginate=6`
+      const response = await http.get('department'+queryParams)
+      setDepartments(response.data.data.data)
+    } catch (error) {
+      console.log('Lỗi kết nối đến API !', error);
+    }
+  }
+  getDepartments()
+}, []);
+// Get Hospitals
+useEffect(()  => {
+  const getHospitals= async () => {
+    try {
+      const queryParams = `?page=1&paginate=3&sort_search_number=true`
+      const response = await http.get('infor-hospital/all-hospital'+queryParams)
+      setHospitals(response.data.data.data)
+    } catch (error) {
+      console.log('Lỗi kết nối đến API !', error);
+    }
+  }
+  getHospitals()
+}, []);
+// set avatar User
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem('HealthCareUser'))
     if (user && user.avatar) {
@@ -66,11 +92,11 @@ const Navbars = () => {
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse className="justify-content-end" id="basic-navbar-nav">
-          <Nav className="me-auto">
+          <Nav>
             <NavDropdown title={<div>Chuyên mục <BsChevronDown/></div>} className="has-megamenu" id="basic-nav-dropdown">
-              <Container>
+              <Container className="pl-0 pr-0">
                 <div className="row w-100">
-                  <div className="col-lg-4 col-md-5 pt-2 pb-2 pr-3">
+                  <div className="col-lg-3 pl-0 col-md-3 pt-2 pb-2 pr-3">
                     <div className="border-right pr-3">
                      <h6><b>Chuyên mục sức khỏe</b></h6>
                      <ul className="w-100 mt-3">
@@ -87,30 +113,96 @@ const Navbars = () => {
                       <Link className="btn btn-outline-primary w-100">Xem tất cả danh mục <i className="fa-solid fa-chevron-right"></i></Link>
                       </div>  
                   </div>
-                  <div className="col-lg-8 col-md-7">
+                  <div className="col-lg-9 col-md-9 pr-0">
 
                   </div>
                 </div>
               </Container>
             </NavDropdown>
-            <NavDropdown title={<div>Kiểm tra sức khỏe <BsChevronDown/></div>}  id="basic-nav-dropdown">
-              <NavDropdown.Item href="#action/3.1">Services</NavDropdown.Item>
-              <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
-              <NavDropdown.Divider />
-              <NavDropdown.Item href="#action/3.4">
-                Separated link
-              </NavDropdown.Item>
+            <NavDropdown title={<div>Kiểm tra sức khỏe <BsChevronDown/></div>}  className="has-megamenu" id="basic-nav-dropdown">
+            <Container className="pl-0 pr-0">
+                <div className="row w-100">
+                  <div className="col-lg-3 pl-0 col-md-3 pt-2 pb-2 pr-3">
+                    <div className="border-right pr-3">
+                     <h6><b>Chuyên mục sức khỏe</b></h6>
+                     <ul className="w-100 mt-3">
+                     {categories.map((category, index) => (
+                        <li>
+                          <img 
+                            className="icon" 
+                            src={ category.thumbnail && config.URL + category.thumbnail}/> 
+                          <Link>{ category.name }</Link>
+                        </li>
+                       )
+                      )} 
+                      </ul> 
+                      <Link className="btn btn-outline-primary w-100">Xem tất cả danh mục <i className="fa-solid fa-chevron-right"></i></Link>
+                      </div>  
+                  </div>
+                  <div className="col-lg-9 col-md-9  pr-0">
+
+                  </div>
+                </div>
+              </Container>
             </NavDropdown>
-            <NavDropdown title={<div>Đặt lịch bác sĩ <BsChevronDown/></div>}  id="basic-nav-dropdown">
-              <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
-              <NavDropdown.Item href="#action/3.2">
-                Another action
-              </NavDropdown.Item>
-              <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
-              <NavDropdown.Divider />
-              <NavDropdown.Item href="#action/3.4">
-                Separated link
-              </NavDropdown.Item>
+            <NavDropdown title={<div>Đặt lịch bác sĩ <BsChevronDown/></div>} className="has-megamenu" id="basic-nav-dropdown">
+            <Container className="pl-0 pr-0">
+                <div className="row w-100">
+                  <div className="col-lg-3 pl-0 col-md-5 pt-2 pb-2 pr-3">
+                    <div className="border-right pr-3">
+                     <h6><b>Các chuyên khoa</b></h6>
+                     <ul className="w-100 mt-3">
+                     {departments.map((department, index) => (
+                        <li>
+                          <img 
+                            className="icon" 
+                            src={department.thumbnail && config.URL + department.thumbnail}/> 
+                          <Link>{department.name }</Link>
+                        </li>
+                       )
+                      )} 
+                      </ul> 
+                      <Link className="btn btn-outline-primary w-100">Tất cả chuyên khoa <i className="fa-solid fa-chevron-right"></i></Link>
+                      </div>  
+                  </div>
+                  <div className="col-lg-9 col-md-7 pr-0">
+                      <div className="hospitals-list">
+                        <div className="list-title">
+                          <h2>
+                              Bệnh viện nổi bật
+                          </h2>
+                        </div>
+                        <div className="row">
+                        {hospitals.map((hospital, index) => (
+                          <div className="col-lg-4 col-md-4 pr-1 pl-0">
+                            <Link to={'/hospital/'+hospital.id} className="hospital">
+                              <img className="bg-banner" src="https://hhg-common.hellobacsi.com/common/navCareCardBg.svg" />
+                              <div className="banner">
+                                <img src={hospital.avatar && config.URL + hospital.avatar}/>
+                              </div>
+                              <div className="hospital-content">
+                                <p className="hospital-name">{hospital.name}</p>
+                                <p className="hospital-desc">{hospital.description}</p>
+                                <div className="hospital-footer">
+                                <Link>Xem thêm</Link>
+                                </div>
+                              </div>
+                            </Link>  
+                          </div> 
+                        ))}
+                        <div className="list-footer">
+                          <Link className="view-book">
+                            <button className="btn btn-primary py-2 px-4">
+                            Trang chủ đặt lịch 
+                            <i className="fa-solid fa-chevron-right"/>
+                            </button>
+                          </Link>  
+                        </div>                       
+                      </div>  
+                    </div>
+                  </div>
+                </div>
+              </Container>
             </NavDropdown>
             <NavDropdown title={<div>Cộng đồng <BsChevronDown/></div>} id="basic-nav-dropdown">
               <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
@@ -186,7 +278,7 @@ const Navbars = () => {
               </NavDropdown>
             ) : (
                 <Link to={"/user-login"} tag={Link}>
-                <button className="">
+                <button className="btn-login">
                   Đăng nhập
                   <span>
                     <i className="fa-solid fa-chevron-right"></i>

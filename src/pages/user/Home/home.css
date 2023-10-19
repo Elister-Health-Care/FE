@@ -81,7 +81,7 @@
   display: flex;
   width: 100%;
 }
-.home .main-section .top-section a {
+.home .main-section .top-section button {
   display: flex;
   justify-content: center;
   padding: 7px 20px;
@@ -91,7 +91,7 @@
   border: 1px solid rgb(228, 232, 236);
   color: rgb(89, 89, 89);
 }
-.home .main-section .top-section a:focus {
+.home .main-section .top-section .active, .home .main-section .top-section button:focus {
   gap: 6px;
   display: flex;
   justify-content: center;
@@ -167,6 +167,7 @@
   height: 100%;
   width: 100%;
   overflow: hidden;
+  text-align: left !important;
 }
 .home .main-section .main-section .section-left .article .content .inner-content .category-name .bookmark, .home .main-section .main-section .section-right .article .content .inner-content .category-name .bookmark, .home .main-section .main-section .list-article .article .content .inner-content .category-name .bookmark {
   text-align: right;
