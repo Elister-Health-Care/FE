@@ -65,6 +65,7 @@ import DoctorArticlePage from '~/pages/doctor/Article'
 import DoctorProfilePage from '~/pages/doctor/Profile'
 import ActiveComponent from './ActiveComponent'
 import HospitalCalendarDoctorPage from '~/pages/admin_hospital/CalendarDoctor'
+import ScheduleProfile from '~/pages/user/Profile/schedule'
 
 //Import Test
 
@@ -86,6 +87,7 @@ const BigRoutes = () => (
             <Route path="profile" element={<UserEditProfile />} />
             <Route path="edit-profile" element={<FormEditProfile />} />
             <Route path="setting" element={<UserPasswordSetting />} />
+            <Route path="schedule" element={<ScheduleProfile/>} />
          </Route>
          <Route path="hospital/:id" element={<HospitalDetail/>} >
             <Route path="" element={<HospitalInformation />} />

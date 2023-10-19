@@ -241,6 +241,7 @@ useEffect(()  => {
                   </div>
                   </Link>
                 </NavDropdown.Item>
+                {user.role == "user" && (
                 <div className="row mr-0 ml-0">
                   <div className="col-lg-6 col-md-6">
                      <div className="dropdown-info">
@@ -249,7 +250,7 @@ useEffect(()  => {
                   </div>
                   <div className="col-lg-6 col-md-6">
                      <div className="dropdown-info">
-                        <Link><AiOutlineHistory/><br/>Quản lý đặt lịch</Link>
+                        <Link to={'/user/schedule'}><AiOutlineHistory/><br/>Quản lý đặt lịch</Link>
                      </div>
                   </div>
                   <div className="col-lg-6 col-md-6">
@@ -263,6 +264,31 @@ useEffect(()  => {
                      </div>
                   </div>
                 </div>
+                )}
+                {user.role == "doctor" && (
+                <div className="row mr-0 ml-0">
+                  <div className="col-lg-12 col-md-12">
+                     <div className="dropdown-info">
+                     <Link to={'/hospital/doctor-dashboard'}>
+                           <AiOutlineLogout className="mr-1 text-dark"/> 
+                           Quản lý bác sĩ
+                     </Link>
+                     </div>
+                  </div>
+                </div>
+                )}
+                {user.role == "hospital" && (
+                <div className="row mr-0 ml-0">
+                  <div className="col-lg-12 col-md-12">
+                     <div className="dropdown-info">
+                     <Link to={'/hospital/dashboard'}>
+                           <AiOutlineLogout className="mr-1 text-dark"/> 
+                           Quản lý bệnh viện
+                     </Link>
+                     </div>
+                  </div>
+                </div>
+                )}
                 <div className="row mr-0 ml-0">
                   <div className="col-lg-12 col-md-12">
                      <div className="dropdown-info">
