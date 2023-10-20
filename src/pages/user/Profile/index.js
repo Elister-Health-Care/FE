@@ -15,7 +15,7 @@ const handleLogout = () => {
 
 const UserProfile = () => {
   return (
-    <div className="container">
+    <div className="container-fluid">
     <div className="row mt-4">
       <div className="col-lg-3 col-md-3">
         <div className="catalog">
