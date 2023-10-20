@@ -1,5 +1,5 @@
 import React from 'react'
-import { Route, Routes} from 'react-router-dom'
+import { Route, Routes } from 'react-router-dom'
 import {
    UserAuthCheck,
    AdminAuthCheck,
@@ -20,7 +20,10 @@ import AdminLoginPage from '~/pages/login_and_register/Admin'
 // Import main pages(public)
 import HomePage from '~/pages/user/Home'
 import UserProductDetailPage from '~/pages/main/Product'
-
+import AllInforPage from '~/pages/user/AllInfor'
+import AllDoctorPage from '~/pages/user/AllDoctor'
+import AllHospitalPage from '~/pages/user/AllHospital'
+import AllServicePage from '~/pages/user/AllService'
 // Import user pages
 import UserMainLayout from '~/layouts/UserMainLayout'
 import UserLayout from '~/layouts/UserLayout'
@@ -82,16 +85,20 @@ const BigRoutes = () => (
       <Route path="/" element={<UserMainLayout />}>
          <Route path="" element={<HomePage />} />
          <Route path="product/:id" element={<UserProductDetailPage />} />
+         <Route path="all" element={<AllInforPage />} />
+         <Route path="all-doctor" element={<AllDoctorPage />} />
+         <Route path="all-hospital" element={<AllHospitalPage />} />
+         <Route path="all-service" element={<AllServicePage />} />
          {/* private route user-main */}
          <Route path="user" element={<UserAuthCheck component={UserProfile} />}>
             <Route path="profile" element={<UserEditProfile />} />
             <Route path="edit-profile" element={<FormEditProfile />} />
             <Route path="setting" element={<UserPasswordSetting />} />
-            <Route path="schedule" element={<ScheduleProfile/>} />
+            <Route path="schedule" element={<ScheduleProfile />} />
          </Route>
-         <Route path="hospital/:id" element={<HospitalDetail/>} >
+         <Route path="hospital/:id" element={<HospitalDetail />}>
             <Route path="" element={<HospitalInformation />} />
-            <Route path=":tab" element={<ActiveComponent/>} />
+            <Route path=":tab" element={<ActiveComponent />} />
          </Route>
       </Route>
 
