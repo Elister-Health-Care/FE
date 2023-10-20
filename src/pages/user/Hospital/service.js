@@ -1,144 +1,160 @@
-import React, { useEffect, useState } from "react";
-import { Link, Outlet, useParams } from "react-router-dom";
-import "./hospital.css";
-import { Container, Nav } from "reactstrap";
-import { GrFormNext } from "react-icons/gr";
-import { FaLocationDot } from "react-icons/fa6";
-import { RiMoneyDollarCircleFill } from "react-icons/ri";
-import http from "~/utils/http";
-import config from "~/router/config";
-import LoadingDot from "~/components/Loading/LoadingDot";
-import { Accordion } from "react-bootstrap";
-import Map from "~/components/Map";
-import { GiConsoleController } from "react-icons/gi";
+import React, { useEffect, useState } from 'react'
+import { Link, Outlet, useParams } from 'react-router-dom'
+import './hospital.css'
+import { Container, Nav } from 'reactstrap'
+import { GrFormNext } from 'react-icons/gr'
+import { FaLocationDot } from 'react-icons/fa6'
+import { RiMoneyDollarCircleFill } from 'react-icons/ri'
+import http from '~/utils/http'
+import config from '~/router/config'
+import LoadingDot from '~/components/Loading/LoadingDot'
+import { Accordion } from 'react-bootstrap'
+import Map from '~/components/Map'
+import { GiConsoleController } from 'react-icons/gi'
 
 const HospitalService = () => {
-  const [services, setService] = useState([]);
-  const [keyword, setKeyword] = useState("");
-  const { id,tab } = useParams();
-  const [loading, setLoading] = useState(false);
-  const [hospital, setHospital] = useState({
-    id: null,
-    email: "",
-    username: "",
-    name: "",
-    phone: "",
-    address: "",
-    avatar: null,
-    is_accept: null,
-    role: "",
-    email_verified_at: "",
-    created_at: "",
-    updated_at: "",
-    id_hospital: null,
-    province_code: null,
-    infrastructure: null,
-    description: "",
-    location: null,
-    search_number: null,
-    time_work: null,
-    enable: null,
-    departments: null,
-  });
+   const [services, setService] = useState([])
+   const [keyword, setKeyword] = useState('')
+   const { id, tab } = useParams()
+   const [loading, setLoading] = useState(false)
+   const [hospital, setHospital] = useState({
+      id: null,
+      email: '',
+      username: '',
+      name: '',
+      phone: '',
+      address: '',
+      avatar: null,
+      is_accept: null,
+      role: '',
+      email_verified_at: '',
+      created_at: '',
+      updated_at: '',
+      id_hospital: null,
+      province_code: null,
+      infrastructure: null,
+      description: '',
+      location: null,
+      search_number: null,
+      time_work: null,
+      enable: null,
+      departments: null,
+   })
 
-  useEffect(() => {
-    const getHospital = async () => {
-      try {
-        setLoading(true);
-        const response = await http.get("/infor-hospital/view-profile/" + id);
-        setHospital(response.data.data);
-      } catch (error) {
-        console.log("Lỗi kết nối đến API !", error);
-      } finally {
-        setLoading(false);
+   useEffect(() => {
+      const getHospital = async () => {
+         try {
+            setLoading(true)
+            const response = await http.get(
+               '/infor-hospital/view-profile/' + id
+            )
+            setHospital(response.data.data)
+         } catch (error) {
+            console.log('Lỗi kết nối đến API !', error)
+         } finally {
+            setLoading(false)
+         }
       }
-    };
-    getHospital();
-  }, [id, tab]);
+      getHospital()
+   }, [id, tab])
 
-  useEffect(() => {
-    const getService = async () => {
-      try {
-        setLoading(true);
-        const response = await http.get("/hospital-service/hospital/" + id + "?search="+keyword);
-        setService(response.data.data);
-      } catch (error) {
-        console.log("Lỗi kết nối đến API !", error);
-      } finally {
-        setLoading(false);
+   useEffect(() => {
+      const getService = async () => {
+         try {
+            setLoading(true)
+            const response = await http.get(
+               '/hospital-service/hospital/' + id + '?search=' + keyword
+            )
+            setService(response.data.data)
+         } catch (error) {
+            console.log('Lỗi kết nối đến API !', error)
+         } finally {
+            setLoading(false)
+         }
       }
-    };
-    getService();
-  }, [id,tab,keyword]);
-  const formatMoney = (money) => {
-    return money.toLocaleString("it-IT", {
-      style: "currency",
-      currency: "VND",
-    });
-  };
+      getService()
+   }, [id, tab, keyword])
+   const formatMoney = (money) => {
+      if (money) {
+         return money.toLocaleString('it-IT', {
+            style: 'currency',
+            currency: 'VND',
+         })
+      }
+      return ''
+   }
 
-  const handleChangeInput = (e) => {
-    const { name, value } = e.target
-    console.log (value);
-    setKeyword(value);
- }
+   const handleChangeInput = (e) => {
+      const { name, value } = e.target
+      console.log(value)
+      setKeyword(value)
+   }
 
-  return (
-    <>
-      {loading && <LoadingDot />}
-      <div className="service">
-        <div className="search">
-          <div className="input-service">
-            <input
-              type="text"
-              placeholder="Tìm dịch vụ"
-              className="form-control"
-              onKeyUp={handleChangeInput}
-            />
-          </div>
-        </div>
-        <div className="service-list mt-4">
-          {services.map((service) => (
-            <div className="service-card">
-              <div className="main-card">
-                <div className="content">
-                  <div className="service-info">
-                    <Link>
-                      <h6>{service.name}</h6>
-                    </Link>
-                    <div className="price">
-                      <RiMoneyDollarCircleFill />
-                      <p className="number">{formatMoney(service.price_hospital_service)} (Giá dịch vụ)</p>
-                    </div>
-                  </div>
-                </div>
-                <div className="infor-hospital">
-                  <span className="avatar-hospital">
-                    <img src={  hospital.avatar
-                      ? config.URL + hospital.avatar
-                      : "/image/avatar_admin_default.png"} />
-                  </span>
-                  <div className="detail-hospital">
-                    <p>{hospital.name}</p>
-                    <div className="address-hospital">
-                      <div className="address">
-                        <p>
-                          441 Lê Văn Lương, Tân Phong, Quận 7, Ho Chi Minh City,
-                          Vietnam
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                  <button className="btn btn-primary btn-book">
-                    Đặt lịch hẹn
-                  </button>
-                </div>
-              </div>
+   return (
+      <>
+         {loading && <LoadingDot />}
+         <div className="service">
+            <div className="search">
+               <div className="input-service">
+                  <input
+                     type="text"
+                     placeholder="Tìm dịch vụ"
+                     className="form-control"
+                     onKeyUp={handleChangeInput}
+                  />
+               </div>
             </div>
-          ))}
-        </div>
-      </div>
-    </>
-  );
-};
-export default HospitalService;
+            <div className="service-list mt-4">
+               {services.map((service) => (
+                  <div className="service-card">
+                     <div className="main-card">
+                        <div className="content">
+                           <div className="service-info">
+                              <Link>
+                                 <h6>{service.name}</h6>
+                              </Link>
+                              <div className="price">
+                                 <RiMoneyDollarCircleFill />
+                                 <p className="number">
+                                    {formatMoney(
+                                       service.price_hospital_service
+                                    )}{' '}
+                                    (Giá dịch vụ)
+                                 </p>
+                              </div>
+                           </div>
+                        </div>
+                        <div className="infor-hospital">
+                           <span className="avatar-hospital">
+                              <img
+                                 src={
+                                    hospital.avatar
+                                       ? config.URL + hospital.avatar
+                                       : '/image/avatar_admin_default.png'
+                                 }
+                              />
+                           </span>
+                           <div className="detail-hospital">
+                              <p>{hospital.name}</p>
+                              <div className="address-hospital">
+                                 <div className="address">
+                                    <p>
+                                       441 Lê Văn Lương, Tân Phong, Quận 7, Ho
+                                       Chi Minh City, Vietnam
+                                    </p>
+                                 </div>
+                              </div>
+                           </div>
+                           <button className="btn btn-primary btn-book">
+                              Đặt lịch hẹn
+                           </button>
+                        </div>
+                     </div>
+                  </div>
+               ))}
+            </div>
+         </div>
+      </>
+   )
+}
+export default HospitalService
