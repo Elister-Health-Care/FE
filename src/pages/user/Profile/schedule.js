@@ -456,7 +456,7 @@ function ScheduleProfile() {
 									<tr>
 										<th><span className='ml-3'><input onClick={selectAll} className="form-check-input" type="checkbox" value="" /></span></th>
 										<th>ID</th>
-										<th>Khách hàng</th>
+										{/* <th>Khách hàng</th> */}
 										<th>Loại lịch</th>
 										<th>Tên dịch vụ</th>
 										<th>Chuyên khoa</th>
@@ -476,7 +476,7 @@ function ScheduleProfile() {
 								<tr>
 									<th><span className='ml-3'><input onClick={selectAll} className="form-check-input" type="checkbox" value="" /></span></th>
 									<th>ID</th>
-									<th>Khách hàng</th>
+									{/* <th>Khách hàng</th> */}
 									<th>Loại lịch</th>
 									<th>Tên dịch vụ</th>
 									<th>Chuyên khoa</th>
@@ -504,7 +504,7 @@ function ScheduleProfile() {
 											</span>
 										</td>
 										<td>{workSchedule.work_schedule_id}</td>
-										<td>
+										{/* <td>
 											<div className={cx('thumbnail-th')}>
 												<img
 													className={cx('thumbnail')}
@@ -519,7 +519,7 @@ function ScheduleProfile() {
 												/>
 												{workSchedule.user_name}
 											</div>
-										</td>
+										</td> */}
 										<td>{workSchedule.id_service == null ? 'Tư vấn' : 'Dịch vụ'}</td>
 										<td>{workSchedule.hospital_service_name ? workSchedule.hospital_service_name : 'N/A'}</td>
 										<td>{workSchedule.department_name}</td>
@@ -537,7 +537,7 @@ function ScheduleProfile() {
 												{workSchedule.doctor_name}
 											</div>
 										</td>
-										<td className={`col-1 ${cx('color_time')}`}>
+										<td className={`col-2 ${cx('color_time')}`}>
 											{workSchedule.time.interval[0]} - {workSchedule.time.interval[1]} <br />
 											{workSchedule.time.date}
 										</td>
