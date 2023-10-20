@@ -22,6 +22,7 @@ const cx = classNames.bind(styles)
 const AdminAllUserPage = () => {
    const location = useLocation()
    const [loadingTable, setLoadingTable] = useState(false)
+   const [loadingData, setLoadingData] = useState(true)
    const [role, setRole] = useState('user')
    const [users, setUsers] = useState([])
    const [userDetail, setUserDetail] = useState({
@@ -57,9 +58,9 @@ const AdminAllUserPage = () => {
       updated_at: '',
       id_hospital: '',
       province_code: '',
-      infrastructure: '',
+      infrastructure: '[]',
       description: '',
-      location: '',
+      location: '[]',
       search_number: '',
    })
    const [doctorDetail, setDoctorDetail] = useState({
@@ -257,20 +258,21 @@ const AdminAllUserPage = () => {
       try {
          const response = await http.get('user/infor-user/' + id)
          if (role === 'user') {
-            setRole('user')
             setUserDetail(response.data.data)
          } else if (role === 'hospital') {
-            setRole('hospital')
+            console.log(hospitalDetail.infrastructure)
             setHospitalDetail(response.data.data)
          } else {
-            setRole('doctor')
             setDoctorDetail(response.data.data)
          }
       } catch (error) {
          console.log('Đã có lỗi xảy ra, quá trình get infor user', error)
+      } finally {
+         setLoadingData(true)
       }
    }
    const handleClickViewInfor = (id, role) => {
+      setLoadingData(false)
       if (role === 'user') {
          setRole('user')
       } else if (role === 'hospital') {
@@ -570,9 +572,9 @@ const AdminAllUserPage = () => {
                      </div>
 
                      <div className={cx('modal-body')}>
-                        <div className="container mt-5">
+                        <div className={cx('container mt-5 up_width')}>
                            <div className="row">
-                              <div className="col-md-4">
+                              <div className="col-md-3">
                                  <div className="card">
                                     <img
                                        src={
@@ -606,7 +608,7 @@ const AdminAllUserPage = () => {
                                     </div>
                                  </div>
                               </div>
-                              <div className="col-md-8">
+                              <div className="col-md-9">
                                  <div className="card">
                                     <div className="card-body">
                                        <div className="row">
@@ -857,21 +859,23 @@ const AdminAllUserPage = () => {
                                                       <div
                                                          className={cx('map')}
                                                       >
-                                                         <MapForHospital
-                                                            latT={
-                                                               convertStringToArray(
-                                                                  hospitalDetail.location
-                                                               )[0]
-                                                            }
-                                                            lngT={
-                                                               convertStringToArray(
-                                                                  hospitalDetail.location
-                                                               )[1]
-                                                            }
-                                                            hospital_name={
-                                                               hospitalDetail.name
-                                                            }
-                                                         />
+                                                         {loadingData && (
+                                                            <MapForHospital
+                                                               latT={
+                                                                  convertStringToArray(
+                                                                     hospitalDetail.location
+                                                                  )[0]
+                                                               }
+                                                               lngT={
+                                                                  convertStringToArray(
+                                                                     hospitalDetail.location
+                                                                  )[1]
+                                                               }
+                                                               hospital_name={
+                                                                  hospitalDetail.name
+                                                               }
+                                                            />
+                                                         )}
                                                       </div>
                                                       {hospitalDetail.location}
                                                    </li>
