@@ -25,6 +25,7 @@ function AllInforPage() {
       {
          name: '',
          price: '',
+         name_hospital: '',
       },
    ])
    const navigate = useNavigate()
@@ -180,7 +181,11 @@ function AllInforPage() {
                         <div key={index} className="all-service-card">
                            <img
                               className="all-service-avatar"
-                              src="/image/service_default.png"
+                              src={
+                                 service.thumbnail_department
+                                    ? config.URL + service.thumbnail_department
+                                    : '/image/service_default.png'
+                              }
                               alt="Hospital 1"
                            />
                            <div className="px-1 mt-2">
@@ -202,8 +207,10 @@ function AllInforPage() {
                                  </span>
                               </div>
                               <div className="p-1">
-                                 <i className="ti-support"></i>&nbsp; Bệnh viện
-                                 rất rất tốt
+                                 <i className="ti-support"></i>&nbsp;{' '}
+                                 {service.name_hospital
+                                    ? service.name_hospital
+                                    : ''}
                               </div>
                            </div>
                         </div>

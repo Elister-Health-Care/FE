@@ -1,13 +1,17 @@
 import { Container } from 'reactstrap'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import httpUser from '~/utils/httpUser'
 import ReactPaginate from 'react-paginate'
+import config from '~/router/config'
+import { pushSearchKeyToUrl } from '~/helpers/utils'
 function AllServicePage() {
+   const location = useLocation()
    const [services, setServices] = useState([
       {
          name: '',
          price: '',
+         name_hospital: '',
       },
    ])
 
@@ -17,6 +21,24 @@ function AllServicePage() {
       page: 1,
       sort_search_number: true,
    })
+   const parseSearchParams = () => {
+      const searchParams = new URLSearchParams(location.search)
+
+      if (searchParams.get('paginate') === null) {
+         return search
+      }
+
+      return {
+         search: searchParams.get('search') || search.search,
+         paginate: parseInt(searchParams.get('paginate')) || search.paginate,
+         page: parseInt(searchParams.get('page')) || search.page,
+         sort_search_number: searchParams.get('sort_search_number') === 'true',
+      }
+   }
+   useEffect(() => {
+      setSearch(parseSearchParams())
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+   }, [location.search])
    const [total, setTotal] = useState(0)
    const pageCount = Math.ceil(total / 12)
    const updateSearchParams = (newSearchParams) => {
@@ -48,8 +70,9 @@ function AllServicePage() {
 
    useEffect(() => {
       fetchService()
+      pushSearchKeyToUrl(search, location)
       // eslint-disable-next-line react-hooks/exhaustive-deps
-   }, [search])
+   }, [search, location])
    return (
       <>
          <div className="home">
@@ -106,7 +129,11 @@ function AllServicePage() {
                         <div key={index} className="all-service-card">
                            <img
                               className="all-service-avatar"
-                              src="/image/service_default.png"
+                              src={
+                                 service.thumbnail_department
+                                    ? config.URL + service.thumbnail_department
+                                    : '/image/service_default.png'
+                              }
                               alt="Hospital 1"
                            />
                            <div className="px-1 mt-2">
@@ -128,8 +155,10 @@ function AllServicePage() {
                                  </span>
                               </div>
                               <div className="p-1">
-                                 <i className="ti-support"></i>&nbsp; Bệnh viện
-                                 rất rất tốt
+                                 <i className="ti-support"></i>&nbsp;{' '}
+                                 {service.name_hospital
+                                    ? service.name_hospital
+                                    : ''}
                               </div>
                            </div>
                         </div>

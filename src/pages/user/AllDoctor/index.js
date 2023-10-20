@@ -1,12 +1,13 @@
 import { Container } from 'reactstrap'
 
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import httpUser from '~/utils/httpUser'
 import config from '~/router/config'
 import ReactPaginate from 'react-paginate'
-
+import { pushSearchKeyToUrl } from '~/helpers/utils'
 function AllDoctorPage() {
+   const location = useLocation()
    const [doctors, setDoctors] = useState([
       {
          id_hospital: '',
@@ -24,6 +25,24 @@ function AllDoctorPage() {
       page: 1,
       sort_search_number: true,
    })
+   const parseSearchParams = () => {
+      const searchParams = new URLSearchParams(location.search)
+
+      if (searchParams.get('paginate') === null) {
+         return search
+      }
+
+      return {
+         search: searchParams.get('search') || search.search,
+         paginate: parseInt(searchParams.get('paginate')) || search.paginate,
+         page: parseInt(searchParams.get('page')) || search.page,
+         sort_search_number: searchParams.get('sort_search_number') === 'true',
+      }
+   }
+   useEffect(() => {
+      setSearch(parseSearchParams())
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+   }, [location.search])
    const [total, setTotal] = useState(0)
    const pageCount = Math.ceil(total / 12)
    const updateSearchParams = (newSearchParams) => {
@@ -59,8 +78,9 @@ function AllDoctorPage() {
    }
    useEffect(() => {
       fetchDoctor()
+      pushSearchKeyToUrl(search, location)
       // eslint-disable-next-line react-hooks/exhaustive-deps
-   }, [search])
+   }, [search, location])
    return (
       <>
          <div className="home">

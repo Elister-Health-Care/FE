@@ -169,8 +169,8 @@ function HospitalCalendarPage() {
             return ''
       }
    }
-   const setErrorTime = (selectedTime, startDay, endDay, day, partOfDay) => {
-      if (selectedTime < startDay || selectedTime > endDay) {
+   const setErrorTime = (selectedTime, startTime, endTime, day, partOfDay) => {
+      if (selectedTime < startTime || selectedTime > endTime) {
          setErrors((prevErrors) => ({
             ...prevErrors,
             [day]: {
@@ -199,7 +199,7 @@ function HospitalCalendarPage() {
       const startTimeMorning = '00:00'
       const endTimeMorning = '12:00'
       const endTimeAfterNoon = '18:00'
-
+      const endTimeNight = '24:00'
       if (partOfDay === 'morning') {
          setErrorTime(
             selectedTime,
@@ -216,11 +216,12 @@ function HospitalCalendarPage() {
             day,
             partOfDay
          )
-      } else {
+         console.log(selectedTime)
+      } else if (partOfDay === 'night') {
          setErrorTime(
             selectedTime,
             endTimeAfterNoon,
-            startTimeMorning,
+            endTimeNight,
             day,
             partOfDay
          )
