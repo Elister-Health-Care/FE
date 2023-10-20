@@ -116,7 +116,7 @@ function AllHospitalPage() {
                               src={
                                  hospital.avatar
                                     ? config.URL + hospital.avatar
-                                    : '/image/avatar_admin_default.png'
+                                    : '/image/default-hospital-search.jpg'
                               }
                               alt="Hospital 1"
                            />

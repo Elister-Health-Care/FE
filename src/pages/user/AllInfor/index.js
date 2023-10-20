@@ -140,7 +140,7 @@ function AllInforPage() {
                               src={
                                  hospital.avatar
                                     ? config.URL + hospital.avatar
-                                    : '/image/avatar_admin_default.png'
+                                    : '/image/default-hospital-search.jpg'
                               }
                               alt="Hospital 1"
                            />
@@ -228,7 +228,7 @@ function AllInforPage() {
                               src={
                                  doctor.avatar
                                     ? config.URL + doctor.avatar
-                                    : '/image/avatar_admin_default.png'
+                                    : '/image/avata-default-doctor.jpg'
                               }
                               alt="Hospital 1"
                            />

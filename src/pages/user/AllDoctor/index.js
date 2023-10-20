@@ -120,7 +120,7 @@ function AllDoctorPage() {
                               src={
                                  doctor.avatar
                                     ? config.URL + doctor.avatar
-                                    : '/image/avatar_admin_default.png'
+                                    : '/image/avata-default-doctor.jpg'
                               }
                               alt="Hospital 1"
                            />
