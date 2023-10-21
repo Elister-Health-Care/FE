@@ -14,6 +14,7 @@ import LoadingTable from '~/components/Loading/LoadingTable'
 import { formatDateTime, pushSearchKeyToUrl } from '~/helpers/utils'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import LoadingDot from '~/components/Loading/LoadingDot'
 
 // rick text 
 import Editor from "~/components/EditorWithUseQuill";
@@ -25,6 +26,7 @@ function DoctorArticlePage() {
 	const [loadingTable, setLoadingTable] = useState(false)
 	const [articles, setArticles] = useState([])
 	const [shouldReloadData, setShouldReloadData] = useState(false);
+	const [loadingDot, setLoadingDot] = useState(false);
 
 	const defaultSearchParams = {
 		search: '',
@@ -202,6 +204,7 @@ function DoctorArticlePage() {
 		}
 		formDataToSubmit.append('content', content);
 		try {
+			setLoadingDot(true);
 			const response = await http.post('article/add', formDataToSubmit);
 			toast.success('Thêm Bài viết thành công !', toastOptions);
 			// clear input 
@@ -218,6 +221,8 @@ function DoctorArticlePage() {
 		} catch (error) {
 			if (error.response.data.data) toast.error(error.response.data.data[0], toastOptions);
 			else toast.error(error.response.data.message, toastOptions);
+		} finally {
+			setLoadingDot(false);
 		}
 	};
 	// submit form 
@@ -245,12 +250,15 @@ function DoctorArticlePage() {
 	const handleDeleteSubmit = async (e) => {
 		e.preventDefault();
 		try {
+			setLoadingDot(true);
 			const response = await http.delete('article/delete/' + articleDetail.id_article);
 			toast.success('Xóa Bài viết thành công !', toastOptions);
 			$(modalDeleteRef.current).modal('hide');
 			setShouldReloadData(!shouldReloadData);
 		} catch (error) {
 			toast.error('Lỗi khi xóa Bài viết !', toastOptions);
+		} finally {
+			setLoadingDot(false);
 		}
 	}
 	// delete healthInsurace 
@@ -289,6 +297,7 @@ function DoctorArticlePage() {
 		if (articleDetail.thumbnail instanceof Object) formDataToSubmit.append('thumbnail', articleDetail.thumbnail);
 		
 		try {
+			setLoadingDot(true);
 			const response = await http.post('article/update/' + articleDetail.id_article, formDataToSubmit);
 			const updatedArticles = [...articles];
 			updatedArticles[articleDetail.index] = response.data.data; 
@@ -300,6 +309,8 @@ function DoctorArticlePage() {
 			console.log(error);
 			if (error.response.data.data) toast.error(error.response.data.data[0], toastOptions);
 			else toast.error(error.response.data.message, toastOptions);
+		} finally {
+			setLoadingDot(false);
 		}
 	}
 	const [selectedEditImage, setSelectedEditImage] = useState(null);
@@ -368,6 +379,7 @@ function DoctorArticlePage() {
 	const handleDeleteManyArticles = async (e) => {
 		e.preventDefault();
 		try {
+			setLoadingDot(true);
 			const response = await http.delete('article/deletes', {
 				data: { list_id: selectedArticles }
 			});
@@ -377,6 +389,8 @@ function DoctorArticlePage() {
 		} catch (error) {
 			if (error.response.data.data) toast.error(error.response.data.data[0], toastOptions);
 			else toast.error(error.response.data.message, toastOptions);
+		} finally {
+			setLoadingDot(false);
 		}
 	};
 
@@ -408,8 +422,9 @@ function DoctorArticlePage() {
    return (
 		<>
 			<ToastContainer />
-			<TitleAdmin>Bài viết </TitleAdmin>
+			<TitleAdmin>Bài viết bác sĩ</TitleAdmin>
 			<div className={cx('card', 'shadow')}>
+				{loadingDot && <LoadingDot />}
 				<div className={cx('card_header')}>
 					<div className={cx('add_box')}>
 						<button data-toggle="modal" data-target="#deleteMany" type="button" className="btn btn-danger ml-2"><i class="fa-solid fa-trash"></i></button>

@@ -14,6 +14,7 @@ import LoadingTable from '~/components/Loading/LoadingTable'
 import { formatDateTime, pushSearchKeyToUrl } from '~/helpers/utils'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import LoadingDot from '~/components/Loading/LoadingDot'
 
 const cx = classNames.bind(styles)
 function ScheduleProfile() {
@@ -27,6 +28,7 @@ function ScheduleProfile() {
 	const [avatarHospital, setAvatarHospital] = useState('/image/default-hospital-search.jpg')
 
 	const healthCareUser = JSON.parse(localStorage.getItem('HealthCareUser'));
+	const [loadingDot, setLoadingDot] = useState(false);
 
 	const defaultSearchParams = {
 		search: '',
@@ -249,12 +251,15 @@ function ScheduleProfile() {
 	const handleDeleteSubmit = async (e) => {
 		e.preventDefault();
 		try {
+			setLoadingDot(true);
 			const response = await http.delete('work-schedule/user-cancel/' + workScheduleDetail.work_schedule_id);
 			toast.success('Hủy lịch hẹn thành công !', toastOptions);
 			$(modalDeleteRef.current).modal('hide');
 			setShouldReloadData(!shouldReloadData);
 		} catch (error) {
 			toast.error('Lỗi khi hủy lịch hẹn !', toastOptions);
+		} finally {
+			setLoadingDot(false);
 		}
 	}
 	// delete healthInsurace 
@@ -285,6 +290,7 @@ function ScheduleProfile() {
 	const handleDeleteManyArticles = async (e) => {
 		e.preventDefault();
 		try {
+			setLoadingDot(true);
 			const response = await http.delete('work-schedule/user-cancel-many', {
 				data: { list_id: selectedWorkSchedules }
 			});
@@ -294,6 +300,8 @@ function ScheduleProfile() {
 		} catch (error) {
 			if (error.response.data.data) toast.error(error.response.data.data[0], toastOptions);
 			else toast.error(error.response.data.message, toastOptions);
+		} finally {
+			setLoadingDot(false);
 		}
 	};
 
@@ -327,6 +335,7 @@ function ScheduleProfile() {
 			<ToastContainer />
 			<TitleAdmin>Lịch hẹn tư vấn và dịch vụ của bạn</TitleAdmin>
 			<div className={cx('card', 'shadow')}>
+				{loadingDot && <LoadingDot />}
 				<div className={cx('card_header')}>
 					<div className={cx('add_box')}>
 						<button data-toggle="modal" data-target="#deleteMany" type="button" className={`btn btn-danger ml-2 ${cx('fontz_14')}`} ><i className="fa-regular fa-rectangle-xmark"></i></button>
@@ -637,7 +646,7 @@ function ScheduleProfile() {
 														<li className={` ${cx('li-detail')}`} ><strong>Email : </strong> {workScheduleDetail.user_email}</li>
 														<li className={` ${cx('li-detail')}`} ><strong>Số điện thoại : </strong> {workScheduleDetail.user_phone}</li>
 														<li className={` ${cx('li-detail')}`} ><strong>Địa chỉ : </strong> {workScheduleDetail.user_address}</li>
-														<li className={` ${cx('li-detail')}`} ><strong>Khung giờ : </strong> {workScheduleDetail.time.interval[0]} - {workScheduleDetail.time.interval[1]} .{workScheduleDetail.time.date}</li>
+														<li className={` ${cx('li-detail')}`} ><strong>Khung giờ : </strong> {workScheduleDetail.time.interval[0]} - {workScheduleDetail.time.interval[1]} . {workScheduleDetail.time.date}</li>
 														<li className={` ${cx('li-detail')}`}>
 															<strong>Giá : </strong>
 															{workScheduleDetail.work_schedule_price
@@ -694,7 +703,7 @@ function ScheduleProfile() {
 									</div>
 									<div className="modal-footer">
 										<button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
-										<button type="submit" className="btn btn-danger"><i className="fa-solid fa-trash"></i> Cancel</button>
+										<button type="submit" className="btn btn-danger"><i className="fa-solid fa-trash"></i> Delete</button>
 									</div>
 								</form>
 							</div>
@@ -785,7 +794,7 @@ function ScheduleProfile() {
 													<li className={` ${cx('li-detail')}`} ><strong>Email : </strong> {workScheduleDetail.user_email}</li>
 													<li className={` ${cx('li-detail')}`} ><strong>Số điện thoại : </strong> {workScheduleDetail.user_phone}</li>
 													<li className={` ${cx('li-detail')}`} ><strong>Địa chỉ : </strong> {workScheduleDetail.user_address}</li>
-													<li className={` ${cx('li-detail')}`} ><strong>Khung giờ : </strong> {workScheduleDetail.time.interval[0]} - {workScheduleDetail.time.interval[1]} .{workScheduleDetail.time.date}</li>
+													<li className={` ${cx('li-detail')}`} ><strong>Khung giờ : </strong> {workScheduleDetail.time.interval[0]} - {workScheduleDetail.time.interval[1]} . {workScheduleDetail.time.date}</li>
 													<li className={` ${cx('li-detail')}`}>
 														<strong>Giá : </strong>
 														{workScheduleDetail.work_schedule_price
