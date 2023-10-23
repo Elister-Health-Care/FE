@@ -18,6 +18,9 @@
    input[type='time'] {
       width: 98px;
    }
+   td {
+      position: relative;
+   }
 }
 .up_width {
    height: 60px;
@@ -80,4 +83,13 @@
       display: inline;
       margin-left: 10px;
    }
+}
+.error {
+   position: absolute;
+   top: 43px;
+   left: 60px;
+   color: #ad1b1b;
+}
+.note {
+   color: #ff0000;
 }

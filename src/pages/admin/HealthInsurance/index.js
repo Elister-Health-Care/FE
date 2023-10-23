@@ -14,6 +14,7 @@ import LoadingTable from '~/components/Loading/LoadingTable'
 import { formatDateTime, pushSearchKeyToUrl } from '~/helpers/utils'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import LoadingDot from '~/components/Loading/LoadingDot'
 
 // rick text 
 import Editor from "~/components/EditorWithUseQuill";
@@ -24,6 +25,7 @@ const AdminHealthInsurance = () => {
 	const [loadingTable, setLoadingTable] = useState(false)
 	const [healthInsuraces, setHealthInsuraces] = useState([])
 	const [shouldReloadData, setShouldReloadData] = useState(false);
+	const [loadingDot, setLoadingDot] = useState(false);
 
 	const defaultSearchParams = {
 		search: '',
@@ -157,6 +159,7 @@ const AdminHealthInsurance = () => {
 		formDataToSubmit.append('name', formData['name']);
 		formDataToSubmit.append('description', content);
 		try {
+			setLoadingDot(true);
 			const response = await http.post('health-insurace/add', formDataToSubmit);
 			toast.success('Thêm bảo hiểm thành công !', toastOptions);
 			// clear input 
@@ -170,6 +173,8 @@ const AdminHealthInsurance = () => {
 		} catch (error) {
 			if (error.response.data.data) toast.error(error.response.data.data[0], toastOptions);
 			else toast.error(error.response.data.message, toastOptions);
+		} finally {
+			setLoadingDot(false);
 		}
 	};
 	// submit form 
@@ -179,12 +184,15 @@ const AdminHealthInsurance = () => {
 	const handleDeleteSubmit = async (e) => {
 		e.preventDefault();
 		try {
+			setLoadingDot(true);
 			const response = await http.delete('health-insurace/' + healthInsuraceDetail.id);
 			toast.success('Xóa Bảo hiểm thành công !', toastOptions);
 			$(modalDeleteRef.current).modal('hide');
 			setShouldReloadData(!shouldReloadData);
 		} catch (error) {
 			toast.error('Lỗi khi xóa Bảo hiểm !', toastOptions);
+		} finally {
+			setLoadingDot(false);
 		}
 	}
 	// delete healthInsurace 
@@ -211,6 +219,7 @@ const AdminHealthInsurance = () => {
 		formDataToSubmit.append('name', healthInsuraceDetail['name']);
 		formDataToSubmit.append('description', contentEdit);
 		try {
+			setLoadingDot(true);
 			const response = await http.post('health-insurace/update/' + healthInsuraceDetail.id, formDataToSubmit);
 			// healthInsuraces[healthInsuraceDetail.index] = response.data.data;  // không nên 
 			const updatedHealthInsuraces = [...healthInsuraces];
@@ -222,6 +231,8 @@ const AdminHealthInsurance = () => {
 		} catch (error) {
 			if (error.response.data.data) toast.error(error.response.data.data[0], toastOptions);
 			else toast.error(error.response.data.message, toastOptions);
+		} finally {
+			setLoadingDot(false);
 		}
 	}
 
@@ -243,6 +254,7 @@ const AdminHealthInsurance = () => {
 			<ToastContainer />
 			<TitleAdmin>Bảo hiểm </TitleAdmin>
 			<div className={cx('card', 'shadow')}>
+				{loadingDot && <LoadingDot />}
 				<div className={cx('card_header')}>
 					<div className={cx('add_box')}>
 						<button data-toggle="modal" data-target="#modalCreateHealthInsurace" type="button" className="btn btn-success ml-2"><i className="fa-solid fa-square-plus"></i></button>

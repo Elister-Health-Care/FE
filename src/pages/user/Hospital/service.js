@@ -14,75 +14,83 @@ import { GiConsoleController } from "react-icons/gi";
 import FormBooking from "~/components/Form/form-booking";
 
 const HospitalService = () => {
-  const [services, setService] = useState([]);
-  const [keyword, setKeyword] = useState("");
-  const { id,tab } = useParams();
-  const [loading, setLoading] = useState(false);
-  const [hospital, setHospital] = useState({
-    id: null,
-    email: "",
-    username: "",
-    name: "",
-    phone: "",
-    address: "",
-    avatar: null,
-    is_accept: null,
-    role: "",
-    email_verified_at: "",
-    created_at: "",
-    updated_at: "",
-    id_hospital: null,
-    province_code: null,
-    infrastructure: null,
-    description: "",
-    location: null,
-    search_number: null,
-    time_work: null,
-    enable: null,
-    departments: null,
-  });
+   const [services, setService] = useState([])
+   const [keyword, setKeyword] = useState('')
+   const { id, tab } = useParams()
+   const [loading, setLoading] = useState(false)
+   const [hospital, setHospital] = useState({
+      id: null,
+      email: '',
+      username: '',
+      name: '',
+      phone: '',
+      address: '',
+      avatar: null,
+      is_accept: null,
+      role: '',
+      email_verified_at: '',
+      created_at: '',
+      updated_at: '',
+      id_hospital: null,
+      province_code: null,
+      infrastructure: null,
+      description: '',
+      location: null,
+      search_number: null,
+      time_work: null,
+      enable: null,
+      departments: null,
+   })
 
-  useEffect(() => {
-    const getHospital = async () => {
-      try {
-        setLoading(true);
-        const response = await http.get("/infor-hospital/view-profile/" + id);
-        setHospital(response.data.data);
-      } catch (error) {
-        console.log("Lỗi kết nối đến API !", error);
-      } finally {
-        setLoading(false);
+   useEffect(() => {
+      const getHospital = async () => {
+         try {
+            setLoading(true)
+            const response = await http.get(
+               '/infor-hospital/view-profile/' + id
+            )
+            setHospital(response.data.data)
+         } catch (error) {
+            console.log('Lỗi kết nối đến API !', error)
+         } finally {
+            setLoading(false)
+         }
       }
-    };
-    getHospital();
-  }, [id, tab]);
+      getHospital()
+   }, [id, tab])
 
-  useEffect(() => {
-    const getService = async () => {
-      try {
-        setLoading(true);
-        const response = await http.get("/hospital-service/hospital/" + id + "?search="+keyword);
-        setService(response.data.data);
-      } catch (error) {
-        console.log("Lỗi kết nối đến API !", error);
-      } finally {
-        setLoading(false);
+   useEffect(() => {
+      const getService = async () => {
+         try {
+            setLoading(true)
+            const response = await http.get(
+               '/hospital-service/hospital/' + id + '?search=' + keyword
+            )
+            setService(response.data.data)
+         } catch (error) {
+            console.log('Lỗi kết nối đến API !', error)
+         } finally {
+            setLoading(false)
+         }
       }
-    };
-    getService();
-  }, [id,tab,keyword]);
-  const formatMoney = (money) => {
-    return money.toLocaleString("it-IT", {
-      style: "currency",
-      currency: "VND",
-    });
-  };
+      getService()
+   }, [id, tab, keyword])
+   const formatMoney = (money) => {
+      if (money) {
+         return money.toLocaleString('it-IT', {
+            style: 'currency',
+            currency: 'VND',
+         })
+      }
+      return ''
+   }
 
-  const handleChangeInput = (e) => {
-    const { name, value } = e.target
-    console.log (value);
-    setKeyword(value);
- }
+   const handleChangeInput = (e) => {
+      const { name, value } = e.target
+      console.log(value)
+      setKeyword(value)
+   }
+
 
   return (
     <>
@@ -129,16 +137,17 @@ const HospitalService = () => {
                         </p>
                       </div>
                     </div>
+                           </div>
+                           <button className="btn btn-primary btn-book">
+                              Đặt lịch hẹn
+                           </button>
+                        </div>
+                     </div>
+
                   </div>
-                  <button className="btn btn-primary btn-book">
-                    Đặt lịch hẹn
-                  </button>
-                </div>
-              </div>
+               ))}
             </div>
-          ))}
         </div>
-      </div>
       </div>
         <div className="col-md-4 col-lg-4">
               <FormBooking id={id}/>

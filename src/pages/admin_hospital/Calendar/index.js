@@ -118,6 +118,7 @@ function HospitalCalendarPage() {
    }
    const [scheduleData, setScheduleData] = useState(data)
    const [loadingDot, setLoadingDot] = useState(false)
+   const [errors, setErrors] = useState({})
    const daysOfWeek = [
       'monday',
       'tuesday',
@@ -168,11 +169,63 @@ function HospitalCalendarPage() {
             return ''
       }
    }
+   const setErrorTime = (selectedTime, startTime, endTime, day, partOfDay) => {
+      if (selectedTime < startTime || selectedTime > endTime) {
+         setErrors((prevErrors) => ({
+            ...prevErrors,
+            [day]: {
+               ...prevErrors[day],
+               [partOfDay]: 'Thời gian không đúng',
+            },
+         }))
+      } else {
+         setErrors((prevErrors) => ({
+            ...prevErrors,
+            [day]: {
+               ...prevErrors[day],
+               [partOfDay]: '', // Đặt lại trạng thái lỗi
+            },
+         }))
+      }
+   }
    const handleTimeChange = (day, partOfDay, timeIndex, newValue) => {
       const updatedSchedule = { ...scheduleData }
 
       updatedSchedule[day][partOfDay].time[timeIndex] = newValue
       setScheduleData(updatedSchedule)
+
+      const selectedTime = newValue
+
+      const startTimeMorning = '00:00'
+      const endTimeMorning = '12:00'
+      const endTimeAfterNoon = '18:00'
+      const endTimeNight = '24:00'
+      if (partOfDay === 'morning') {
+         setErrorTime(
+            selectedTime,
+            startTimeMorning,
+            endTimeMorning,
+            day,
+            partOfDay
+         )
+      } else if (partOfDay === 'afternoon') {
+         setErrorTime(
+            selectedTime,
+            endTimeMorning,
+            endTimeAfterNoon,
+            day,
+            partOfDay
+         )
+         console.log(selectedTime)
+      } else if (partOfDay === 'night') {
+         setErrorTime(
+            selectedTime,
+            endTimeAfterNoon,
+            endTimeNight,
+            day,
+            partOfDay
+         )
+      }
    }
 
    const handleDayCheckboxChange = (day, newValue) => {
@@ -215,9 +268,7 @@ function HospitalCalendarPage() {
          })
          toast.success('Cập nhật lịch thành công !', toastOptions)
       } catch (error) {
-         if (error.response.data.data)
-            toast.error(error.response.data.data[0], toastOptions)
-         else toast.error(error.response.data.message, toastOptions)
+         toast.error('Bạn đã cập nhật giờ không hợp lệ', toastOptions)
       } finally {
          setLoadingDot(false)
       }
@@ -237,159 +288,197 @@ function HospitalCalendarPage() {
                </span>
             </div>
             <div className={cx('card_body', 'center')}>
+               <div>
+                  <p className={cx('float-right', 'note')}>
+                     **Lưu ý buổi sáng bắt đầu từ 00:00 - 12:00, buổi chiều từ
+                     12:00 - 18:00 và buổi tối 18:00-00:00
+                  </p>
+               </div>
+
                <table>
-                  {daysOfWeek.map((day) => (
-                     <tr key={day} className={cx('up_width')}>
-                        <td className={cx('day')}>
-                           <div className={cx('dayp')}>
-                              <span className={cx('pr_13')}>
-                                 {formatDay(day)}
-                              </span>
-                           </div>
+                  <thead></thead>
+                  <tbody>
+                     {daysOfWeek.map((day) => (
+                        <tr key={day} className={cx('up_width')}>
+                           <td className={cx('day')}>
+                              <div className={cx('dayp')}>
+                                 <span className={cx('pr_13')}>
+                                    {formatDay(day)}
+                                 </span>
+                              </div>
 
-                           <input
-                              type="checkbox"
-                              checked={scheduleData[day].enable}
-                              onChange={(e) =>
-                                 handleDayCheckboxChange(day, e.target.checked)
-                              }
-                           />
-                        </td>
-                        <td>
-                           <span className={cx('park')}>Sáng</span>
-                           <div className={cx('width_lock')}>
                               <input
-                                 type="time"
-                                 value={forrmatTime(
-                                    scheduleData[day].morning.time[0]
-                                 )}
+                                 type="checkbox"
+                                 checked={scheduleData[day].enable || false}
                                  onChange={(e) =>
-                                    handleTimeChange(
+                                    handleDayCheckboxChange(
+                                       day,
+                                       e.target.checked
+                                    )
+                                 }
+                              />
+                           </td>
+                           <td>
+                              <span className={cx('park')}>Sáng</span>
+                              <div className={cx('width_lock')}>
+                                 <input
+                                    type="time"
+                                    value={forrmatTime(
+                                       scheduleData[day].morning.time[0] || ''
+                                    )}
+                                    onChange={(e) =>
+                                       handleTimeChange(
+                                          day,
+                                          'morning',
+                                          0,
+                                          e.target.value
+                                       )
+                                    }
+                                 />
+                                 {' - '}
+                                 <input
+                                    type="time"
+                                    value={forrmatTime(
+                                       scheduleData[day].morning.time[1] || ''
+                                    )}
+                                    onChange={(e) =>
+                                       handleTimeChange(
+                                          day,
+                                          'morning',
+                                          1,
+                                          e.target.value
+                                       )
+                                    }
+                                 />
+                              </div>
+                              <input
+                                 type="checkbox"
+                                 checked={
+                                    scheduleData[day].morning.enable || false
+                                 }
+                                 onChange={(e) =>
+                                    handlePartOfDayCheckboxChange(
                                        day,
                                        'morning',
-                                       0,
-                                       e.target.value
+                                       e.target.checked
                                     )
                                  }
                               />
-                              {' - '}
+                              {errors[day] && errors[day]['morning'] && (
+                                 <span className={cx('error')}>
+                                    {errors[day]['morning']}
+                                 </span>
+                              )}
+                           </td>
+                           <td>
+                              <span className={cx('park')}>Chiều</span>
+                              <div className={cx('width_lock')}>
+                                 <input
+                                    type="time"
+                                    value={
+                                       scheduleData[day].afternoon.time[0] || ''
+                                    }
+                                    onChange={(e) =>
+                                       handleTimeChange(
+                                          day,
+                                          'afternoon',
+                                          0,
+                                          e.target.value
+                                       )
+                                    }
+                                 />
+                                 {' - '}
+                                 <input
+                                    type="time"
+                                    value={
+                                       scheduleData[day].afternoon.time[1] || ''
+                                    }
+                                    onChange={(e) =>
+                                       handleTimeChange(
+                                          day,
+                                          'afternoon',
+                                          1,
+                                          e.target.value
+                                       )
+                                    }
+                                 />
+                              </div>
+
                               <input
-                                 type="time"
-                                 value={forrmatTime(
-                                    scheduleData[day].morning.time[1]
-                                 )}
-                                 onChange={(e) =>
-                                    handleTimeChange(
-                                       day,
-                                       'morning',
-                                       1,
-                                       e.target.value
-                                    )
+                                 type="checkbox"
+                                 checked={
+                                    scheduleData[day].afternoon.enable || false
                                  }
-                              />
-                           </div>
-                           <input
-                              type="checkbox"
-                              checked={scheduleData[day].morning.enable}
-                              onChange={(e) =>
-                                 handlePartOfDayCheckboxChange(
-                                    day,
-                                    'morning',
-                                    e.target.checked
-                                 )
-                              }
-                           />
-                        </td>
-                        <td>
-                           <span className={cx('park')}>Chiều</span>
-                           <div className={cx('width_lock')}>
-                              <input
-                                 type="time"
-                                 value={scheduleData[day].afternoon.time[0]}
                                  onChange={(e) =>
-                                    handleTimeChange(
+                                    handlePartOfDayCheckboxChange(
                                        day,
                                        'afternoon',
-                                       0,
-                                       e.target.value
+                                       e.target.checked
                                     )
                                  }
                               />
-                              {' - '}
-                              <input
-                                 type="time"
-                                 value={scheduleData[day].afternoon.time[1]}
-                                 onChange={(e) =>
-                                    handleTimeChange(
-                                       day,
-                                       'afternoon',
-                                       1,
-                                       e.target.value
-                                    )
-                                 }
-                              />
-                           </div>
+                              {errors[day] && errors[day]['afternoon'] && (
+                                 <span className={cx('error')}>
+                                    {errors[day]['afternoon']}
+                                 </span>
+                              )}
+                           </td>
+                           <td>
+                              <span className={cx('park')}>Tối</span>
+                              <div className={cx('width_lock')}>
+                                 <input
+                                    type="time"
+                                    value={forrmatTime(
+                                       scheduleData[day].night.time[0] || ''
+                                    )}
+                                    onChange={(e) =>
+                                       handleTimeChange(
+                                          day,
+                                          'night',
+                                          0,
+                                          e.target.value
+                                       )
+                                    }
+                                 />
+                                 {' - '}
+                                 <input
+                                    type="time"
+                                    value={forrmatTime(
+                                       scheduleData[day].night.time[1] || ''
+                                    )}
+                                    onChange={(e) =>
+                                       handleTimeChange(
+                                          day,
+                                          'night',
+                                          1,
+                                          e.target.value
+                                       )
+                                    }
+                                 />
+                              </div>
 
-                           <input
-                              type="checkbox"
-                              checked={scheduleData[day].afternoon.enable}
-                              onChange={(e) =>
-                                 handlePartOfDayCheckboxChange(
-                                    day,
-                                    'afternoon',
-                                    e.target.checked
-                                 )
-                              }
-                           />
-                        </td>
-                        <td>
-                           <span className={cx('park')}>Tối</span>
-                           <div className={cx('width_lock')}>
                               <input
-                                 type="time"
-                                 value={forrmatTime(
-                                    scheduleData[day].night.time[0]
-                                 )}
+                                 type="checkbox"
+                                 checked={
+                                    scheduleData[day].night.enable || false
+                                 }
                                  onChange={(e) =>
-                                    handleTimeChange(
+                                    handlePartOfDayCheckboxChange(
                                        day,
                                        'night',
-                                       0,
-                                       e.target.value
+                                       e.target.checked
                                     )
                                  }
                               />
-                              {' - '}
-                              <input
-                                 type="time"
-                                 value={forrmatTime(
-                                    scheduleData[day].night.time[1]
-                                 )}
-                                 onChange={(e) =>
-                                    handleTimeChange(
-                                       day,
-                                       'night',
-                                       1,
-                                       e.target.value
-                                    )
-                                 }
-                              />
-                           </div>
-
-                           <input
-                              type="checkbox"
-                              checked={scheduleData[day].night.enable}
-                              onChange={(e) =>
-                                 handlePartOfDayCheckboxChange(
-                                    day,
-                                    'night',
-                                    e.target.checked
-                                 )
-                              }
-                           />
-                        </td>
-                     </tr>
-                  ))}
+                              {errors[day] && errors[day]['night'] && (
+                                 <span className={cx('error')}>
+                                    {errors[day]['night']}
+                                 </span>
+                              )}
+                           </td>
+                        </tr>
+                     ))}
+                  </tbody>
                </table>
 
                <button
