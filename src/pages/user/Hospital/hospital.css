@@ -592,6 +592,9 @@
   border: 1px solid rgb(217, 217, 217);
   border-radius: 6px;
 }
+.body-hospital .modal-booking .form-booking .input-booking .select-department .input-department .dropdown-input input:disabled {
+  cursor: not-allowed;
+}
 .body-hospital .modal-booking .form-booking .input-booking .select-department .input-department .dropdown-input .icon-search {
   position: absolute;
   top: 50%;
@@ -619,6 +622,31 @@
   height: 24px;
   font-size: 15px;
 }
+.body-hospital .modal-booking .form-booking .input-booking .select-department .input-department .dropdown-input .dropdown-departerment {
+  right: 0px;
+}
+.body-hospital .modal-booking .form-booking .input-booking .select-department .input-department .dropdown-input .dropdown-departerment a {
+  display: flex;
+  gap: 10px;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+.body-hospital .modal-booking .form-booking .input-booking .select-department .input-department .dropdown-input .dropdown-departerment a img {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  -o-object-fit: cover;
+     object-fit: cover;
+  -o-object-position: center;
+     object-position: center;
+}
+.body-hospital .modal-booking .form-booking .input-booking .select-department .input-department .dropdown-input .dropdown-departerment a p {
+  margin-bottom: 0px;
+  margin-top: 3px;
+}
+.body-hospital .modal-booking .form-booking .input-booking .select-department .input-department .dropdown-input .dropdown-departerment li:hover {
+  background-color: #f1f1f1;
+}
 .body-hospital .modal-booking .form-booking .input-booking .btn-booking {
   background-color: #2d87f3;
   border: 1px solid #2d87f3;
@@ -638,4 +666,162 @@
   transition: background-color 0.3s, border-color 0.3s;
   border-radius: 6px;
   overflow: visible;
+}
+.body-hospital .modal-booking .form-booking .input-booking .btn-booking:enabled {
+  background-color: #007bff;
+  border-color: #007bff;
+  color: #fff;
+  cursor: pointer;
+  font-size: 16px;
+  line-height: 24px;
+  padding: 12px 24px;
+  height: 100%;
+  width: 100%;
+  font-weight: 700;
+  transition: background-color 0.3s, border-color 0.3s;
+  border-radius: 6px;
+  overflow: visible;
+}
+.body-hospital .modal-booking .form-booking .input-booking .advise {
+  position: relative;
+  margin-top: 20px;
+}
+.body-hospital .modal-booking .form-booking .input-booking .advise ul {
+  padding-left: 0px;
+  width: 100%;
+  display: inline-flex;
+  max-width: 100%;
+  border-bottom: 1px solid #e4e8ec;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -moz-column-gap: 1.25rem;
+       column-gap: 1.25rem;
+}
+.body-hospital .modal-booking .form-booking .input-booking .advise ul li {
+  color: #2d87f3;
+  border-bottom: 3px solid #2d87f3;
+  bottom: -1px;
+  position: relative;
+  flex: 1 1 0%;
+  justify-content: center;
+  display: flex;
+  align-items: center;
+  padding-bottom: 4px;
+}
+.body-hospital .modal-booking .form-booking .input-booking .advise ul li .title {
+  -webkit-box-align: center;
+  display: flex;
+  align-items: center;
+}
+.body-hospital .modal-booking .form-booking .input-booking .advise ul li .title .content {
+  -webkit-tap-highlight-color: transparent;
+  color: rgb(45, 135, 243) !important;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 1rem;
+  line-height: 1.5rem;
+  letter-spacing: 0px;
+  margin-bottom: 0;
+}
+.body-hospital .modal-booking .form-booking .input-booking .advise .booking-description {
+  color: rgb(89, 89, 89);
+  font-size: 14px;
+  line-height: 22px;
+  margin-top: 20px;
+}
+.body-hospital .modal-booking .form-booking .input-booking .main-form-booking {
+  background-color: rgb(248, 249, 252);
+  position: relative;
+}
+.body-hospital .modal-booking .form-booking .input-booking .main-form-booking .title-booking {
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 18px;
+}
+.body-hospital .modal-booking .form-booking .input-booking .main-form-booking .input-datetime .pickerContainer {
+  position: relative;
+  padding-top: 0px;
+}
+.body-hospital .modal-booking .form-booking .input-booking .main-form-booking .input-datetime .pickerContainer .nav-tabs {
+  margin-top: 20px;
+}
+.body-hospital .modal-booking .form-booking .input-booking .main-form-booking .input-datetime .pickerContainer .nav-tabs .nav-item {
+  border: none;
+  text-align: center;
+  font-weight: 600;
+}
+.body-hospital .modal-booking .form-booking .input-booking .main-form-booking .input-datetime .pickerContainer .nav-tabs .nav-item .nav-link {
+  border: none;
+  text-align: center;
+  font-weight: 600;
+  width: 100%;
+}
+.body-hospital .modal-booking .form-booking .input-booking .main-form-booking .input-datetime .pickerContainer .nav-tabs .nav-item .active {
+  background: none;
+  color: rgb(45, 135, 243);
+  border-bottom: 2px solid rgb(45, 135, 243);
+}
+.body-hospital .modal-booking .form-booking .input-booking .main-form-booking .input-datetime .pickerContainer .datetime {
+  position: relative;
+  width: 100%;
+}
+.body-hospital .modal-booking .form-booking .input-booking .main-form-booking .input-datetime .pickerContainer .datetime .input-cover {
+  position: relative;
+}
+.body-hospital .modal-booking .form-booking .input-booking .main-form-booking .input-datetime .pickerContainer .datetime .input-cover input {
+  font-size: 16px;
+  line-height: 1.2;
+  font-weight: 400;
+  padding: 12px 16px;
+  background-color: rgb(255, 255, 255);
+  cursor: pointer;
+  width: 100%;
+  border: 1px solid rgb(217, 217, 217);
+  border-radius: 6px;
+}
+.body-hospital .modal-booking .form-booking .input-booking .main-form-booking .input-datetime .pickerContainer .time-booking {
+  display: grid;
+  margin-top: 24px;
+  gap: 8px;
+  grid-template-columns: repeat(3, 1fr);
+}
+.body-hospital .modal-booking .form-booking .input-booking .main-form-booking .input-datetime .pickerContainer .time-booking button {
+  border-width: 1.5px;
+  border: 1px solid rgb(210, 214, 220);
+  padding: 8px 0px !important;
+  background-color: #fff;
+  color: #2d87f3;
+  font-size: 14px;
+  line-height: 22px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 700;
+  transition: background-color 0.3s, border-color 0.3s;
+  width: auto;
+}
+.body-hospital .modal-booking .form-booking .input-booking .main-form-booking .input-datetime .pickerContainer .time-booking button span {
+  color: rgb(38, 38, 38);
+  font-weight: 400;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
+.body-hospital .modal-booking .form-booking .input-booking .main-form-booking .input-datetime .pickerContainer .time-booking .active, .body-hospital .modal-booking .form-booking .input-booking .main-form-booking .input-datetime .pickerContainer .time-booking button:focus {
+  background-color: #2d87f3;
+  border: 1px solid #2d87f3;
+  font-size: 14px;
+  line-height: 22px;
+  padding: 7px 0px !important;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 700;
+  transition: background-color 0.3s, border-color 0.3s;
+  width: auto;
+}
+.body-hospital .modal-booking .form-booking .input-booking .main-form-booking .input-datetime .pickerContainer .time-booking .active span, .body-hospital .modal-booking .form-booking .input-booking .main-form-booking .input-datetime .pickerContainer .time-booking button:focus span {
+  color: #fff;
+  font-weight: 400;
+  align-items: center;
+  display: flex;
+  justify-content: center;
 }/*# sourceMappingURL=hospital.css.map */

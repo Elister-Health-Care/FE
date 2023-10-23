@@ -10,6 +10,7 @@ import { BiChevronDown  } from "react-icons/bi";
 import http from "~/utils/http";
 import config from "~/router/config";
 import LoadingDot from "~/components/Loading/LoadingDot";
+import FormBooking from "~/components/Form/form-booking";
 
 const HospitalDetail = () => {
   const [loading, setLoading] = useState(false);
@@ -292,10 +293,10 @@ const HospitalDetail = () => {
               <div className="name-hospital">
                 <h2>{hospital.name}</h2>
                 <p className="address">
-                  <span className="icon-location">
+                  <span className="icon-location mr-1">
                     <FaLocationDot />
                   </span>
-                  441 Lê Văn Lương, Tân Phong, Quận 7, Ho Chi Minh City, Vietnam
+                  {hospital.address}
                 </p>
               </div>
             </div>
@@ -345,75 +346,8 @@ const HospitalDetail = () => {
                  Bảo hiểm 
                 </Link>
               </div>
-              <Outlet />
             </div>
-            <div className="col-md-4 col-lg-4">
-              <div className="modal-booking">
-                <h5 className="title">Đặt lịch ngay</h5>
-                <p className="advice">
-                  Lựa chọn bác sĩ phù hợp, dịch vụ y tế cần khám và tiến hành
-                  đặt lịch ngay.
-                </p>
-                <ul className="list-choice">
-                  <li className="active"> <FaUserDoctor className="mr-1"/> Bác sĩ</li>
-                  <li><RiServiceFill className="mr-1"/>Dịch vụ</li>
-                </ul>
-                <div className="form-booking">
-                  <div>
-                    <label htmlFor="hospital">Bệnh viện</label>
-                    <div className="selected-hospital">
-                      <div className="input-hospital">
-                        <input type="text" disabled defaultValue="Phòng khám Đa khoa Quốc tế Sài Gòn Chi nhánh Quận 7"/>
-                        <div className="logo-hospital">
-                          <img src="https://cdn-healthcare.hellohealthgroup.com/2023/07/1689066725_64ad1ce5dbc5c9.91037231.jpg" />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="input-booking">
-                    <div>
-                      <label className="department">Chuyên khoa</label>
-                      <div className="select-department">
-                        <div className="input-department">
-                          <div className="dropdown-input">
-                              <div className="p-relative">
-                                <input type="text" className="dropdown-department" placeholder="Tìm chuyên khoa"/>
-                                <div className="icon-search">
-                                  <Search className="icon"/>
-                                </div>
-                                <div className="icon-down">
-                                  <BiChevronDown className="icon"/> 
-                                </div>
-                              </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div>
-                      <label className="department">Bác sĩ</label>
-                      <div className="select-department">
-                        <div className="input-department">
-                          <div className="dropdown-input">
-                              <div className="p-relative">
-                                <input type="text" className="dropdown-department" placeholder="Tìm bác sĩ"/>
-                                <div className="icon-search">
-                                  <Search className="icon"/>
-                                </div>
-                                <div className="icon-down">
-                                  <BiChevronDown className="icon"/> 
-                                </div>
-                              </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>  
-                    <div>
-                      <button disabled className="btn-booking">Đặt lịch ngay</button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <Outlet />
           </div>
         </Container>
       </div>

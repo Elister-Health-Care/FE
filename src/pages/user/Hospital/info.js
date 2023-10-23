@@ -1,15 +1,17 @@
-import React, { useEffect, useState } from 'react'
-import { Link, Outlet, useParams } from 'react-router-dom'
-import './hospital.css'
-import { Container, Nav } from 'reactstrap'
-import { GrFormNext } from 'react-icons/gr'
-import { FaLocationDot } from 'react-icons/fa6'
-import { RiMoneyDollarCircleFill } from 'react-icons/ri'
-import http from '~/utils/http'
-import config from '~/router/config'
-import LoadingDot from '~/components/Loading/LoadingDot'
-import { Accordion } from 'react-bootstrap'
-import Map from '~/components/Map'
+import React, { useEffect, useState } from "react";
+import { Link, Outlet, useParams } from "react-router-dom";
+import "./hospital.css";
+import { Container, Nav } from "reactstrap";
+import { GrFormNext } from "react-icons/gr";
+import { FaLocationDot } from "react-icons/fa6";
+import { RiMoneyDollarCircleFill } from "react-icons/ri";
+import http from "~/utils/http";
+import config from "~/router/config";
+import LoadingDot from "~/components/Loading/LoadingDot";
+import { Accordion } from "react-bootstrap";
+import Map from "~/components/Map"
+import FormBooking from "~/components/Form/form-booking";
+
 const HospitalInformation = () => {
    const [loading, setLoading] = useState(false)
    const [infrastructures, setInfrastructure] = useState([])
@@ -221,12 +223,13 @@ const HospitalInformation = () => {
    }, [id])
    const handleChildData = (data) => {
       // setUsers({ ...users, location: data })
-   }
-   return (
+    };
+    return (
       <>
-         <div className="infor-hospital">
-            <div className="timesheet">
-               <div className="week-working-time d-flex ">
+       <div className="col-lg-8 col-md-8">
+            <div className="infor-hospital">
+              <div className="timesheet">
+                <div className="week-working-time d-flex ">
                   <h2>Giờ làm việc:</h2>
                </div>
                <div className="week-working-time">
@@ -360,8 +363,12 @@ const HospitalInformation = () => {
                   </p>
                </div>
             </div>
-         </div>
+        </div>
+        </div>
+        <div className="col-md-4 col-lg-4">
+              <FormBooking id={id}/>
+        </div>
       </>
-   )
+    )
 }
 export default HospitalInformation

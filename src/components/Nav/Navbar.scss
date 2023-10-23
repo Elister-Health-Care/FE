@@ -319,7 +319,7 @@ nav{
             background: var(--gradientColor);
             color: var(--whiteColor);
             border: 1px solid var(--SecondaryColor);
-            width: 180px;
+            width: 200px;
             height: 50px    ;
             color: #fff;
             text-transform: uppercase;
@@ -328,10 +328,11 @@ nav{
             align-items: center;
             font-size: 15px;
             transition: .3s ease all;
+            border-radius: 10px !important;
             span {
                 background-color: #fff;
                 color: var(--SecondaryColor);
-                margin-left: 25px;
+                margin-left: 15px;
                 height: 40px;
                 width: 40px;
                 text-align: center;
