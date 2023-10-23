@@ -10,6 +10,7 @@ import config from "~/router/config";
 import LoadingDot from "~/components/Loading/LoadingDot";
 import { Accordion } from "react-bootstrap";
 import Map from "~/components/Map"
+import FormBooking from "~/components/Form/form-booking";
 
 const HospitalInformation = () => {
     const [loading, setLoading] = useState(false)
@@ -217,7 +218,8 @@ const HospitalInformation = () => {
       // setUsers({ ...users, location: data })
     };
     return (
-        <>
+      <>
+       <div className="col-lg-8 col-md-8">
             <div className="infor-hospital">
               <div className="timesheet">
                 <div className="week-working-time d-flex ">
@@ -319,6 +321,10 @@ const HospitalInformation = () => {
                 </div>
               </div>
             </div>
+        </div>
+        <div className="col-md-4 col-lg-4">
+              <FormBooking id={id}/>
+        </div>
         </>
     )
 }

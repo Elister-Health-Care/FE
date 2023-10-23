@@ -10,13 +10,17 @@ import config from "~/router/config";
 import LoadingDot from "~/components/Loading/LoadingDot";
 import { Accordion } from "react-bootstrap";
 import Map from "~/components/Map";
+import FormBooking from "~/components/Form/form-booking";
 
 const HospitalDoctor = () => {
   const [doctors, setDoctor] = useState([]);
   const { id,tab } = useParams();
   const [keyword, setKeyword] = useState("");
   const [loading, setLoading] = useState(false);
-
+  const [id_department, setIdDepartment] = useState(null);
+  const [name_department, setNameDepartment] = useState(null);
+  const [name_doctor, setNameDoctor] = useState(null);
+  const [id_doctor, setIdDoctor] = useState(null); 
   const [hospital, setHospital] = useState({
     id: null,
     email: "",
@@ -54,7 +58,7 @@ const HospitalDoctor = () => {
       }
     };
     getHospital();
-  }, [id, tab]);
+  }, [id, tab, id_department,id_doctor]);
   
 
   useEffect(() => {
@@ -83,9 +87,18 @@ const HospitalDoctor = () => {
     console.log (value);
     setKeyword(value);
  }
+
+  const handleBooking = (id_department, id_doctor, name_department, name_doctor) => {
+      setIdDepartment(id_department);
+      setNameDepartment(name_department);
+      setIdDoctor(id_doctor);
+      setNameDoctor(name_doctor)
+  }
+
   return (
     <>
     {loading && <LoadingDot />}
+       <div className="col-lg-8 col-md-8">
        <div className="service">
             <div className="search">
                 <div className="input-service">
@@ -149,13 +162,14 @@ const HospitalDoctor = () => {
                             <div className="address-hospital">
                             <div className="address">
                                 <p>
-                                441 Lê Văn Lương, Tân Phong, Quận 7, Ho Chi Minh City,
-                                Vietnam
+                                {hospital.address}
                                 </p>
                             </div>
                             </div>
                         </div>
-                        <button className="btn btn-primary btn-book">
+                        <button onClick={() => {
+                          handleBooking(doctor.id_department, doctor.id_doctor, doctor.name, doctor.name_doctor)
+                        }} className="btn btn-primary btn-book">
                             Đặt lịch hẹn
                         </button>
                         </div>
@@ -163,6 +177,16 @@ const HospitalDoctor = () => {
                     </div>
                 ))}
                 </div>
+        </div>
+        </div>
+        <div className="col-md-4 col-lg-4">
+              <FormBooking 
+                id={id} 
+                id_department_selected={id_department}
+                name_department_selected={name_department}
+                id_doctor_selected={id_doctor}
+                name_doctor_selected={name_doctor}
+                />
         </div>
     </>
   );

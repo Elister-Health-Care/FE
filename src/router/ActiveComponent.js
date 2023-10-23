@@ -8,13 +8,13 @@ import HospitalService from '~/pages/user/Hospital/service';
 
 const ActiveComponent = () => {
     let {id,tab} = useParams();
-    if(tab && tab == "service") {
+    if(tab && tab === "service") {
         return <HospitalService/>
     }
-    else if (tab && tab == "doctor") {
+    else if (tab && tab === "doctor") {
         return <HospitalDoctor/>
     }
-    else if (tab && tab == "insurance") {
+    else if (tab && tab === "insurance") {
         return <HospitalInsurance/>
     }
     else {
