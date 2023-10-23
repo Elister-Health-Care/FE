@@ -294,9 +294,12 @@ const HospitalInformation = () => {
                            <Accordion.Body>
                               <div className="service-body">
                                  <p className="service-name">{services.name}</p>
-                                 <p className="service-description">
-                                    {services.infor.about_service}
-                                 </p>
+                                 <p
+                                    className="service-description"
+                                    dangerouslySetInnerHTML={{
+                                       __html: services.infor.about_service,
+                                    }}
+                                 ></p>
                                  <div className="service-fee">
                                     <p className="fee-icon">
                                        <RiMoneyDollarCircleFill />

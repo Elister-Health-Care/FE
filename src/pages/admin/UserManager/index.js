@@ -260,7 +260,7 @@ const AdminAllUserPage = () => {
          if (role === 'user') {
             setUserDetail(response.data.data)
          } else if (role === 'hospital') {
-            console.log(hospitalDetail.infrastructure)
+            console.log(typeof response.data.data.infrastructure)
             setHospitalDetail(response.data.data)
          } else {
             setDoctorDetail(response.data.data)
@@ -422,7 +422,9 @@ const AdminAllUserPage = () => {
                               <td>
                                  {user.role === 'hospital'
                                     ? 'Bệnh viện'
-                                    : 'Bác sĩ'}
+                                    : user.role === 'doctor'
+                                    ? 'Bác sĩ'
+                                    : 'Người dùng'}
                               </td>
                               <td>
                                  {user.email_verified_at
@@ -679,25 +681,27 @@ const AdminAllUserPage = () => {
                                                       ? doctorDetail.phone
                                                       : ''}
                                                 </li>
-                                                <li className="list-group-item">
-                                                   <strong>Ngày tạo:</strong>{' '}
-                                                   {role === 'user' &&
-                                                   userDetail
-                                                      ? formatDateTime(
-                                                           userDetail.created_at
-                                                        )
-                                                      : role === 'hospital' &&
-                                                        hospitalDetail
-                                                      ? formatDateTime(
-                                                           hospitalDetail.created_at
-                                                        )
-                                                      : role === 'doctor' &&
-                                                        doctorDetail
-                                                      ? formatDateTime(
-                                                           doctorDetail.created_at
-                                                        )
-                                                      : ''}
-                                                </li>
+
+                                                {role === 'user' &&
+                                                userDetail ? (
+                                                   <li className="list-group-item">
+                                                      <strong>Ngày tạo:</strong>{' '}
+                                                      {formatDateTime(
+                                                         userDetail.created_at
+                                                      )}
+                                                   </li>
+                                                ) : role === 'doctor' &&
+                                                  doctorDetail ? (
+                                                   <li className="list-group-item">
+                                                      <strong>Ngày tạo:</strong>{' '}
+                                                      {formatDateTime(
+                                                         doctorDetail.created_at
+                                                      )}
+                                                   </li>
+                                                ) : (
+                                                   ''
+                                                )}
+
                                                 {role === 'hospital' &&
                                                 hospitalDetail ? (
                                                    <li className="list-group-item">
@@ -746,38 +750,55 @@ const AdminAllUserPage = () => {
                                                       ? 'Bệnh viện'
                                                       : 'Bác sĩ'}
                                                 </li>
-                                                <li className="list-group-item">
-                                                   <strong>Giới tính:</strong>{' '}
-                                                   {role === 'user' &&
-                                                   userDetail
-                                                      ? formatGender(
-                                                           userDetail.gender
-                                                        )
-                                                      : role === 'hospital' &&
-                                                        hospitalDetail
-                                                      ? formatGender(
-                                                           hospitalDetail.address
-                                                        )
-                                                      : role === 'doctor' &&
-                                                        doctorDetail
-                                                      ? formatGender(
-                                                           doctorDetail.address
-                                                        )
-                                                      : ''}
-                                                </li>
-                                                <li className="list-group-item">
-                                                   <strong>Ngày sinh:</strong>{' '}
-                                                   {role === 'user' &&
-                                                   userDetail
-                                                      ? userDetail.date_of_birth
-                                                      : role === 'hospital' &&
-                                                        hospitalDetail
-                                                      ? hospitalDetail.date_of_birth
-                                                      : role === 'doctor' &&
-                                                        doctorDetail
-                                                      ? doctorDetail.date_of_birth
-                                                      : ''}
-                                                </li>
+
+                                                {role === 'user' &&
+                                                userDetail ? (
+                                                   <li className="list-group-item">
+                                                      <strong>
+                                                         Giới tính:
+                                                      </strong>{' '}
+                                                      {formatGender(
+                                                         userDetail.gender
+                                                      )}
+                                                   </li>
+                                                ) : role === 'doctor' &&
+                                                  doctorDetail ? (
+                                                   <li className="list-group-item">
+                                                      <strong>
+                                                         Giới tính:
+                                                      </strong>{' '}
+                                                      {formatGender(
+                                                         doctorDetail.gender
+                                                      )}
+                                                   </li>
+                                                ) : (
+                                                   ''
+                                                )}
+
+                                                {role === 'user' &&
+                                                userDetail ? (
+                                                   <li className="list-group-item">
+                                                      <strong>
+                                                         Ngày sinh:
+                                                      </strong>{' '}
+                                                      {formatGender(
+                                                         userDetail.date_of_birth
+                                                      )}
+                                                   </li>
+                                                ) : role === 'doctor' &&
+                                                  doctorDetail ? (
+                                                   <li className="list-group-item">
+                                                      <strong>
+                                                         Ngày sinh:
+                                                      </strong>{' '}
+                                                      {formatGender(
+                                                         doctorDetail.date_of_birth
+                                                      )}
+                                                   </li>
+                                                ) : (
+                                                   ''
+                                                )}
+
                                                 <li className="list-group-item">
                                                    <strong>
                                                       Email Verified At:
@@ -799,6 +820,17 @@ const AdminAllUserPage = () => {
                                                         )
                                                       : ''}
                                                 </li>
+                                                {role === 'hospital' &&
+                                                hospitalDetail ? (
+                                                   <li className="list-group-item">
+                                                      <strong>Ngày tạo:</strong>{' '}
+                                                      {formatGender(
+                                                         userDetail.created_at
+                                                      )}
+                                                   </li>
+                                                ) : (
+                                                   ''
+                                                )}
                                                 <li className="list-group-item">
                                                    <strong>Cập nhật:</strong>{' '}
                                                    {role === 'user' &&
@@ -847,7 +879,7 @@ const AdminAllUserPage = () => {
                                                       <strong>
                                                          Cơ sở vật chất:
                                                       </strong>{' '}
-                                                      {JSON.parse(
+                                                      {Object.values(
                                                          hospitalDetail.infrastructure
                                                       ).map(
                                                          (value, index) =>
