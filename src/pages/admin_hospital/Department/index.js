@@ -131,7 +131,9 @@ function HospitalDepartmentPage() {
          $(modalDeleteDepartmentRef.current).modal('hide')
          setShouldReloadData(!shouldReloadData)
       } catch (error) {
-         toast.error('Lỗi khi xóa danh mục !', toastOptions)
+         if (error.response.data.data)
+            toast.error(error.response.data.data[0], toastOptions)
+         else toast.error(error.response.data.message, toastOptions)
       }
    }
    useEffect(() => {

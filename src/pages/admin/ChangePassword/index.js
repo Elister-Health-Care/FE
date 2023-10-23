@@ -5,8 +5,7 @@ import styles from './AdminChangePasswordPage.module.scss'
 import { useState } from 'react'
 import validateForm from '~/helpers/validation'
 import http from '~/utils/http'
-import { ToastContainer, toast } from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.css'
+import { Link } from 'react-router-dom'
 
 const cx = classNames.bind(styles)
 const HospitalChangepasswordPage = () => {
@@ -49,17 +48,7 @@ const HospitalChangepasswordPage = () => {
                   new_password: '',
                   new_password_confirmation: '',
                })
-               setErrors({})
-               toast.success(' Đổi thành công!', {
-                  position: 'top-right',
-                  autoClose: 4000,
-                  hideProgressBar: false,
-                  closeOnClick: true,
-                  pauseOnHover: true,
-                  draggable: true,
-                  progress: undefined,
-                  theme: 'light',
-               })
+               setErrors({ success: 'Đổi thành công' })
             }
          } catch (error) {
             if (error.response.data.message === 'Validation errors') {
@@ -79,10 +68,25 @@ const HospitalChangepasswordPage = () => {
    }
    return (
       <>
-         <ToastContainer />
          <TitleAdmin>Đổi mật khẩu</TitleAdmin>
          <div className={cx('card', 'shadow')}>
             <div className={cx('card_body')}>
+               <div className="col-md-9 personal-info">
+                  {errors.success && (
+                     <div className="alert alert-info alert-dismissable">
+                        <Link
+                           className="panel-close close"
+                           onClick={() => {
+                              setErrors({})
+                           }}
+                        >
+                           ×
+                        </Link>
+                        <i class=" mdi mdi-check-underline"></i> &nbsp;
+                        {errors.success}
+                     </div>
+                  )}
+               </div>
                <form className="form-horizontal mt-3">
                   <div className="form-group row">
                      <label

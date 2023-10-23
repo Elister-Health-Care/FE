@@ -22,9 +22,7 @@ function DoctorProfilePage() {
    const [provinces, setProvinces] = useState([])
    const [selectedProvince, setSelectedProvince] = useState('')
    const [infrastructure, setInfrastructure] = useState('')
-   const [infrastructures, setInfrastructures] = useState(
-      JSON.parse(user.infrastructure)
-   )
+   const [infrastructures, setInfrastructures] = useState(user.infrastructure)
    const [users, setUsers] = useState({
       email: user.email,
       address: user.address,
@@ -180,10 +178,9 @@ function DoctorProfilePage() {
          for (const key in users) {
             formDataToSubmit.append(key, users[key])
          }
-         formDataToSubmit.append(
-            'infrastructure',
-            JSON.stringify(infrastructures)
-         )
+         infrastructures.forEach((item, index) => {
+            formDataToSubmit.append(`infrastructure[${index}]`, item)
+         })
          setLoading(true)
          try {
             const response = await httpUser.post(

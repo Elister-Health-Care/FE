@@ -168,10 +168,9 @@ function HospitalRegisterPage() {
          for (const key in hospitalData) {
             formDataToSubmit.append(key, hospitalData[key])
          }
-         formDataToSubmit.append(
-            'infrastructure',
-            JSON.stringify(infrastructures)
-         )
+         infrastructures.forEach((item, index) => {
+            formDataToSubmit.append(`infrastructure[${index}]`, item)
+         })
          formDataToSubmit.append(
             'location',
             JSON.stringify(hospitalData.location)

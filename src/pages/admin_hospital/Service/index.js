@@ -165,7 +165,7 @@ function HospitalServicePage() {
       e.preventDefault()
 
       try {
-         const response = await httpUser.post('/hospital-service/add', formData)
+         await httpUser.post('/hospital-service/add', formData)
          toast.success('Thêm dịch vụ thành công !', toastOptions)
          // clear input
          clearFormData()
@@ -225,7 +225,7 @@ function HospitalServicePage() {
          price: services[index].price_hospital_service,
          infor: {
             about_service: services[index].infor.about_service,
-            prepare_process: services[index].infor.about_service,
+            prepare_process: services[index].infor.prepare_process,
             service_details: services[index].infor.service_details,
             location: user.location,
          },
@@ -323,6 +323,7 @@ function HospitalServicePage() {
          }
       }
       getService()
+      // eslint-disable-next-line react-hooks/exhaustive-deps
    }, [search, shouldReloadData])
    return (
       <>
@@ -519,7 +520,7 @@ function HospitalServicePage() {
                   <div className="modal-content">
                      <div className="modal-header">
                         <h5 className="modal-title" id="exampleModalLabel">
-                           Thêm mới Bảo hiểm
+                           Thêm dịch vụ
                         </h5>
                         <button
                            type="button"
@@ -548,6 +549,7 @@ function HospitalServicePage() {
                                        className="form-control"
                                        id="department"
                                     >
+                                       <option>Chọn chuyên khoa</option>
                                        {departments.map((department) => (
                                           <option
                                              key={department.id}
@@ -690,7 +692,7 @@ function HospitalServicePage() {
                               Close
                            </button>
                            <button type="submit" className="btn btn-primary">
-                              <i className="fa-solid fa-plus"></i> Add
+                              <i className="fa-solid fa-plus"></i> Thêm
                            </button>
                         </div>
                      </form>
@@ -944,7 +946,7 @@ function HospitalServicePage() {
                               Close
                            </button>
                            <button type="submit" className="btn btn-primary">
-                              <i className="fa-solid fa-plus"></i> Add
+                              <i className="ti-pencil-alt"></i> Sửa
                            </button>
                         </div>
                      </form>

@@ -196,7 +196,7 @@ function Menu({ children }) {
                         Bảo hiểm
                      </Link>
                   </li>
-                  <li>
+                  {/* <li>
                      <Link
                         to="service"
                         onClick={() => handleClickSelectUl('Dịch vụ')}
@@ -204,10 +204,10 @@ function Menu({ children }) {
                      >
                         Dịch vụ
                      </Link>
-                  </li>
+                  </li> */}
                </ul>
             </li>
-            <li className="">
+            {/* <li className="">
                <Link
                   onClick={() => handleClickSelect('Thống kê')}
                   className={cx(selected === 'Thống kê' && 'active')}
@@ -236,7 +236,7 @@ function Menu({ children }) {
                      </Link>
                   </li>
                </ul>
-            </li>
+            </li> */}
          </ul>
       </div>
    )
