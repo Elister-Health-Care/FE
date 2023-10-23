@@ -14,6 +14,7 @@ import LoadingTable from '~/components/Loading/LoadingTable'
 import { formatDateTime, pushSearchKeyToUrl } from '~/helpers/utils'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import LoadingDot from '~/components/Loading/LoadingDot'
 
 const cx = classNames.bind(styles)
 function HospitalCalendarDoctorPage() {
@@ -26,6 +27,7 @@ function HospitalCalendarDoctorPage() {
 	const [avatarDoctor, setAvatarDoctor] = useState('/image/avata-default-doctor.jpg')
 
 	const healthCareUser = JSON.parse(localStorage.getItem('HealthCareUser'));
+	const [loadingDot, setLoadingDot] = useState(false);
 
 	const defaultSearchParams = {
 		search: '',
@@ -274,12 +276,15 @@ function HospitalCalendarDoctorPage() {
 	const handleDeleteSubmit = async (e) => {
 		e.preventDefault();
 		try {
+			setLoadingDot(true);
 			const response = await http.delete('work-schedule/hospital-cancel/' + workScheduleDetail.work_schedule_id);
 			toast.success('Hủy lịch hẹn thành công !', toastOptions);
 			$(modalDeleteRef.current).modal('hide');
 			setShouldReloadData(!shouldReloadData);
 		} catch (error) {
 			toast.error('Lỗi khi hủy lịch hẹn !', toastOptions);
+		} finally {
+			setLoadingDot(false);
 		}
 	}
 	// delete healthInsurace 
@@ -307,9 +312,10 @@ function HospitalCalendarDoctorPage() {
 		}
 	};
 
-	const handleDeleteManyArticles = async (e) => {
+	const handleDeleteManyWorkSchedules = async (e) => {
 		e.preventDefault();
 		try {
+			setLoadingDot(true);
 			const response = await http.delete('work-schedule/hospital-cancel-many', {
 				data: { list_id: selectedWorkSchedules }
 			});
@@ -319,6 +325,8 @@ function HospitalCalendarDoctorPage() {
 		} catch (error) {
 			if (error.response.data.data) toast.error(error.response.data.data[0], toastOptions);
 			else toast.error(error.response.data.message, toastOptions);
+		} finally {
+			setLoadingDot(false);
 		}
 	};
 
@@ -352,6 +360,7 @@ function HospitalCalendarDoctorPage() {
 			<ToastContainer />
 			<TitleAdmin>Lịch làm việc của bệnh viện </TitleAdmin>
 			<div className={cx('card', 'shadow')}>
+				{loadingDot && <LoadingDot />}
 				<div className={cx('card_header')}>
 					<div className={cx('add_box')}>
 						<button data-toggle="modal" data-target="#deleteMany" type="button" className={`btn btn-danger ml-2 ${cx('fontz_14')}`} ><i className="fa-regular fa-rectangle-xmark"></i></button>
@@ -662,7 +671,7 @@ function HospitalCalendarDoctorPage() {
 														<li className={` ${cx('li-detail')}`} ><strong>Email : </strong> {workScheduleDetail.user_email}</li>
 														<li className={` ${cx('li-detail')}`} ><strong>Số điện thoại : </strong> {workScheduleDetail.user_phone}</li>
 														<li className={` ${cx('li-detail')}`} ><strong>Địa chỉ : </strong> {workScheduleDetail.user_address}</li>
-														<li className={` ${cx('li-detail')}`} ><strong>Khung giờ : </strong> {workScheduleDetail.time.interval[0]} - {workScheduleDetail.time.interval[1]} .{workScheduleDetail.time.date}</li>
+														<li className={` ${cx('li-detail')}`} ><strong>Khung giờ : </strong> {workScheduleDetail.time.interval[0]} - {workScheduleDetail.time.interval[1]} . {workScheduleDetail.time.date}</li>
 														<li className={` ${cx('li-detail')}`}>
 															<strong>Giá : </strong>
 															{workScheduleDetail.work_schedule_price
@@ -717,7 +726,7 @@ function HospitalCalendarDoctorPage() {
 										<span aria-hidden="true">&times;</span>
 									</button>
 								</div>
-								<form onSubmit={handleDeleteManyArticles}>
+								<form onSubmit={handleDeleteManyWorkSchedules}>
 									<div className="modal-body">
 										Cảnh báo ! Bạn có chắc chắn là xóa những lịch có thời gian này khỏi hệ thống !
 										{
@@ -775,7 +784,7 @@ function HospitalCalendarDoctorPage() {
 													<li className={` ${cx('li-detail')}`} ><strong>Email : </strong> {workScheduleDetail.user_email}</li>
 													<li className={` ${cx('li-detail')}`} ><strong>Số điện thoại : </strong> {workScheduleDetail.user_phone}</li>
 													<li className={` ${cx('li-detail')}`} ><strong>Địa chỉ : </strong> {workScheduleDetail.user_address}</li>
-													<li className={` ${cx('li-detail')}`} ><strong>Khung giờ : </strong> {workScheduleDetail.time.interval[0]} - {workScheduleDetail.time.interval[1]} .{workScheduleDetail.time.date}</li>
+													<li className={` ${cx('li-detail')}`} ><strong>Khung giờ : </strong> {workScheduleDetail.time.interval[0]} - {workScheduleDetail.time.interval[1]} . {workScheduleDetail.time.date}</li>
 													<li className={` ${cx('li-detail')}`}>
 														<strong>Giá : </strong>
 														{workScheduleDetail.work_schedule_price

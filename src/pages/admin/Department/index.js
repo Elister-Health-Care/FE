@@ -14,6 +14,7 @@ import LoadingTable from '~/components/Loading/LoadingTable'
 import { formatDateTime, pushSearchKeyToUrl } from '~/helpers/utils'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import LoadingDot from '~/components/Loading/LoadingDot'
 
 const cx = classNames.bind(styles)
 const AdminDepartment = () => {
@@ -21,6 +22,7 @@ const AdminDepartment = () => {
 	const [loadingTable, setLoadingTable] = useState(false)
 	const [departments, setDepartments] = useState([])
 	const [shouldReloadData, setShouldReloadData] = useState(false);
+	const [loadingDot, setLoadingDot] = useState(false);
 
     const defaultSearchParams = {
         search: '',
@@ -176,6 +178,7 @@ const AdminDepartment = () => {
 			formDataToSubmit.append(key, formData[key]);
 		}
 		try {
+			setLoadingDot(true);
 			const response = await http.post('department/add', formDataToSubmit);
 			toast.success('Thêm chuyên khoa thành công !', toastOptions);
 			// clear input 
@@ -193,6 +196,8 @@ const AdminDepartment = () => {
 		} catch (error) {
 			if (error.response.data.data) toast.error(error.response.data.data[0], toastOptions);
 			else toast.error(error.response.data.message, toastOptions);
+		} finally {
+			setLoadingDot(false);
 		}
 	};
 	// submit form 
@@ -202,12 +207,15 @@ const AdminDepartment = () => {
 	const handleDeleteSubmit = async (e) => {
 		e.preventDefault();
 		try {
+			setLoadingDot(true);
 			const response = await http.delete('department/delete/' + departmentDetail.id);
 			toast.success('Xóa chuyên khoa thành công !', toastOptions);
 			$(modalDeleteRef.current).modal('hide');
 			setShouldReloadData(!shouldReloadData);
 		} catch (error) {
 			toast.error('Lỗi khi xóa chuyên khoa !', toastOptions);
+		} finally {
+			setLoadingDot(false);
 		}
 	}
 	// delete department 
@@ -253,6 +261,7 @@ const AdminDepartment = () => {
 		formDataToSubmit.append('description', departmentDetail['description']);
 		if (departmentDetail.thumbnail instanceof Object) formDataToSubmit.append('thumbnail', departmentDetail['thumbnail']);
 		try {
+			setLoadingDot(true);
 			const response = await http.post('department/update/' + departmentDetail.id, formDataToSubmit);
 			toast.success('Chỉnh sửa chuyên khoa thành công !', toastOptions);
 			setSelectedEditImage(null);
@@ -261,6 +270,8 @@ const AdminDepartment = () => {
 		} catch (error) {
 			if (error.response.data.data) toast.error(error.response.data.data[0], toastOptions);
 			else toast.error(error.response.data.message, toastOptions);
+		} finally {
+			setLoadingDot(false);
 		}
 	}
 
@@ -269,6 +280,7 @@ const AdminDepartment = () => {
          <ToastContainer />
          <TitleAdmin>Chuyên khoa </TitleAdmin>
          <div className={cx('card', 'shadow')}>
+				{loadingDot && <LoadingDot />}
             <div className={cx('card_header')}>
                <div className={cx('add_box')}>
                   <button data-toggle="modal" data-target="#modalCreateDepartment" type="button" className="btn btn-success ml-2"><i className="fa-solid fa-square-plus"></i></button>

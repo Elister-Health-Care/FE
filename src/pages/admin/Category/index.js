@@ -14,6 +14,7 @@ import LoadingTable from '~/components/Loading/LoadingTable'
 import { formatDateTime, pushSearchKeyToUrl } from '~/helpers/utils'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import LoadingDot from '~/components/Loading/LoadingDot'
 
 const cx = classNames.bind(styles)
 const AdminCategory = () => {
@@ -21,6 +22,7 @@ const AdminCategory = () => {
 	const [loadingTable, setLoadingTable] = useState(false)
 	const [categories, setCategories] = useState([])
 	const [shouldReloadData, setShouldReloadData] = useState(false);
+   const [loadingDot, setLoadingDot] = useState(false);
 
     const defaultSearchParams = {
         search: '',
@@ -175,6 +177,7 @@ const AdminCategory = () => {
 			formDataToSubmit.append(key, formData[key]);
 		}
 		try {
+         setLoadingDot(true);
 			const response = await http.post('category/add', formDataToSubmit);
 			toast.success('Thêm danh mục thành công !', toastOptions);
 			// clear input 
@@ -191,7 +194,9 @@ const AdminCategory = () => {
 		} catch (error) {
 			if (error.response.data.data) toast.error(error.response.data.data[0], toastOptions);
 			else toast.error(error.response.data.message, toastOptions);
-		}
+		} finally {
+         setLoadingDot(false);
+      }
 	};
 	// submit form 
 	// add category 
@@ -200,13 +205,16 @@ const AdminCategory = () => {
 	const handleDeleteSubmit = async (e) => {
 		e.preventDefault();
 		try {
+         setLoadingDot(true);
 			const response = await http.delete('category/delete/' + categoryDetail.id);
 			toast.success('Xóa danh mục thành công !', toastOptions);
 			$(modalDeleteRef.current).modal('hide');
 			setShouldReloadData(!shouldReloadData);
 		} catch (error) {
 			toast.error('Lỗi khi xóa danh mục !', toastOptions);
-		}
+		} finally {
+         setLoadingDot(false);
+      }
 	}
 	// delete category 
 
@@ -250,6 +258,7 @@ const AdminCategory = () => {
 		formDataToSubmit.append('name', categoryDetail['name']);
 		if (categoryDetail.thumbnail instanceof Object) formDataToSubmit.append('thumbnail', categoryDetail['thumbnail']);
 		try {
+         setLoadingDot(true)
 			const response = await http.post('category/update/' + categoryDetail.id, formDataToSubmit);
 			toast.success('Chỉnh sửa danh mục thành công !', toastOptions);
 			setSelectedEditImage(null);
@@ -258,7 +267,9 @@ const AdminCategory = () => {
 		} catch (error) {
 			if (error.response.data.data) toast.error(error.response.data.data[0], toastOptions);
 			else toast.error(error.response.data.message, toastOptions);
-		}
+		} finally {
+         setLoadingDot(false)
+      }
 	}
 
    return (
@@ -266,6 +277,7 @@ const AdminCategory = () => {
          <ToastContainer />
          <TitleAdmin>Danh mục </TitleAdmin>
          <div className={cx('card', 'shadow')}>
+            {loadingDot && <LoadingDot />}
             <div className={cx('card_header')}>
                <div className={cx('add_box')}>
                   <button data-toggle="modal" data-target="#modalCreateCategory" type="button" className="btn btn-success ml-2"><i className="fa-solid fa-square-plus"></i></button>
