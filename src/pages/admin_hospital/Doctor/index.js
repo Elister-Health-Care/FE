@@ -166,7 +166,7 @@ function HospitalDoctorPage() {
          console.error('Lỗi kết nối đến API')
       }
    }
-
+   const uniqueDoctorIds = []
    const handleSubmitAddDoctor = async (e) => {
       e.preventDefault()
       setErrors({})
@@ -379,67 +379,74 @@ function HospitalDoctorPage() {
                      </thead>
 
                      <tbody>
-                        {doctors.map((doctor, index) => (
-                           <tr key={index}>
-                              <td>{doctor.id_doctor}</td>
-                              <td>{doctor.name_doctor}</td>
-                              <td>{doctor.name_department}</td>
-                              <td>{doctor.email}</td>
-                              <td>{doctor.phone}</td>
-                              <td>{doctor.address}</td>
-                              <td>
-                                 <img
-                                    className={cx('avatar')}
-                                    alt=""
-                                    src={
-                                       doctor.avatar
-                                          ? config.URL + doctor.avatar
-                                          : '/image/avata-default-doctor.jpg'
-                                    }
-                                 />
-                              </td>
-                              <td>
-                                 {doctor.created_at
-                                    ? formatDateTime(doctor.created_at)
-                                    : 'N/A'}
-                              </td>
-                              <td>
-                                 {doctor.is_confirm === 1 ? (
-                                    <>
-                                       <Tippy content="Khóa">
-                                          <button
-                                             onClick={() =>
-                                                handleChangeActive(
-                                                   doctor.id_doctor,
-                                                   0
-                                                )
-                                             }
-                                             className="btn btn-danger btn-sm mt-1"
-                                          >
-                                             <i className="ti-lock" />
-                                          </button>
-                                       </Tippy>
-                                    </>
-                                 ) : (
-                                    <Tippy content="Mở khóa">
-                                       <button
-                                          onClick={() =>
-                                             handleChangeActive(
-                                                doctor.id_doctor,
-                                                1
-                                             )
+                        {doctors.map((doctor, index) => {
+                           if (!uniqueDoctorIds.includes(doctor.id_doctor)) {
+                              uniqueDoctorIds.push(doctor.id_doctor)
+
+                              return (
+                                 <tr key={index}>
+                                    <td>{doctor.id_doctor}</td>
+                                    <td>{doctor.name_doctor}</td>
+                                    <td>{doctor.name_department}</td>
+                                    <td>{doctor.email}</td>
+                                    <td>{doctor.phone}</td>
+                                    <td>{doctor.address}</td>
+                                    <td>
+                                       <img
+                                          className={cx('avatar')}
+                                          alt=""
+                                          src={
+                                             doctor.avatar
+                                                ? config.URL + doctor.avatar
+                                                : '/image/avata-default-doctor.jpg'
                                           }
-                                          className="btn btn-secondary btn-sm sua"
-                                          data-toggle="modal"
-                                          data-target="#updateModal"
-                                       >
-                                          <i className="ti-unlock" />
-                                       </button>
-                                    </Tippy>
-                                 )}
-                              </td>
-                           </tr>
-                        ))}
+                                       />
+                                    </td>
+                                    <td>
+                                       {doctor.created_at
+                                          ? formatDateTime(doctor.created_at)
+                                          : 'N/A'}
+                                    </td>
+                                    <td>
+                                       {doctor.is_confirm === 1 ? (
+                                          <>
+                                             <Tippy content="Khóa">
+                                                <button
+                                                   onClick={() =>
+                                                      handleChangeActive(
+                                                         doctor.id_doctor,
+                                                         0
+                                                      )
+                                                   }
+                                                   className="btn btn-danger btn-sm mt-1"
+                                                >
+                                                   <i className="ti-lock" />
+                                                </button>
+                                             </Tippy>
+                                          </>
+                                       ) : (
+                                          <Tippy content="Mở khóa">
+                                             <button
+                                                onClick={() =>
+                                                   handleChangeActive(
+                                                      doctor.id_doctor,
+                                                      1
+                                                   )
+                                                }
+                                                className="btn btn-secondary btn-sm sua"
+                                                data-toggle="modal"
+                                                data-target="#updateModal"
+                                             >
+                                                <i className="ti-unlock" />
+                                             </button>
+                                          </Tippy>
+                                       )}
+                                    </td>
+                                 </tr>
+                              )
+                           }
+                           return null
+                        })}
                      </tbody>
                   </table>
                )}
