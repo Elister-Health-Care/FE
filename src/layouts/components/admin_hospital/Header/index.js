@@ -13,7 +13,11 @@ function Header() {
    const user = JSON.parse(localStorage.getItem('HealthCareUser'))
    const [navActive, setNavActive] = useState('')
    const [linkActive, setLinkActive] = useState('')
-   const [avatar, setAvatar] = useState('/image/avatar_admin_default.png')
+   const [avatar, setAvatar] = useState(
+      user.role === 'doctor'
+         ? '/image/avata-default-doctor.jpg'
+         : '/image/default-hospital-search.jpg'
+   )
    const [name, setName] = useState(user.name ? user.name : 'You')
    const isAdminUpdated = useSelector((state) => state.admin.keyAdminUpdated)
    useEffect(() => {
