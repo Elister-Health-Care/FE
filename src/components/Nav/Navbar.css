@@ -38,6 +38,175 @@ nav .has-megamenu .dropdown-menu .icon {
   -o-object-position: center;
      object-position: center;
 }
+nav .has-megamenu .dropdown-menu .main-section .link-nav {
+  padding: 16px 0px;
+  margin: 8px auto;
+  width: 100%;
+  justify-content: space-between;
+}
+nav .has-megamenu .dropdown-menu .main-section .link-nav .item-link {
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  gap: 16px;
+  padding: 16px;
+  background: var(--whiteColor);
+  border-radius: 4px;
+  box-shadow: rgba(0, 0, 0, 0.04) 0px 4px 8px, rgba(0, 0, 0, 0.06) 0px 0px 2px, rgba(0, 0, 0, 0.04) 0px 0px 1px;
+  text-decoration: none;
+  color: var(--blackColor);
+  font-weight: 600;
+}
+nav .has-megamenu .dropdown-menu .main-section .hr hr {
+  -o-border-image: initial;
+     border-image: initial;
+  border-top: 2px dashed rgb(228, 232, 236);
+}
+nav .has-megamenu .dropdown-menu .main-section .top-section {
+  margin: 30px 0px;
+  gap: 16px;
+  display: flex;
+  width: 100%;
+}
+nav .has-megamenu .dropdown-menu .main-section .top-section button {
+  display: flex;
+  justify-content: center;
+  padding: 7px 20px;
+  border-radius: 40px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid rgb(228, 232, 236);
+  color: rgb(89, 89, 89);
+}
+nav .has-megamenu .dropdown-menu .main-section .top-section .active, nav .has-megamenu .dropdown-menu .main-section .top-section button:focus {
+  gap: 6px;
+  display: flex;
+  justify-content: center;
+  padding: 7px 20px;
+  border-radius: 40px;
+  cursor: pointer;
+  border: 0px;
+  background: rgb(227, 242, 255);
+  color: rgb(45, 135, 243);
+}
+nav .has-megamenu .dropdown-menu .main-section .section-left .article .banner-article, nav .has-megamenu .dropdown-menu .main-section .section-right .article .banner-article, nav .has-megamenu .dropdown-menu .main-section .list-article .article .banner-article {
+  min-height: 468px;
+  max-height: 468px;
+  position: relative;
+}
+nav .has-megamenu .dropdown-menu .main-section .section-left .article .banner-article span, nav .has-megamenu .dropdown-menu .main-section .section-right .article .banner-article span, nav .has-megamenu .dropdown-menu .main-section .list-article .article .banner-article span {
+  box-sizing: border-box;
+  display: block;
+  overflow: hidden;
+  width: initial;
+  height: initial;
+  background: none;
+  opacity: 1;
+  border: 0px;
+  margin: 0px;
+  padding: 0px;
+  position: absolute;
+  inset: 0px;
+}
+nav .has-megamenu .dropdown-menu .main-section .section-left .article .banner-article span img, nav .has-megamenu .dropdown-menu .main-section .section-right .article .banner-article span img, nav .has-megamenu .dropdown-menu .main-section .list-article .article .banner-article span img {
+  position: absolute;
+  inset: 0px;
+  box-sizing: border-box;
+  padding: 0px;
+  border: none;
+  margin: auto;
+  display: block;
+  width: 0px;
+  height: 0px;
+  min-width: 100%;
+  max-width: 100%;
+  min-height: 100%;
+  max-height: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+  border-radius: 10px;
+}
+nav .has-megamenu .dropdown-menu .main-section .section-left .article .content, nav .has-megamenu .dropdown-menu .main-section .section-right .article .content, nav .has-megamenu .dropdown-menu .main-section .list-article .article .content {
+  display: flex;
+  flex-direction: column;
+}
+nav .has-megamenu .dropdown-menu .main-section .section-left .article .content .inner-content, nav .has-megamenu .dropdown-menu .main-section .section-right .article .content .inner-content, nav .has-megamenu .dropdown-menu .main-section .list-article .article .content .inner-content {
+  display: flex;
+  flex-direction: column;
+}
+nav .has-megamenu .dropdown-menu .main-section .section-left .article .content .inner-content .category-name, nav .has-megamenu .dropdown-menu .main-section .section-right .article .content .inner-content .category-name, nav .has-megamenu .dropdown-menu .main-section .list-article .article .content .inner-content .category-name {
+  align-items: center;
+  display: flex;
+  margin-top: 16px;
+  margin-bottom: 5px;
+  font-size: 12px;
+  line-height: 22px;
+  font-weight: 700;
+  flex: 1 2 90%;
+  width: 100%;
+}
+nav .has-megamenu .dropdown-menu .main-section .section-left .article .content .inner-content .category-name .name, nav .has-megamenu .dropdown-menu .main-section .section-right .article .content .inner-content .category-name .name, nav .has-megamenu .dropdown-menu .main-section .list-article .article .content .inner-content .category-name .name {
+  color: var(--textColor) !important;
+  color: inherit;
+  display: inline-block;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  text-align: left !important;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  display: -webkit-box;
+  overflow: hidden;
+}
+nav .has-megamenu .dropdown-menu .main-section .section-left .article .content .inner-content .category-name .bookmark, nav .has-megamenu .dropdown-menu .main-section .section-right .article .content .inner-content .category-name .bookmark, nav .has-megamenu .dropdown-menu .main-section .list-article .article .content .inner-content .category-name .bookmark {
+  text-align: right;
+  color: var(--greyText);
+}
+nav .has-megamenu .dropdown-menu .main-section .section-left .article .content .inner-content .title-article, nav .has-megamenu .dropdown-menu .main-section .section-right .article .content .inner-content .title-article, nav .has-megamenu .dropdown-menu .main-section .list-article .article .content .inner-content .title-article {
+  line-height: 32px;
+  font-weight: 600;
+}
+nav .has-megamenu .dropdown-menu .main-section .section-left .article .content .inner-content .title-article a, nav .has-megamenu .dropdown-menu .main-section .section-right .article .content .inner-content .title-article a, nav .has-megamenu .dropdown-menu .main-section .list-article .article .content .inner-content .title-article a {
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  display: -webkit-box;
+  overflow: hidden;
+  color: var(--blackColor);
+}
+nav .has-megamenu .dropdown-menu .main-section .section-left .article .content .inner-content p, nav .has-megamenu .dropdown-menu .main-section .section-right .article .content .inner-content p, nav .has-megamenu .dropdown-menu .main-section .list-article .article .content .inner-content p {
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  display: -webkit-box;
+  margin-bottom: 16px;
+  margin-top: 8px;
+  word-break: break-word;
+  overflow: hidden;
+}
+nav .has-megamenu .dropdown-menu .main-section .section-left .article .content .inner-content .footer-article .img-doctor, nav .has-megamenu .dropdown-menu .main-section .section-right .article .content .inner-content .footer-article .img-doctor, nav .has-megamenu .dropdown-menu .main-section .list-article .article .content .inner-content .footer-article .img-doctor {
+  height: 32px;
+  margin-right: 12px;
+  width: 32px;
+  border-radius: 50%;
+}
+nav .has-megamenu .dropdown-menu .main-section .section-left .article .content .inner-content .footer-article p, nav .has-megamenu .dropdown-menu .main-section .section-right .article .content .inner-content .footer-article p, nav .has-megamenu .dropdown-menu .main-section .list-article .article .content .inner-content .footer-article p {
+  font-size: 14px;
+  text-align: left;
+}
+nav .has-megamenu .dropdown-menu .main-section .section-left .article .content .inner-content .footer-article p .name-doctor, nav .has-megamenu .dropdown-menu .main-section .section-right .article .content .inner-content .footer-article p .name-doctor, nav .has-megamenu .dropdown-menu .main-section .list-article .article .content .inner-content .footer-article p .name-doctor {
+  font-weight: 600;
+}
+nav .has-megamenu .dropdown-menu .main-section .section-right .article .banner-article {
+  min-height: 300px;
+  max-height: 300px;
+}
+nav .has-megamenu .dropdown-menu .main-section .section-right .article .horizontal {
+  margin-top: 20px;
+  min-height: 150px;
+  max-height: 150px;
+}
+nav .has-megamenu .dropdown-menu .main-section .list-article .article .banner-article {
+  min-height: 150px;
+}
 nav .has-megamenu .dropdown-menu .hospitals-list .list-title {
   margin: 10px -15px;
   display: flex;

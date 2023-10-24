@@ -217,4 +217,14 @@
 }
 .home .main-section .main-section .list-article .article .banner-article {
   min-height: 150px;
+}
+.home .main-section .all-hospital-list .all-hospital-card {
+  padding: 20px;
+}
+.home .main-section .all-hospital-list .all-hospital-card .book-appointment-button {
+  margin-top: 40px !important;
+  background: var(--gradientColor);
+}
+.home .main-section .all-hospital-list .all-hospital-card .book-appointment-button:hover {
+  color: var(--textColor);
 }/*# sourceMappingURL=home.css.map */

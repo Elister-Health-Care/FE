@@ -25,6 +25,7 @@ const Navbars = () => {
    const [departments, setDepartments] = useState([])
    const [hospitals, setHospitals] = useState([])
    const isUserUpdated = useSelector((state) => state.user.keyUserUpdated)
+   const [articles, setArticles] = useState([]);
    const navigate = useNavigate()
    // get categories
    useEffect(() => {
@@ -39,6 +40,20 @@ const Navbars = () => {
       }
       getCategory()
    }, [])
+
+   useEffect(() => {
+		const getArticle = async () => {
+			try {
+				const queryParams = `?&page=1&paginate=3&sort_search_number=true`;
+				const response = await http.get('/article'+queryParams);
+				setArticles(response.data.data.data);
+			} catch (error) {
+				console.log('Lỗi kết nối đến API !', error);
+			} 
+		}
+		getArticle()
+	}, []);
+
    // Get Department
    useEffect(() => {
       const getDepartments = async () => {
@@ -119,7 +134,7 @@ const Navbars = () => {
                                  </h6>
                                  <ul className="w-100 mt-3">
                                     {categories.map((category, index) => (
-                                       <li>
+                                       <li key={index}>
                                           <img
                                              className="icon"
                                              src={
@@ -137,11 +152,55 @@ const Navbars = () => {
                                  </Link>
                               </div>
                            </div>
-                           <div className="col-lg-9 col-md-9 pr-0"></div>
+                           <div className="col-lg-9 col-md-9 pr-0">
+                              <div className="hospitals-list">
+                                 <div className="list-title">
+                                    <h2>Bài viết nổi bật</h2>
+                                 </div>
+                              </div>
+                              <div className="row main-section">
+                                 {articles.map((article, index) => {
+                                    return(
+                                    <div className="col-lg-4 col-md-4 list-article">
+                                    <article className="article">
+                                       <div className="banner-article">
+                                          <span>
+                                          <img src={article.thumbnail_article && config.URL + article.thumbnail_article} />
+                                          </span>
+                                       </div>
+                                       <div className="content">
+                                          <div className="inner-content">
+                                             <p className="category-name">
+                                                <Link className="name">{article.name_category}</Link>
+                                             </p>
+                                             <h5 className="title-article">
+                                                <Link to={"/article/"+article.id_article}>
+                                                {article.title}
+                                                </Link>
+                                             </h5>
+                                             <div className="footer-article d-flex">
+                                                <img
+                                                className="img-doctor"
+                                                src={article.avatar_user ? config.URL + article.avatar_user : "/image/avatar_admin_default.png"}
+                                                />
+                                                <p>
+                                                Tham vấn y khoa:
+                                                <span className="name-doctor ml-1">
+                                                   {article.name_user}
+                                                </span>
+                                                </p>
+                                             </div>
+                                          </div>
+                                          </div>
+                                    </article>
+                                    </div>
+                                    )})}
+                                 </div>
+                           </div>
                         </div>
                      </Container>
                   </NavDropdown>
-                  <NavDropdown
+                  {/* <NavDropdown
                      title={
                         <div>
                            Kiểm tra sức khỏe <BsChevronDown />
@@ -180,7 +239,7 @@ const Navbars = () => {
                            <div className="col-lg-9 col-md-9  pr-0"></div>
                         </div>
                      </Container>
-                  </NavDropdown>
+                  </NavDropdown> */}
                   <NavDropdown
                      title={
                         <div>
@@ -271,7 +330,7 @@ const Navbars = () => {
                         </div>
                      </Container>
                   </NavDropdown>
-                  <NavDropdown
+                  {/* <NavDropdown
                      title={
                         <div>
                            Cộng đồng <BsChevronDown />
@@ -292,7 +351,7 @@ const Navbars = () => {
                      <NavDropdown.Item href="#action/3.4">
                         Separated link
                      </NavDropdown.Item>
-                  </NavDropdown>
+                  </NavDropdown> */}
                   {user ? (
                      <NavDropdown
                         className="nav-info"

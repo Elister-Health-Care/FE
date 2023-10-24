@@ -240,5 +240,17 @@
                 }
             }
         }
+        .all-hospital-list {
+            .all-hospital-card {
+                padding: 20px;
+                .book-appointment-button {
+                    margin-top: 40px !important;
+                    background: var(--gradientColor);
+                }
+                .book-appointment-button:hover {
+                    color: var(--textColor)
+                }
+            }
+        }
     }
 }

@@ -3,6 +3,7 @@ import { Outlet } from 'react-router-dom'
 import Navbars from '~/components/Nav/Navbar'
 import { useEffect, useState } from 'react'
 import './user.css'
+import UserFooter from '~/components/Footer/user'
 
 const UserMainLayout = () => {
 
@@ -28,6 +29,9 @@ const UserMainLayout = () => {
          </div>
          <div>
             <Outlet />
+         </div>
+         <div>
+            <UserFooter/>
          </div>
       </div>
    )
