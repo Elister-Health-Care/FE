@@ -670,7 +670,7 @@ const FormBooking = ({ id = null,
           }
         }
     });
-},[day_off]);
+},[day_off, time_advise]);
 
     useEffect(() => {
       dayOfWeek.map((day) => {

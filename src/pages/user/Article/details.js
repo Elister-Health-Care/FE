@@ -169,7 +169,7 @@ const ArticleDetail = () => {
                   {articles_realted.map((item,index) => {
                     if (item.id_article != article.id_article) {
                       return (
-                    <Link key={index}><h3>- {item.title}</h3></Link>
+                    <Link to={"/article/" + item.id_article} key={index}><h3>- {item.title}</h3></Link>
                     );
                     }
                   })}
