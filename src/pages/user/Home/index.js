@@ -7,7 +7,7 @@ import { ReactComponent as Care } from "~/Assets/care.svg";
 import { ReactComponent as Discover } from "~/Assets/discover.svg";
 import { ReactComponent as HealthTools } from "~/Assets/health-tools.svg";
 import { BsFillBookmarkFill } from "react-icons/bs";
-import http from '~/utils/http';
+import http from '~/utils/httpUser';
 import config from "~/router/config";
 import LoadingDot from '~/components/Loading/LoadingDot'
 
@@ -23,6 +23,29 @@ const HomePage = () => {
        address: '',
     },
  ])
+ const [services, setServices] = useState([
+  {
+     name: '',
+     price: '',
+     name_hospital: '',
+  },
+])
+
+useEffect(() => {
+  const getService = async () => {
+    try {
+      const queryParams = `?page=1&paginate=4&sort_search_number=true`
+      const response = await http.get(
+          'hospital-service/all' + queryParams
+      )
+      setServices(response.data.data.data)
+    } catch (error) {
+      console.error('Lấy timework thất bại', error)
+    }
+  }
+  getService()
+}, []);
+
  useEffect(() => {
   const getHospitals = async () => {
      try {
@@ -66,6 +89,17 @@ const HomePage = () => {
     setTypeGetArticle(true);
     setActive(1)
   }
+
+  const formatMoney = (money) => {
+    if (money) {
+       return money.toLocaleString('it-IT', {
+          style: 'currency',
+          currency: 'VND',
+       })
+    }
+    return ''
+ }
+
   return (
     <div className="home">
       {loading && <LoadingDot />}
@@ -128,7 +162,7 @@ const HomePage = () => {
             {articles.map((article, index) => {
               if(index===0) {
               return(
-                <article className="article">
+                <article key={index} className="article">
                   <div className="banner-article">
                     <span>
                       <img src={article.thumbnail_article && config.URL + article.thumbnail_article} />
@@ -171,7 +205,7 @@ const HomePage = () => {
             {articles.map((article, index) => {
               if(index===1) {
               return(
-              <article className="article">
+              <article key={index} className="article">
                 <div className="banner-article">
                   <span>
                     <img src={article.thumbnail_article && config.URL + article.thumbnail_article} />
@@ -212,7 +246,7 @@ const HomePage = () => {
               {articles.map((article, index) => {
               if(index===2) {
               return(
-              <article className="article row">
+              <article key={index} className="article row">
                 <div className="content col-lg-7 col-md-7">
                   <div className="inner-content">
                       <p className="category-name">
@@ -257,7 +291,7 @@ const HomePage = () => {
           {articles.map((article, index) => {
               if(index >=3) {
               return(
-            <div className="col-lg-3 col-md-3 list-article">
+            <div key={index} className="col-lg-3 col-md-3 list-article">
               <article className="article">
                 <div className="banner-article">
                   <span>
@@ -300,8 +334,10 @@ const HomePage = () => {
           <hr />
         </div>
         <div className="main-section container mt-5 mb-5">
-                  <h2>Bệnh viện/Phòng khám cho bạn</h2>
-
+                  <div className="title-list-hospital">
+                    <h2>Bệnh viện/Phòng khám cho bạn</h2>
+                    <Link to={"/all"}>Xem tất cả</Link>
+                  </div>
                   <div className="all-hospital-list">
                      {hospitals.map((hospital, index) => (
                         <div key={index} className="all-hospital-card">
@@ -328,6 +364,56 @@ const HomePage = () => {
                      ))}
                   </div>
                </div>
+          <div className="justify-content-center hr px-5">
+          <hr />
+        </div> 
+        <div className="main-section container mt-5">
+                  <div className="title-list-hospital">
+                    <h2>Dịch vụ cho bạn</h2>
+                    <Link to={"/all-service"}>Xem tất cả</Link>
+                  </div>
+                  <div className="all-hospital-list">
+                     {services.map((service, index) => (
+                        <div key={index} className="all-service-card">
+                           <img
+                              className="all-service-avatar"
+                              src={
+                                 service.thumbnail_department
+                                    ? config.URL + service.thumbnail_department
+                                    : '/image/service_default.png'
+                              }
+                              alt="Hospital 1"
+                           />
+                           <div className="px-1 mt-2">
+                              <Link
+                                 to={
+                                    '/hospital/' +
+                                    service.id_hospital +
+                                    '/service'
+                                 }
+                                 className="tt_service"
+                              >
+                                 {service.name}
+                              </Link>
+                              <div className="p-1 d-block">
+                                 <i className="ti-location-pin"></i> Giá dịch
+                                 vụ&nbsp; 
+                                 <br/>
+                                 <span className="srv_price text-success">
+                                    {formatMoney(service.price)}
+                                 </span>
+                              </div>
+                              <div className="p-1">
+                                 <i className="ti-support"></i>&nbsp;{' '}
+                                 {service.name_hospital
+                                    ? service.name_hospital
+                                    : ''}
+                              </div>
+                           </div>
+                        </div>
+                     ))}
+                  </div>
+               </div>                   
       </div>
     </div>
   );
