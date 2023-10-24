@@ -120,9 +120,15 @@ const AdminAllUserPage = () => {
    const convertStringToArray = (string) => {
       return JSON.parse(string)
    }
-   const checkAvatar = (avatar) => {
+   const checkAvatar = (avatar, role) => {
       if (!avatar) {
-         return '/image/avatar_admin_default.png'
+         if (role === 'hospital') {
+            return '/image/default-hospital-search.jpg'
+         } else if (role === 'doctor') {
+            return '/image/avata-default-doctor.jpg'
+         } else {
+            return '/image/avatar_admin_default.png'
+         }
       }
       return config.URL + avatar
    }
@@ -412,11 +418,7 @@ const AdminAllUserPage = () => {
                                  <img
                                     className={cx('avatar')}
                                     alt=""
-                                    src={
-                                       user.avatar
-                                          ? config.URL + user.avatar
-                                          : '/image/avatar_admin_default.png'
-                                    }
+                                    src={checkAvatar(user.avatar, user.role)}
                                  />
                               </td>
                               <td>
@@ -581,14 +583,21 @@ const AdminAllUserPage = () => {
                                     <img
                                        src={
                                           role === 'user' && userDetail
-                                             ? checkAvatar(userDetail.avatar)
+                                             ? checkAvatar(
+                                                  userDetail.avatar,
+                                                  'user'
+                                               )
                                              : role === 'hospital' &&
                                                hospitalDetail
                                              ? checkAvatar(
-                                                  hospitalDetail.avatar
+                                                  hospitalDetail.avatar,
+                                                  'hospital'
                                                )
                                              : role === 'doctor' && doctorDetail
-                                             ? checkAvatar(doctorDetail.avatar)
+                                             ? checkAvatar(
+                                                  doctorDetail.avatar,
+                                                  'doctor'
+                                               )
                                              : '/image/default_avatar.png'
                                        }
                                        className="card-img-top"

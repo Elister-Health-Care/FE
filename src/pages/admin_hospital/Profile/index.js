@@ -35,7 +35,7 @@ function DoctorProfilePage() {
    })
    const dispatch = useDispatch()
    const [selectImage, setSelectImage] = useState(
-      '/image/avatar_admin_default.png'
+      '/image/default-hospital-search.jpg'
    )
    const rules = {
       name: {
