@@ -307,9 +307,9 @@ const UserLoginPage = () => {
                                        <div className="col-lg-12 p-1">
                                           <Link
                                              className="btn btn-primary w-100"
-                                             to={'#'}
+                                             to={'/hospital-register'}
                                           >
-                                             <b>Đăng ký bác sĩ</b>
+                                             <b>Đăng ký bệnh viện</b>
                                           </Link>
                                        </div>
                                     </div>
