@@ -16,21 +16,29 @@ html {
 
 :root {
    --mainColor: #96dfe2;
-   --btnColor: #11B3CF;
-   --PrimaryColor: hsl(199,100%,33%);
-   --SecondaryColor: hsl(187,85%,43%);
-   --gradientColor: linear-gradient(to right, hsl(187,85%,43%),hsl(199,100%,33%));
-   --gradientColorChange: linear-gradient(to right,hsl(199,100%,33%), hsl(187,85%,43%));
-   --whiteColor: hsl(0,0%,100%);
-   --blackColor: hsl(201,33%,16%);
-   --textColor: hsl(240,4%,36%);
-   --whiteColorDeam: hsl(0,0%,93%);
-   --greyText: rgb(190,190,190);
-   --inputColor: rgb(239,239,239);
-   --bodyColor: rgb(240,240,246);
-   --cardBG: rgb(225,225,225);
-   --successColor: #009E5C;
- }
+   --btnColor: #11b3cf;
+   --PrimaryColor: hsl(199, 100%, 33%);
+   --SecondaryColor: hsl(187, 85%, 43%);
+   --gradientColor: linear-gradient(
+      to right,
+      hsl(187, 85%, 43%),
+      hsl(199, 100%, 33%)
+   );
+   --gradientColorChange: linear-gradient(
+      to right,
+      hsl(199, 100%, 33%),
+      hsl(187, 85%, 43%)
+   );
+   --whiteColor: hsl(0, 0%, 100%);
+   --blackColor: hsl(201, 33%, 16%);
+   --textColor: hsl(240, 4%, 36%);
+   --whiteColorDeam: hsl(0, 0%, 93%);
+   --greyText: rgb(190, 190, 190);
+   --inputColor: rgb(239, 239, 239);
+   --bodyColor: rgb(240, 240, 246);
+   --cardBG: rgb(225, 225, 225);
+   --successColor: #009e5c;
+}
 
 body {
    margin: 0;
@@ -234,4 +242,7 @@ ul {
 }
 .text_center {
    text-align: center;
+}
+iframe#webpack-dev-server-client-overlay {
+   display: none;
 }

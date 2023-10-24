@@ -3,11 +3,16 @@ import React from 'react'
 import { Navigate } from 'react-router-dom'
 
 const UserAuthCheck = ({ component: Component }) => {
-   const user = localStorage.getItem('HealthCareUser')
+   const user = JSON.parse(localStorage.getItem('HealthCareUser'))
    if (!user) {
       return <Navigate to="/user-login" />
+   } else {
+      if (user.role === 'hospital' || user.role === 'doctor') {
+         return <Navigate to="/page-not-found" />
+      } else {
+         return <Component />
+      }
    }
-   return <Component />
 }
 
 const AdminAuthCheck = ({ component: Component }) => {

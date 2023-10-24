@@ -141,6 +141,9 @@ function AdminProfilePage() {
             console.log('Cập nhật thành công')
          } catch (error) {
             console.log(error)
+            if (error.response.data.data)
+               setNotify({ error: error.response.data.data[0] })
+            else setNotify({ error: error.response.data.message })
             console.error('Lỗi kết nối đến API', error)
          } finally {
             setIsButtonDisabled(true)
@@ -197,6 +200,20 @@ function AdminProfilePage() {
                         </Link>
                         <i class=" mdi mdi-check-underline"></i> &nbsp;
                         {notify.success}
+                     </div>
+                  )}
+                  {notify.error && (
+                     <div className="alert alert-warning alert-dismissable">
+                        <Link
+                           className="panel-close close"
+                           onClick={() => {
+                              setNotify({})
+                           }}
+                        >
+                           ×
+                        </Link>
+                        <i class=" mdi mdi-check-underline"></i> &nbsp;
+                        {notify.error}
                      </div>
                   )}
                   <h3>Thông tin tài khoản</h3>

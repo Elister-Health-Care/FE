@@ -27,10 +27,9 @@ function Map({ onChildData }) {
    }
    const { isLoaded } = useJsApiLoader({
       id: 'google-map-script',
-      googleMapsApiKey: 'AIzaSyB_o0aJQDa945krcRzTGB0sBKGuq15RNBM',
+      googleMapsApiKey: 'AIzaSyCLQbOE27qnoeprAFYx_Xco466-9lv0Te8',
    })
    const onLoad = useCallback(function callback(map) {
-      // This is just an example of getting and using the map instance!!! don't just blindly copy!
       const bounds = new window.google.maps.LatLngBounds(center)
       map.fitBounds(bounds)
 
