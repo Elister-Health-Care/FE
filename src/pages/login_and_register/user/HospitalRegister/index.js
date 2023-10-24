@@ -7,6 +7,8 @@ import { Link, useNavigate } from 'react-router-dom'
 import http from '~/utils/http'
 import validateForm from '~/helpers/validation'
 import { useAppContext } from '~/contexts/AppContext'
+import LoadingDot from '~/components/Loading/LoadingDot'
+import ErrorBoundary from '~/components/ErrorBoundaryCp'
 
 const cx = classNames.bind(styles)
 
@@ -18,6 +20,7 @@ function HospitalRegisterPage() {
    const [provinces, setProvinvces] = useState([])
    const [selectImage, setSelectImage] = useState('/image/default-avatar.png')
    const [errors, setErrors] = useState({})
+   const [loadingDot, setLoadingDot] = useState(false)
 
    const [infrastructure, setInfrastructure] = useState('')
    const [infrastructures, setInfrastructures] = useState([])
@@ -117,6 +120,7 @@ function HospitalRegisterPage() {
    const handlekeyDownInfrastructure = (e) => {
       if (e.key === 'Enter') {
          setInfrastructures([...infrastructures, infrastructure])
+         setInfrastructure('')
          e.preventDefault()
       }
    }
@@ -176,6 +180,7 @@ function HospitalRegisterPage() {
             JSON.stringify(hospitalData.location)
          )
          try {
+            setLoadingDot(true)
             const response = await http.post(
                'infor-hospital/register',
                formDataToSubmit,
@@ -204,6 +209,8 @@ function HospitalRegisterPage() {
             }
 
             console.log(error)
+         } finally {
+            setLoadingDot(false)
          }
       } else {
          setErrors(validationErrors)
@@ -212,6 +219,7 @@ function HospitalRegisterPage() {
 
    return (
       <div className={cx('wrapper')}>
+         {loadingDot && <LoadingDot />}
          <div className={cx('inner')}>
             <img
                src="/admin/images/image-1.png"
@@ -454,7 +462,8 @@ function HospitalRegisterPage() {
                      <input
                         onKeyDown={handlekeyDownInfrastructure}
                         onChange={handleInfrastructureChange}
-                        defaultValue={infrastructure}
+                        placeholder="Cơ sở vật chất"
+                        value={infrastructure}
                         type="text"
                         name="infrastructure"
                         className={cx('form_control', 'text_left', 'tk')}
@@ -522,7 +531,9 @@ function HospitalRegisterPage() {
                   className={cx('close_icon')}
                />
             </button>
-            <Map onChildData={handleChildData}></Map>
+            <ErrorBoundary>
+               <Map onChildData={handleChildData}></Map>
+            </ErrorBoundary>
          </div>
       </div>
    )

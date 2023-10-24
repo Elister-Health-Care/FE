@@ -244,9 +244,9 @@ const AdminAllUserPage = () => {
          if (status === 2) {
             toast.warning(' Đã khóa tài khoản có id ' + id, toastOptions)
          } else if (status === 1) {
-            toast.success('Duyệt tài khoản id' + id, toastOptions)
+            toast.success('Duyệt tài khoản id ' + id, toastOptions)
          } else {
-            toast.success('Mở khóa tài khoản id' + id, toastOptions)
+            toast.success('Mở khóa tài khoản id ' + id, toastOptions)
          }
          updateUser(id, value)
          console.log(setUsers)
@@ -824,8 +824,8 @@ const AdminAllUserPage = () => {
                                                 hospitalDetail ? (
                                                    <li className="list-group-item">
                                                       <strong>Ngày tạo:</strong>{' '}
-                                                      {formatGender(
-                                                         userDetail.created_at
+                                                      {formatDateTime(
+                                                         hospitalDetail.created_at
                                                       )}
                                                    </li>
                                                 ) : (
