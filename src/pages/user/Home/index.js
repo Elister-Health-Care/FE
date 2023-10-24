@@ -16,6 +16,27 @@ const HomePage = () => {
   const [articles, setArticles] = useState([]);
   const [type_get_article, setTypeGetArticle] = useState(true);
   const [active,setActive] = useState(1);
+  const [hospitals, setHospitals] = useState([
+    {
+       id_hospital: '',
+       avatar: '',
+       address: '',
+    },
+ ])
+ useEffect(() => {
+  const getHospitals = async () => {
+     try {
+        const queryParams = `?page=1&paginate=4&sort_search_number=true`
+        const response = await http.get(
+           'infor-hospital/all-hospital' + queryParams
+        )
+        setHospitals(response.data.data.data)
+     } catch (error) {
+        console.log('Lỗi kết nối đến API !', error)
+     }
+  }
+  getHospitals()
+}, [])
   useEffect(() => {
 		const getArticle = async () => {
 			try {
@@ -130,7 +151,7 @@ const HomePage = () => {
                       <div className="footer-article d-flex">
                         <img
                           className="img-doctor"
-                          src={article.avatar_user && config.URL + article.avatar_user}
+                          src={article.avatar_user ? config.URL + article.avatar_user : "/image/avatar_admin_default.png"}
                         />
                         <p>
                           Tham vấn y khoa:
@@ -172,7 +193,7 @@ const HomePage = () => {
                       <div className="footer-article d-flex">
                         <img
                           className="img-doctor"
-                          src={article.avatar_user && config.URL + article.avatar_user}
+                          src={article.avatar_user ? config.URL + article.avatar_user : "/image/avatar_admin_default.png"}
                         />
                         <p>
                           Tham vấn y khoa:
@@ -208,7 +229,7 @@ const HomePage = () => {
                       <div className="footer-article d-flex">
                         <img
                           className="img-doctor"
-                          src={article.avatar_user && config.URL + article.avatar_user}
+                          src={article.avatar_user ? config.URL + article.avatar_user : "/image/avatar_admin_default.png"}
                         />
                         <p>
                           Tham vấn y khoa:
@@ -259,7 +280,7 @@ const HomePage = () => {
                       <div className="footer-article d-flex">
                         <img
                           className="img-doctor"
-                          src={article.avatar_user && config.URL + article.avatar_user}
+                          src={article.avatar_user ? config.URL + article.avatar_user : "/image/avatar_admin_default.png"}
                         />
                         <p>
                           Tham vấn y khoa:
@@ -275,6 +296,38 @@ const HomePage = () => {
               )}})}
           </div>
         </div>
+        <div className="justify-content-center hr px-5">
+          <hr />
+        </div>
+        <div className="main-section container mt-5 mb-5">
+                  <h2>Bệnh viện/Phòng khám cho bạn</h2>
+
+                  <div className="all-hospital-list">
+                     {hospitals.map((hospital, index) => (
+                        <div key={index} className="all-hospital-card">
+                           <img
+                              className="all-hospital-avatar"
+                              src={
+                                 hospital.avatar
+                                    ? config.URL + hospital.avatar
+                                    : '/image/default-hospital-search.jpg'
+                              }
+                              alt="Hospital 1"
+                           />
+                           <h5>{hospital.name}</h5>
+                           <div className="mb-4">
+                              <i className="ti-location-pin"></i>{' '}
+                              {hospital.address}
+                           </div>
+                           <Link to= {"/hospital/"+hospital.id_hospital}
+                              className="book-appointment-button"
+                           >
+                              Đặt lịch bệnh viện
+                           </Link>
+                        </div>
+                     ))}
+                  </div>
+               </div>
       </div>
     </div>
   );
