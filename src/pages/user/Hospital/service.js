@@ -16,6 +16,8 @@ import FormBooking from "~/components/Form/form-booking";
 const HospitalService = () => {
    const [services, setService] = useState([])
    const [keyword, setKeyword] = useState('')
+   const [id_service, setIdService] = useState(null);
+   const [name_service, setNameService] = useState(null);
    const { id, tab } = useParams()
    const [loading, setLoading] = useState(false)
    const [hospital, setHospital] = useState({
@@ -91,7 +93,11 @@ const HospitalService = () => {
       setKeyword(value)
    }
 
-
+   const handleBooking = (id_service, name_service) => {
+    setIdService(id_service);
+    setNameService(name_service);
+  }
+   
   return (
     <>
       {loading && <LoadingDot />}
@@ -138,7 +144,7 @@ const HospitalService = () => {
                       </div>
                     </div>
                            </div>
-                           <button className="btn btn-primary btn-book">
+                           <button onClick={() => handleBooking(service.id_hospital_service, service.name)} className="btn btn-primary btn-book">
                               Đặt lịch hẹn
                            </button>
                         </div>
@@ -150,7 +156,12 @@ const HospitalService = () => {
         </div>
       </div>
         <div className="col-md-4 col-lg-4">
-              <FormBooking id={id}/>
+              <FormBooking
+               id={id} 
+               id_service_selected={id_service}
+               name_service_selected={name_service}
+               tab_booking_select = {tab}
+              />
         </div>
     </>
   );

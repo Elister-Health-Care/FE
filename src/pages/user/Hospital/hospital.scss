@@ -666,10 +666,14 @@
                                         border-radius: 50%;
                                         object-fit: cover;
                                         object-position: center;
+                                        margin: auto 0px;
                                     }
                                     p {
                                         margin-bottom: 0px;
                                         margin-top: 3px;
+                                        .money {
+                                            font-size: 14px;
+                                        }
                                     }
                                 }
                                 li:hover {
