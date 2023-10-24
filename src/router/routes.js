@@ -37,6 +37,7 @@ import FormEditProfile from '~/pages/user/Profile/form-edit'
 import UserPasswordSetting from '~/pages/user/Profile/password'
 import HospitalDetail from '~/pages/user/Hospital/detail'
 import HospitalInformation from '~/pages/user/Hospital/info'
+import ArticleDetail from '~/pages/user/Article/details'
 // Import admin pages
 import AdminLayout from '~/layouts/AdminLayout'
 import AdminDashboardPage from '~/pages/admin/Dashboard'
@@ -100,7 +101,7 @@ const BigRoutes = () => (
             <Route path="" element={<HospitalInformation />} />
             <Route path=":tab" element={<ActiveComponent />} />
          </Route>
-         <Route path="hospital/:id" element={<HospitalDetail />}></Route>
+         <Route path="article/:id" element={<ArticleDetail />}></Route>
       </Route>
 
       {/* Private route user-hospital ********************/}

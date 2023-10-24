@@ -122,7 +122,7 @@ const HomePage = () => {
                         </Link>
                       </p>
                       <h4 className="title-article">
-                        <Link>
+                        <Link to= {"/article/"+article.id_article}>
                           {article.title}
                         </Link>
                       </h4>
@@ -165,7 +165,7 @@ const HomePage = () => {
                         </Link>
                       </p>
                       <h5 className="title-article">
-                        <Link>
+                        <Link to={"/article/"+article.id_article}>
                           {article.title}
                         </Link>
                       </h5>
@@ -201,7 +201,7 @@ const HomePage = () => {
                         </Link>
                       </p>
                       <h5 className="title-article">
-                        <Link>
+                        <Link to={"/article/"+article.id_article}>
                           {article.title}
                         </Link>
                       </h5>
@@ -252,7 +252,7 @@ const HomePage = () => {
                         </Link>
                       </p>
                       <h5 className="title-article">
-                        <Link>
+                        <Link to={"/article/"+article.id_article}>
                           {article.title}
                         </Link>
                       </h5>
