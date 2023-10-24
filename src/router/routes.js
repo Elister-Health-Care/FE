@@ -100,6 +100,7 @@ const BigRoutes = () => (
             <Route path="" element={<HospitalInformation />} />
             <Route path=":tab" element={<ActiveComponent />} />
          </Route>
+         <Route path="hospital/:id" element={<HospitalDetail />}></Route>
       </Route>
 
       {/* Private route user-hospital ********************/}

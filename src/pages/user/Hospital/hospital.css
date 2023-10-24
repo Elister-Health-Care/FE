@@ -639,10 +639,14 @@
      object-fit: cover;
   -o-object-position: center;
      object-position: center;
+  margin: auto 0px;
 }
 .body-hospital .modal-booking .form-booking .input-booking .select-department .input-department .dropdown-input .dropdown-departerment a p {
   margin-bottom: 0px;
   margin-top: 3px;
+}
+.body-hospital .modal-booking .form-booking .input-booking .select-department .input-department .dropdown-input .dropdown-departerment a p .money {
+  font-size: 14px;
 }
 .body-hospital .modal-booking .form-booking .input-booking .select-department .input-department .dropdown-input .dropdown-departerment li:hover {
   background-color: #f1f1f1;
