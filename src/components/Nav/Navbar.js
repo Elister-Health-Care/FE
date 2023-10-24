@@ -227,7 +227,7 @@ const Navbars = () => {
                                     {hospitals.map((hospital, index) => (
                                        <div className="col-lg-4 col-md-4 pr-1 pl-0">
                                           <Link
-                                             to={'/hospital/' + hospital.id}
+                                             to={'/hospital/' + hospital.id_hospital}
                                              className="hospital"
                                           >
                                              <img

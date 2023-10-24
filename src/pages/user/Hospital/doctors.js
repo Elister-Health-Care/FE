@@ -204,6 +204,7 @@ const HospitalDoctor = () => {
                 name_department_selected={name_department}
                 id_doctor_selected={id_doctor}
                 name_doctor_selected={name_doctor}
+                tab_booking_select= {tab}
                 />
         </div>
     </>

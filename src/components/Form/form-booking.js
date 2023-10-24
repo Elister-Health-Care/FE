@@ -4,7 +4,7 @@ import "~/pages/user/Hospital/hospital.css";
 import { GrFormNext } from "react-icons/gr";
 import { ReactComponent as Search } from "~/Assets/search.svg";
 import { FaLocationDot, FaUserDoctor } from "react-icons/fa6";
-import { RiServiceFill } from "react-icons/ri";
+import { RiMoneyDollarCircleFill, RiServiceFill } from "react-icons/ri";
 import { BiChevronDown } from "react-icons/bi";
 import http from "~/utils/httpUser";
 import config from "~/router/config";
@@ -12,11 +12,12 @@ import Tab from "react-bootstrap/Tab";
 import Tabs from "react-bootstrap/Tabs";
 import LoadingDot from "~/components/Loading/LoadingDot";
 import { toast, ToastContainer } from "react-toastify";
+import classNames from "classnames";
 
 const FormBooking = ({ id = null, 
   id_department_selected = null, name_department_selected =null, 
   id_doctor_selected=null, name_doctor_selected=null,
-  id_service_selected=null, name_service_selected=null}) => {
+  id_service_selected=null, name_service_selected=null, tab_booking_select = null}) => {
   const [id_department, setIdDepartment] = useState(id_department_selected);
   const [id_doctor, setIdDoctor] = useState(id_doctor_selected);
   const [id_service, setIdService] = useState(id_service_selected);
@@ -24,7 +25,7 @@ const FormBooking = ({ id = null,
   const [default_day, setDefaultDay] = useState(null);
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
   const [day_selected, setDay] = useState(null);
-  const [day_off, setDayOff] = useState(false);
+  const [day_off, setDayOff] = useState(true);
   const [morning_times, setMorning] = useState({
     time: "",
     enable: null,
@@ -466,6 +467,19 @@ const FormBooking = ({ id = null,
     }
  }, [name_department_selected ,id_department_selected, id_doctor_selected, name_doctor_selected])
 
+ useEffect(() => {
+  if(name_service_selected && id_service_selected) {
+    setNameService(name_service_selected);
+    setIdService(id_service_selected);
+    setBookiAdviseService({
+      ...book_advise_service,
+      id_hospital_service: id_service_selected,
+   })
+    setShowService(false);
+  }
+}, [name_service_selected, id_service_selected])
+
+
   useEffect(() => {
     const getHospital = async () => {
       try {
@@ -531,6 +545,16 @@ const FormBooking = ({ id = null,
     setShow(false);
   };
 
+  const formatMoney = (money) => {
+    if (money) {
+       return money.toLocaleString('it-IT', {
+          style: 'currency',
+          currency: 'VND',
+       })
+    }
+    return ''
+ }
+
   const handleSetInputDoctor = (name, id) => {
     setNameDoctor(name);
     setIdDoctor(id);
@@ -580,6 +604,13 @@ const FormBooking = ({ id = null,
   }, [id_doctor]);
 
   useEffect(() => {
+    if(tab_booking_select != null){
+      setTabBooking(tab_booking_select);
+      tab_booking_select=null;
+    }
+  },[tab_booking]);
+
+  useEffect(() => {
     const getTimeService = async () => {
       try {
         const response = await http.get("/time-work/service/" + id_service);
@@ -614,30 +645,61 @@ const FormBooking = ({ id = null,
   // });
   useEffect(() => {
     dayOfWeek.map((day) => {
-      if(!time_advise[day]) {
-        // console.log(1)
-        // setDayOff(true);
-      }
-      else {
-        setDayOff(false)
         if (time_advise[day].date === default_day) {
-          setNight(time_advise[day].night);
-          setMorning(time_advise[day].morning);
-          setAfternoon(time_advise[day].afternoon);
+          setDayOff(time_advise[day].enable)
+          if(time_advise[day].enable==true) {
+            setNight(time_advise[day].night);
+            setMorning(time_advise[day].morning);
+            setAfternoon(time_advise[day].afternoon);
+          } else {
+            setNight({
+              time: "",
+              enable: null,
+              divided_times:[],
+            });
+            setMorning({
+              time: "",
+              enable: null,
+              divided_times:[],
+            });
+            setAfternoon({
+              time: "",
+              enable: null,
+              divided_times:[],
+            })
+          }
         }
-    }
     });
-});
+},[day_off]);
 
     useEffect(() => {
       dayOfWeek.map((day) => {
           if (time_service[day].date === default_day) {
-            setNightService(time_service[day].night);
-            setMorningService(time_service[day].morning);
-            setAfternoonService(time_service[day].afternoon);
+            if(time_service[day].enable==true) {
+              setNightService(time_service[day].night);
+              setMorningService(time_service[day].morning);
+              setAfternoonService(time_service[day].afternoon);
+            }
+            else {
+              setNightService({
+                time: "",
+                enable: null,
+                divided_times:[],
+              });
+              setMorningService({
+                time: "",
+                enable: null,
+                divided_times:[],
+              });
+              setAfternoonService({
+                time: "",
+                enable: null,
+                divided_times:[],
+              })
+            }
         }
       });
-    });
+    },[day_off]);
 
   const handleDateService = (e) => {
     const { name, value } = e.target;
@@ -648,29 +710,63 @@ const FormBooking = ({ id = null,
           date: ""+value+"",
        })
       if (time_service[day].date == value) {
-        setNightService(time_service[day].night);
-        setMorningService(time_service[day].morning);
-        setAfternoonService(time_service[day].afternoon);
+        if(time_service[day].enable==true) {
+          setNightService(time_service[day].night);
+          setMorningService(time_service[day].morning);
+          setAfternoonService(time_service[day].afternoon);
+        }
+        else {
+          setNightService({
+            time: "",
+            enable: null,
+            divided_times:[],
+          });
+          setMorningService({
+            time: "",
+            enable: null,
+            divided_times:[],
+          });
+          setAfternoonService({
+            time: "",
+            enable: null,
+            divided_times:[],
+          })
+        }
       }
-      console.log(morning_service_times);
     });
   }
 
   const handleDate = (e) => {
     const { name, value } = e.target;
     dayOfWeek.map((day) => {
-      console.log(time_advise[day]);
-   
         setDefaultDay(value);
-        setDayOff(false);
         setTimeBooking({
           ...time_booking,
           date: ""+value+"",
        })
-        if (time_advise[day].date == value) {
-          setNight(time_advise[day].night);
-          setMorning(time_advise[day].morning);
-          setAfternoon(time_advise[day].afternoon);
+        if (time_advise[day].date === value) {
+            setDayOff(time_advise[day].enable)
+            if(time_advise[day].enable==true) {
+              setNight(time_advise[day].night);
+              setMorning(time_advise[day].morning);
+              setAfternoon(time_advise[day].afternoon);
+            } else {
+              setNight({
+                time: "",
+                enable: null,
+                divided_times:[],
+              });
+              setMorning({
+                time: "",
+                enable: null,
+                divided_times:[],
+              });
+              setAfternoon({
+                time: "",
+                enable: null,
+                divided_times:[],
+              })
+            }
         }
     });
   };
@@ -743,10 +839,18 @@ const FormBooking = ({ id = null,
         setDoctorEnable(false);
         setNameDoctor("");
         setIdDoctor(null);
+        setTimeBooking({
+          date: "",
+          interval: []
+        })
       } else {
         setIsButtonDisabled(true);
         setNameService("");
         setIdService(null);
+        setTimeServiceBooking({
+          date: "",
+          interval: []
+        })
       }
   } 
 
@@ -877,8 +981,10 @@ const FormBooking = ({ id = null,
                               }
                             >
                               <a>
-                                <img src={config.URL + doctor.avatar} />
-                                <p>{doctor.name_doctor}</p>
+                                <img src={doctor.avatar!=null ? config.URL + doctor.avatar : "/image/avatar_admin_default.png"} />
+                                <p>{doctor.name_doctor} <br/>
+                                   <span className="text-success money"><RiMoneyDollarCircleFill/> {formatMoney(doctor.price)}</span> 
+                                </p>
                               </a>
                             </li>
                           ))}
@@ -922,15 +1028,13 @@ const FormBooking = ({ id = null,
                       </div>
                     </div>
                     {id_doctor != null ? (
-                    <>{!day_off ? (
+                    <>
                       <Tabs
                         defaultActiveKey="morning"
                         id="fill-tab-example"
                         className="mb-3"
                         fill
                       >
-                        {console.log(day_off)}
-
                         <Tab eventKey="morning" title="Sáng">
                           {morning_times.enable===true ? (
                           <div className="time-booking">
@@ -978,9 +1082,6 @@ const FormBooking = ({ id = null,
                         </Tab>
                         
                       </Tabs>
-                      ) : (
-                        <p className="text-danger">Rất tiết! Bác sĩ của bệnh viện không có lịch tư vấn vào ngày này.</p>
-                      )}
                       </>
                     ) : (
                       <p className="mt-3">
@@ -1009,7 +1110,7 @@ const FormBooking = ({ id = null,
                   src={
                     hospital.avatar
                       ? config.URL + hospital.avatar
-                      : "/image/avatar_admin_default.png"
+                      : "/image/default-hospital-search.jpg"
                   }
                   alt=""
                 />
@@ -1086,6 +1187,7 @@ const FormBooking = ({ id = null,
                       </div>
                     </div>
                     {id_service != null ? (
+                      <>
                       <Tabs
                         defaultActiveKey="morning"
                         id="fill-tab-example"
@@ -1139,6 +1241,7 @@ const FormBooking = ({ id = null,
                         </Tab>
                         
                       </Tabs>
+                      </>
                     ) : (
                       <p className="mt-3">
                         Hãy chọn dịch vụ bạn muốn được sử dụng 
