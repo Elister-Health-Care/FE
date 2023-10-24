@@ -25,7 +25,7 @@ const Navbars = () => {
    const [departments, setDepartments] = useState([])
    const [hospitals, setHospitals] = useState([])
    const isUserUpdated = useSelector((state) => state.user.keyUserUpdated)
-   const [articles, setArticles] = useState([]);
+   const [articles, setArticles] = useState([])
    const navigate = useNavigate()
    // get categories
    useEffect(() => {
@@ -42,17 +42,17 @@ const Navbars = () => {
    }, [])
 
    useEffect(() => {
-		const getArticle = async () => {
-			try {
-				const queryParams = `?&page=1&paginate=3&sort_search_number=true`;
-				const response = await http.get('/article'+queryParams);
-				setArticles(response.data.data.data);
-			} catch (error) {
-				console.log('Lỗi kết nối đến API !', error);
-			} 
-		}
-		getArticle()
-	}, []);
+      const getArticle = async () => {
+         try {
+            const queryParams = `?&page=1&paginate=3&sort_search_number=true`
+            const response = await http.get('/article' + queryParams)
+            setArticles(response.data.data.data)
+         } catch (error) {
+            console.log('Lỗi kết nối đến API !', error)
+         }
+      }
+      getArticle()
+   }, [])
 
    // Get Department
    useEffect(() => {
@@ -160,42 +160,61 @@ const Navbars = () => {
                               </div>
                               <div className="row main-section">
                                  {articles.map((article, index) => {
-                                    return(
-                                    <div className="col-lg-4 col-md-4 list-article">
-                                    <article className="article">
-                                       <div className="banner-article">
-                                          <span>
-                                          <img src={article.thumbnail_article && config.URL + article.thumbnail_article} />
-                                          </span>
-                                       </div>
-                                       <div className="content">
-                                          <div className="inner-content">
-                                             <p className="category-name">
-                                                <Link className="name">{article.name_category}</Link>
-                                             </p>
-                                             <h5 className="title-article">
-                                                <Link to={"/article/"+article.id_article}>
-                                                {article.title}
-                                                </Link>
-                                             </h5>
-                                             <div className="footer-article d-flex">
-                                                <img
-                                                className="img-doctor"
-                                                src={article.avatar_user ? config.URL + article.avatar_user : "/image/avatar_admin_default.png"}
-                                                />
-                                                <p>
-                                                Tham vấn y khoa:
-                                                <span className="name-doctor ml-1">
-                                                   {article.name_user}
+                                    return (
+                                       <div className="col-lg-4 col-md-4 list-article">
+                                          <article className="article">
+                                             <div className="banner-article">
+                                                <span>
+                                                   <img
+                                                      src={
+                                                         article.thumbnail_article &&
+                                                         config.URL +
+                                                            article.thumbnail_article
+                                                      }
+                                                   />
                                                 </span>
-                                                </p>
                                              </div>
-                                          </div>
-                                          </div>
-                                    </article>
-                                    </div>
-                                    )})}
-                                 </div>
+                                             <div className="content">
+                                                <div className="inner-content">
+                                                   <p className="category-name">
+                                                      <Link className="name">
+                                                         {article.name_category}
+                                                      </Link>
+                                                   </p>
+                                                   <h5 className="title-article">
+                                                      <Link
+                                                         to={
+                                                            '/article/' +
+                                                            article.id_article
+                                                         }
+                                                      >
+                                                         {article.title}
+                                                      </Link>
+                                                   </h5>
+                                                   <div className="footer-article d-flex">
+                                                      <img
+                                                         className="img-doctor"
+                                                         src={
+                                                            article.avatar_user
+                                                               ? config.URL +
+                                                                 article.avatar_user
+                                                               : '/image/avatar_admin_default.png'
+                                                         }
+                                                      />
+                                                      <p>
+                                                         Tham vấn y khoa:
+                                                         <span className="name-doctor ml-1">
+                                                            {article.name_user}
+                                                         </span>
+                                                      </p>
+                                                   </div>
+                                                </div>
+                                             </div>
+                                          </article>
+                                       </div>
+                                    )
+                                 })}
+                              </div>
                            </div>
                         </div>
                      </Container>
@@ -286,7 +305,10 @@ const Navbars = () => {
                                     {hospitals.map((hospital, index) => (
                                        <div className="col-lg-4 col-md-4 pr-1 pl-0">
                                           <Link
-                                             to={'/hospital/' + hospital.id_hospital}
+                                             to={
+                                                '/hospital/' +
+                                                hospital.id_hospital
+                                             }
                                              className="hospital"
                                           >
                                              <img
@@ -368,7 +390,16 @@ const Navbars = () => {
                         id="basic-nav-dropdown"
                      >
                         <NavDropdown.Item className="p-2">
-                           <Link to={'user/profile'} tag={Link}>
+                           <Link
+                              to={
+                                 user.role === 'hospital'
+                                    ? 'hospital/profile '
+                                    : user.role === 'doctor'
+                                    ? 'hospital/doctor-profile'
+                                    : 'user/profile'
+                              }
+                              tag={Link}
+                           >
                               <div className="d-flex info-user">
                                  <img
                                     className="avatar"
