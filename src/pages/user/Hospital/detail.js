@@ -272,7 +272,9 @@ const HospitalDetail = () => {
                 <div className="thumbnail">
                   <div className="grid-layout">
                     <img
-                      src="https://cdn-healthcare.hellohealthgroup.com/2023/06/1687490654_6495105ef02194.17483979.jpg"
+                      src={ hospital.avatar
+                        ? config.URL + hospital.avatar
+                        : "/image/default-hospital-search.jpg"}
                       alt=""
                     />
                   </div>
@@ -285,7 +287,7 @@ const HospitalDetail = () => {
                   src={
                     hospital.avatar
                       ? config.URL + hospital.avatar
-                      : "/image/avatar_admin_default.png"
+                      : "/image/default-hospital-search.jpg"
                   }
                   alt=""
                 />

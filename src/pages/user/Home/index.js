@@ -122,7 +122,7 @@ const HomePage = () => {
                         </Link>
                       </p>
                       <h4 className="title-article">
-                        <Link>
+                        <Link to= {"/article/"+article.id_article}>
                           {article.title}
                         </Link>
                       </h4>
