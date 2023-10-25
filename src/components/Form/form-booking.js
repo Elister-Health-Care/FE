@@ -12,7 +12,7 @@ import Tab from "react-bootstrap/Tab";
 import Tabs from "react-bootstrap/Tabs";
 import LoadingDot from "~/components/Loading/LoadingDot";
 import { toast, ToastContainer } from "react-toastify";
-import classNames from "classnames";
+import { useSelector } from "react-redux";
 
 const FormBooking = ({ id = null, 
   id_department_selected = null, name_department_selected =null, 
@@ -26,6 +26,7 @@ const FormBooking = ({ id = null,
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
   const [day_selected, setDay] = useState(null);
   const [day_off, setDayOff] = useState(true);
+  const inputRef = useRef(null);
   const [morning_times, setMorning] = useState({
     time: "",
     enable: null,
@@ -85,10 +86,28 @@ const FormBooking = ({ id = null,
      setTimeServiceBooking({
       ...time_booking_service,
       date: ""+tomorrow+"",
-   })
+    })
     }
     document.getElementById("datefield").setAttribute("min", tomorrow);
   }, [default_day]);
+
+  const getTomorrow = () => {
+    var today = new Date();
+    var dd = today.getDate() + 1; //get day after today
+    var mm = today.getMonth() + 1;
+    var yyyy = today.getFullYear();
+
+    if (dd < 10) {
+      dd = "0" + dd;
+    }
+
+    if (mm < 10) {
+      mm = "0" + mm;
+    }
+
+    var tomorrow = yyyy + "-" + mm + "-" + dd;
+    return tomorrow;
+  }
 
   const [time_booking, setTimeBooking] = useState({
     date: "",
@@ -424,6 +443,7 @@ const FormBooking = ({ id = null,
   const [services, setService] = useState([]);
   const [show_doctors, setShowDoctor] = useState(false);
   const [show_service, setShowService] = useState(false);
+  const isBookingChanged = useSelector((state) => state.booking.keyBookingUpdated)
   const [hospital, setHospital] = useState({
     id: null,
     email: "",
@@ -447,13 +467,16 @@ const FormBooking = ({ id = null,
     enable: null,
     departments: null,
   });
-
  useEffect(() => {
     if(name_department_selected && id_department_selected && id_doctor_selected && name_doctor_selected) {
       setNameDepartment(name_department_selected);
       setIdDepartment(id_department_selected);
       setDoctorEnable(true);
       setNameDoctor("");
+      setTimeBooking({
+          ...time_booking,
+          date: ""+getTomorrow()+"",
+      })
       setIdDoctor(null);
       setShow(false);
       setNameDoctor(name_doctor_selected);
@@ -464,11 +487,21 @@ const FormBooking = ({ id = null,
      })
       setDoctorEnable(true);
       setShowDoctor(false);
+      name_department_selected = null;
+      id_department_selected = null; 
+      id_doctor_selected = null; 
+      name_doctor_selected = null;
+      id_service_selected = null;
+      name_service_selected = null;
     }
- }, [name_department_selected ,id_department_selected, id_doctor_selected, name_doctor_selected])
+ }, [isBookingChanged])
 
  useEffect(() => {
   if(name_service_selected && id_service_selected) {
+    setTimeServiceBooking({
+      ...time_booking_service,
+      date: ""+getTomorrow()+"",
+    })
     setNameService(name_service_selected);
     setIdService(id_service_selected);
     setBookiAdviseService({
@@ -476,8 +509,15 @@ const FormBooking = ({ id = null,
       id_hospital_service: id_service_selected,
    })
     setShowService(false);
+    name_department_selected = null;
+    id_department_selected = null; 
+    id_doctor_selected = null; 
+    name_doctor_selected = null;
+    id_service_selected = null;
+    name_service_selected = null;
+   
   }
-}, [name_service_selected, id_service_selected])
+}, [isBookingChanged])
 
 
   useEffect(() => {
@@ -670,11 +710,12 @@ const FormBooking = ({ id = null,
           }
         }
     });
-},[day_off, time_advise]);
+},[day_off, time_advise, id_doctor]);
 
     useEffect(() => {
       dayOfWeek.map((day) => {
           if (time_service[day].date === default_day) {
+            setDayOff(time_service[day].enable)
             if(time_service[day].enable==true) {
               setNightService(time_service[day].night);
               setMorningService(time_service[day].morning);
@@ -699,7 +740,7 @@ const FormBooking = ({ id = null,
             }
         }
       });
-    },[day_off]);
+    },[day_off, time_service, id_service]);
 
   const handleDateService = (e) => {
     const { name, value } = e.target;
@@ -799,19 +840,16 @@ const FormBooking = ({ id = null,
       )
        toast.success(' Đặt lịch thành công!', toastOptions)
    } catch (error) {
-      toast.error(' Đặt lịch thất bại!', toastOptions)
+      toast.error(error.response.data.message, toastOptions)
+      console.log("Lỗi API!", error)
    } finally {
-      setIsButtonDisabled(true);
-      setNameDepartment("");
-      setIdDepartment(null);
-      setDoctorEnable(false);
-      setNameDoctor("");
-      setIdDoctor(null);
+      clearInput();
    }
   }
 
   const handleClickBookingService =  async (e) => {
     e.preventDefault()
+    console.log(time_booking_service)
     try {
       const response = await http.post(
          '/work-schedule/add-service',
@@ -822,37 +860,44 @@ const FormBooking = ({ id = null,
       )
        toast.success(' Đặt lịch thành công!', toastOptions)
    } catch (error) {
-      toast.error(' Đặt lịch thất bại!', toastOptions)
+      toast.error(error.response.data.message, toastOptions)
    } finally {
-      setIsButtonDisabled(true);
-      setNameService("");
-      setIdService(null);
+      clearInput();
    }
   }
 
   const handleChangeTab = (tab_changed) => {
       setTabBooking(tab_changed); 
-      if(tab_changed === "doctor") {
-        setIsButtonDisabled(true);
-        setNameDepartment("");
-        setIdDepartment(null);
-        setDoctorEnable(false);
-        setNameDoctor("");
-        setIdDoctor(null);
-        setTimeBooking({
-          date: "",
-          interval: []
-        })
-      } else {
-        setIsButtonDisabled(true);
-        setNameService("");
-        setIdService(null);
-        setTimeServiceBooking({
-          date: "",
-          interval: []
-        })
-      }
+      clearInput();
   } 
+
+  const clearInput = () => {
+    setIsButtonDisabled(true);
+    setNameDepartment("");
+    setIdDepartment(null);
+    setDoctorEnable(false);
+    setNameDoctor("");
+    setIdDoctor(null);
+    setTimeBooking({
+      date: "",
+      interval: []
+    })
+    setTimeServiceBooking({
+      date: "22",
+      interval: []
+    })  
+    setIsButtonDisabled(true);
+    setNameService("");
+    setIdService(null);     
+    inputRef.current.value = getTomorrow();
+    setDefaultDay(null);
+    name_department_selected = null;
+    id_department_selected = null
+    id_doctor_selected = null;
+    name_doctor_selected = null;
+    id_service_selected = null;
+    name_service_selected = null;
+  }
 
   return (
     <>
@@ -1022,6 +1067,7 @@ const FormBooking = ({ id = null,
                           onChange={handleDate}
                           defaultValue={default_day}
                           id="datefield"
+                          ref={inputRef}
                           type="date"
                           name="interval"
                         />
@@ -1181,6 +1227,7 @@ const FormBooking = ({ id = null,
                           onChange={handleDateService}
                           defaultValue={default_day}
                           id="datefield"
+                          ref={inputRef}
                           type="date"
                           name="interval"
                         />

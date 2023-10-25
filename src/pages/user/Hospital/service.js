@@ -12,6 +12,8 @@ import { Accordion } from "react-bootstrap";
 import Map from "~/components/Map";
 import { GiConsoleController } from "react-icons/gi";
 import FormBooking from "~/components/Form/form-booking";
+import { changeBooking } from '~/redux/bookingSlice';
+import { useDispatch, useSelector } from 'react-redux';
 
 const HospitalService = () => {
    const [services, setService] = useState([])
@@ -20,6 +22,8 @@ const HospitalService = () => {
    const [name_service, setNameService] = useState(null);
    const { id, tab } = useParams()
    const [loading, setLoading] = useState(false)
+   const isDoctorChanged = useSelector((state) => state.booking.keyBookingUpdated)
+   const dispatch = useDispatch();
    const [hospital, setHospital] = useState({
       id: null,
       email: '',
@@ -96,6 +100,7 @@ const HospitalService = () => {
    const handleBooking = (id_service, name_service) => {
     setIdService(id_service);
     setNameService(name_service);
+    dispatch(changeBooking());
   }
    
   return (

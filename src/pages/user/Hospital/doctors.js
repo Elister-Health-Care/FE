@@ -11,6 +11,8 @@ import LoadingDot from "~/components/Loading/LoadingDot";
 import { Accordion } from "react-bootstrap";
 import Map from "~/components/Map";
 import FormBooking from "~/components/Form/form-booking";
+import { changeBooking } from '~/redux/bookingSlice';
+import { useDispatch, useSelector } from 'react-redux';
 
 const HospitalDoctor = () => {
   const [doctors, setDoctor] = useState([]);
@@ -20,7 +22,9 @@ const HospitalDoctor = () => {
   const [id_department, setIdDepartment] = useState(null);
   const [name_department, setNameDepartment] = useState(null);
   const [name_doctor, setNameDoctor] = useState(null);
-  const [id_doctor, setIdDoctor] = useState(null); 
+  const [id_doctor, setIdDoctor] = useState(null);
+  const isDoctorChanged = useSelector((state) => state.booking.keyBookingUpdated)
+  const dispatch = useDispatch();
   const [hospital, setHospital] = useState({
     id: null,
     email: "",
@@ -94,7 +98,6 @@ const HospitalDoctor = () => {
 
   const handleChangeInput = (e) => {
     const { name, value } = e.target
-    console.log (value);
     setKeyword(value);
  }
 
@@ -102,7 +105,8 @@ const HospitalDoctor = () => {
       setIdDepartment(id_department);
       setNameDepartment(name_department);
       setIdDoctor(id_doctor);
-      setNameDoctor(name_doctor)
+      setNameDoctor(name_doctor);
+      dispatch(changeBooking())
   }
 
   return (
