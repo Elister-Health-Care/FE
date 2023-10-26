@@ -426,9 +426,11 @@ function DoctorArticlePage() {
 			<div className={cx('card', 'shadow')}>
 				{loadingDot && <LoadingDot />}
 				<div className={cx('card_header')}>
+					{selectedArticles.length > 0 ? (
 					<div className={cx('add_box')}>
 						<button data-toggle="modal" data-target="#deleteMany" type="button" className="btn btn-danger ml-2"><i class="fa-solid fa-trash"></i></button>
 					</div>
+					) : null}
 					<div className={cx('add_box')}>
 						<button data-toggle="modal" data-target="#modalCreateHealthInsurace" type="button" className="btn btn-success ml-2"><i className="fa-solid fa-square-plus"></i></button>
 					</div>

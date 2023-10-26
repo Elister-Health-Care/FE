@@ -362,9 +362,11 @@ function HospitalCalendarDoctorPage() {
 			<div className={cx('card', 'shadow')}>
 				{loadingDot && <LoadingDot />}
 				<div className={cx('card_header')}>
+					{selectedWorkSchedules.length > 0 ? (
 					<div className={cx('add_box')}>
 						<button data-toggle="modal" data-target="#deleteMany" type="button" className={`btn btn-danger ml-2 ${cx('fontz_14')}`} ><i className="fa-regular fa-rectangle-xmark"></i></button>
 					</div>
+					) : null}
 					<div className={cx('search_box')}>
 						<div className={cx('input-group', 'fontz_14')}>
 							<span className="input-group-prepend">
