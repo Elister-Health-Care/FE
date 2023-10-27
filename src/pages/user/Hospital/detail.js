@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link, Outlet, useParams } from "react-router-dom";
+import { Link, Outlet, useNavigate, useParams } from "react-router-dom";
 import "./hospital.css";
 import { Container, Nav } from "reactstrap";
 import { GrFormNext } from "react-icons/gr";
@@ -17,6 +17,7 @@ const HospitalDetail = () => {
   const [insurances, setInsurance] = useState([])
   const [doctors, setDoctor] = useState([]);
   const [services, setService] = useState([]);
+  const navigate = useNavigate();
   const [active, setActive] = useState("infor");
   const { id, tab } = useParams();
 
@@ -212,7 +213,9 @@ const HospitalDetail = () => {
         const response = await http.get("/infor-hospital/view-profile/" + id);
         setHospital(response.data.data);
       } catch (error) {
-        console.log("Lỗi kết nối đến API !", error);
+        if(error.response.data.status == 404 ) {
+          navigate("/page-not-found");
+        }
       } finally {
         setLoading(false);
       }

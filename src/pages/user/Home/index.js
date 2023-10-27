@@ -387,9 +387,8 @@ useEffect(() => {
                            <div className="px-1 mt-2">
                               <Link
                                  to={
-                                    '/hospital/' +
-                                    service.id_hospital +
-                                    '/service'
+                                    '/service/' +
+                                    service.id_hospital_service
                                  }
                                  className="tt_service"
                               >

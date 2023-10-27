@@ -143,6 +143,23 @@
 .main-article .header-article .name-article h1 {
   font-weight: 700;
 }
+.main-article .header-article .content-article h2 {
+  font-size: 16px;
+  letter-spacing: 0;
+  line-height: 24px;
+  display: flex;
+  font-weight: 700;
+  color: var(--custom-heading-color);
+}
+.main-article .header-article .content-article h2:before {
+  display: block;
+  content: "";
+  width: 2px;
+  height: 15px;
+  background: var(--mainColor);
+  margin-top: 4px;
+  margin-right: 10px;
+}
 .main-article .header-article .content-article img {
   width: 100% !important;
 }
@@ -306,7 +323,6 @@
 }
 .main-article .right-component .list-article .list .list-item .item-infor {
   padding: 10px 10px 10px 0px;
-  width: 60%;
 }
 .main-article .right-component .list-article .list .list-item .item-infor .name-article p {
   -webkit-box-orient: vertical;

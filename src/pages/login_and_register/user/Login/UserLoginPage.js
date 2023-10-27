@@ -21,6 +21,22 @@ const UserLoginPage = () => {
    const { toastRegisterSuccess, handleToastRegisterSuccessFalse } =
       useAppContext()
    const navigate = useNavigate()
+   const [email, setEmail] = useState('');
+   
+   const handleEmailChange = (e) => {
+      console.log(e.target.value);
+      setEmail(e.target.value)
+   }
+
+   const handleSendmail = async () => {
+      try {
+         await http.post('user/forgot-pw-sendcode', { email })
+      } catch (error) {
+         console.error('Gửi mật khẩu thất bại! Hãy kiểm tra lại email', toastOptions)
+      } finally {
+         toast.success('Mật khẩu đã gửi về email bạn thành công! Hãy kiểm tra email.', toastOptions)
+      }
+   }
 
    useEffect(() => {
       const userLoggined = JSON.parse(localStorage.getItem('HealthCareUser'))
@@ -276,7 +292,7 @@ const UserLoginPage = () => {
 
                                     <p className="mt-2 text-center">Hoặc</p>
                                     <div className="row">
-                                       <div className="col-lg-6 col-md-6 pr-1 pl-1">
+                                       <div className="col-lg-12 col-md-12 pr-1 pl-1">
                                           <div className="social google ">
                                              <Link onClick={googleSignIn}>
                                                 <img
@@ -290,7 +306,7 @@ const UserLoginPage = () => {
                                              </Link>
                                           </div>
                                        </div>
-                                       <div className="col-lg-6 col-md-6 pr-1 pl-1">
+                                       {/* <div className="col-lg-6 col-md-6 pr-1 pl-1">
                                           <div className="social facebook">
                                              <Link to={'/github'}>
                                                 <img
@@ -303,7 +319,7 @@ const UserLoginPage = () => {
                                                 </div>
                                              </Link>
                                           </div>
-                                       </div>
+                                       </div> */}
                                        <div className="col-lg-12 p-1">
                                           <Link
                                              className="btn btn-primary w-100"
@@ -350,7 +366,6 @@ const UserLoginPage = () => {
                                           <div className="modal-body">
                                              <form
                                                 method="POST"
-                                                action="/forgot.sendcode"
                                                 encType="multipart/form-data"
                                              >
                                                 <div className="form-group row">
@@ -364,6 +379,7 @@ const UserLoginPage = () => {
                                                       <input
                                                          name="email"
                                                          type="email"
+                                                         onChange={handleEmailChange}
                                                          className="form-control"
                                                          id="staticEmail"
                                                          placeholder="email@example.com"
@@ -378,12 +394,14 @@ const UserLoginPage = () => {
                                                 type="button"
                                                 className="btn btn-secondary"
                                                 data-dismiss="modal"
+                                                
                                              >
                                                 Close
                                              </button>
                                              <button
                                                 type="submit"
                                                 className="btn btn-primary"
+                                                onClick={handleSendmail}
                                              >
                                                 Submit
                                              </button>
