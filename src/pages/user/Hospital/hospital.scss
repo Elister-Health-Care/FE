@@ -489,378 +489,378 @@
             }
         }
     }
-    .modal-booking {
-        min-width: 360px;
-        max-width: 360px;
-        background-color: rgb(248, 249, 252);
-        border-radius: 6px;
-        padding: 16px;
-        margin-top: 24px;
-        .title {
-            font-size: 18px;
-            line-height: 28px;
-            color: var(--custom-heading-color);
-            font-weight: 700;
+}
+.modal-booking {
+    min-width: 360px;
+    max-width: 360px;
+    background-color: rgb(248, 249, 252);
+    border-radius: 6px;
+    padding: 16px;
+    margin-top: 24px;
+    .title {
+        font-size: 18px;
+        line-height: 28px;
+        color: var(--custom-heading-color);
+        font-weight: 700;
+    }
+    .advice {
+        font-size: 14px;
+        letter-spacing: -.2px;
+        line-height: 22px;
+    }
+    .list-choice {
+        margin-block: 24px;
+        width: 100%;
+        display: -webkit-inline-box;
+        display: -webkit-inline-flex;
+        display: -ms-inline-flexbox;
+        display: inline-flex;
+        max-width: 100%;
+        border-bottom: 1px solid #e4e8ec;
+        -webkit-overflow-scrolling: touch;
+        overflow-x: auto;
+        overflow-y: hidden;
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+        -webkit-column-gap: 1.25rem;
+        column-gap: 1.25rem;
+        list-style: none;
+        .active {
+            color: #2d87f3;
+            border-bottom: 3px solid #2d87f3;
+            bottom: -1px;
+            position: relative;
         }
-        .advice {
-            font-size: 14px;
-            letter-spacing: -.2px;
-            line-height: 22px;
-        }
-        .list-choice {
-            margin-block: 24px;
+        li {
             width: 100%;
-            display: -webkit-inline-box;
-            display: -webkit-inline-flex;
-            display: -ms-inline-flexbox;
-            display: inline-flex;
-            max-width: 100%;
-            border-bottom: 1px solid #e4e8ec;
-            -webkit-overflow-scrolling: touch;
-            overflow-x: auto;
-            overflow-y: hidden;
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-            -webkit-column-gap: 1.25rem;
-            column-gap: 1.25rem;
-            list-style: none;
-            .active {
-                color: #2d87f3;
-                border-bottom: 3px solid #2d87f3;
-                bottom: -1px;
+            -webkit-box-pack: center;
+            justify-content: center;
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-align-items: center;
+            -webkit-box-align: center;
+            -ms-flex-align: center;
+            align-items: center;
+            padding-bottom: 4px;
+            font-weight: 600;
+            color:var(--greyText)
+        }
+    }
+    .form-booking {
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+        position: relative;
+        label {
+            font-weight: 600;
+            font-size: 12px;
+            line-height: 18px;
+        }
+        .selected-hospital{
+            position: relative;
+            width: 100%;
+            .input-hospital {
                 position: relative;
-            }
-            li {
-                width: 100%;
-                -webkit-box-pack: center;
-                justify-content: center;
-                display: -webkit-box;
-                display: -webkit-flex;
-                display: -ms-flexbox;
-                display: flex;
-                -webkit-align-items: center;
-                -webkit-box-align: center;
-                -ms-flex-align: center;
-                align-items: center;
-                padding-bottom: 4px;
-                font-weight: 600;
-                color:var(--greyText)
+                input {
+                    background-color: transparent;
+                    font-size: 16px;
+                    line-height: 1.2;
+                    font-weight: 400;
+                    padding: 12px 16px 12px 48px;
+                    cursor: not-allowed;
+                    width: 100%;
+                    border: 1px solid rgb(217, 217, 217);
+                    border-radius: 6px;
+                }
+                .logo-hospital {
+                    position: absolute;
+                    top: 50%;
+                    left: 16px;
+                    display: inline-flex;
+                    cursor: default;
+                    transform: translateY(-50%);
+                    img {
+                        width: 24px;
+                        height: 24px;
+                        object-fit: contain;
+                    }
+                }
             }
         }
-        .form-booking {
+        .input-booking {
             display: flex;
             flex-direction: column;
             gap: 24px;
             position: relative;
-            label {
-                font-weight: 600;
+            .department {
+                font-weight: 700;
                 font-size: 12px;
                 line-height: 18px;
             }
-            .selected-hospital{
+            .select-department {
                 position: relative;
-                width: 100%;
-                .input-hospital {
+                border: 1px solid rgb(217, 217, 217);
+                background-position: right 16px center;
+                border-radius: 6px;
+                background-color: rgb(255, 255, 255);
+                .input-department {
                     position: relative;
-                    input {
-                        background-color: transparent;
-                        font-size: 16px;
-                        line-height: 1.2;
-                        font-weight: 400;
-                        padding: 12px 16px 12px 48px;
-                        cursor: not-allowed;
+                    display: flex;
+                    width: 100%;
+                    box-sizing: border-box;
+                    -webkit-box-align: center;
+                    align-items: center;
+                    .dropdown-input {
+                        position: relative;
                         width: 100%;
-                        border: 1px solid rgb(217, 217, 217);
-                        border-radius: 6px;
-                    }
-                    .logo-hospital {
-                        position: absolute;
-                        top: 50%;
-                        left: 16px;
-                        display: inline-flex;
-                        cursor: default;
-                        transform: translateY(-50%);
-                        img {
-                            width: 24px;
-                            height: 24px;
-                            object-fit: contain;
+                        input {
+                            padding: 12px 36px 12px 48px;
+                            font-size: 16px;
+                            line-height: 1.2;
+                            font-weight: 400;
+                            width: 100%;
+                            border: 1px solid rgb(217, 217, 217);
+                            border-radius: 6px;
+                        }
+                        input:disabled {
+                            cursor: not-allowed;
+                        }
+                        .icon-search {
+                            position: absolute;
+                            top: 50%;
+                            left: 16px;
+                            display: inline-flex;
+                            cursor: default;
+                            transform: translateY(-50%);
+                            .icon {
+                                width: 24px;
+                                max-width: unset;
+                                height: 24px;
+                            }
+                        }
+                        .icon-down {
+                            position: absolute;
+                            top: 50%;
+                            right: 16px;
+                            display: inline-flex;
+                            cursor: default;
+                            transform: translateY(-50%);
+                            .icon {
+                                width: 24px;
+                                max-width: unset;
+                                height: 24px;
+                                font-size: 15px;
+                            }
+                        }
+                        .dropdown-departerment {
+                            right:0px;
+                            a {
+                                display: flex;
+                                gap: 10px;
+                                padding: 5px 10px;
+                                cursor: pointer;
+                                img {
+                                    width: 30px;
+                                    height: 30px;
+                                    border-radius: 50%;
+                                    object-fit: cover;
+                                    object-position: center;
+                                    margin: auto 0px;
+                                }
+                                p {
+                                    margin-bottom: 0px;
+                                    margin-top: 3px;
+                                    .money {
+                                        font-size: 14px;
+                                    }
+                                }
+                            }
+                            li:hover {
+                                background-color: #f1f1f1;
+                            }
                         }
                     }
                 }
             }
-            .input-booking {
-                display: flex;
-                flex-direction: column;
-                gap: 24px;
+            .btn-booking {
+                background-color: #2d87f3;
+                border: 1px solid #2d87f3;
+                color: #fff;
+            }
+            .btn-booking:disabled {
+                background-color: #bfbfbf;
+                border-color: #bfbfbf;
+                color: #fff;
+                cursor: not-allowed;
+                font-size: 16px;
+                line-height: 24px;
+                padding: 12px 24px;
+                height: 100%;
+                width: 100%;
+                font-weight: 700;
+                transition: background-color .3s,border-color .3s;
+                border-radius: 6px;
+                overflow: visible;
+            }
+            .btn-booking:enabled {
+                background-color: #007bff;
+                border-color:#007bff;
+                color: #fff;
+                cursor: pointer;
+                font-size: 16px;
+                line-height: 24px;
+                padding: 12px 24px;
+                height: 100%;
+                width: 100%;
+                font-weight: 700;
+                transition: background-color .3s,border-color .3s;
+                border-radius: 6px;
+                overflow: visible;
+            }
+            .advise {
                 position: relative;
-                .department {
-                    font-weight: 700;
-                    font-size: 12px;
-                    line-height: 18px;
-                }
-                .select-department {
-                    position: relative;
-                    border: 1px solid rgb(217, 217, 217);
-                    background-position: right 16px center;
-                    border-radius: 6px;
-                    background-color: rgb(255, 255, 255);
-                    .input-department {
+                margin-top: 20px;
+                ul {
+                    padding-left: 0px;
+                    width: 100%;
+                    display: inline-flex;
+                    max-width: 100%;
+                    border-bottom: 1px solid #e4e8ec;
+                    overflow-x: auto;
+                    overflow-y: hidden;
+                    column-gap: 1.25rem;
+                    li {
+                        color: #2d87f3;
+                        border-bottom: 3px solid #2d87f3;
+                        bottom: -1px;
                         position: relative;
+                        flex: 1 1 0%;
+                        -webkit-box-pack: center;
+                        justify-content: center;
                         display: flex;
-                        width: 100%;
-                        box-sizing: border-box;
                         -webkit-box-align: center;
+                        -ms-flex-align: center;
                         align-items: center;
-                        .dropdown-input {
-                            position: relative;
-                            width: 100%;
-                            input {
-                                padding: 12px 36px 12px 48px;
-                                font-size: 16px;
-                                line-height: 1.2;
-                                font-weight: 400;
-                                width: 100%;
-                                border: 1px solid rgb(217, 217, 217);
-                                border-radius: 6px;
-                            }
-                            input:disabled {
-                                cursor: not-allowed;
-                            }
-                            .icon-search {
-                                position: absolute;
-                                top: 50%;
-                                left: 16px;
-                                display: inline-flex;
-                                cursor: default;
-                                transform: translateY(-50%);
-                                .icon {
-                                    width: 24px;
-                                    max-width: unset;
-                                    height: 24px;
-                                }
-                            }
-                            .icon-down {
-                                position: absolute;
-                                top: 50%;
-                                right: 16px;
-                                display: inline-flex;
-                                cursor: default;
-                                transform: translateY(-50%);
-                                .icon {
-                                    width: 24px;
-                                    max-width: unset;
-                                    height: 24px;
-                                    font-size: 15px;
-                                }
-                            }
-                            .dropdown-departerment {
-                                right:0px;
-                                a {
-                                    display: flex;
-                                    gap: 10px;
-                                    padding: 5px 10px;
-                                    cursor: pointer;
-                                    img {
-                                        width: 30px;
-                                        height: 30px;
-                                        border-radius: 50%;
-                                        object-fit: cover;
-                                        object-position: center;
-                                        margin: auto 0px;
-                                    }
-                                    p {
-                                        margin-bottom: 0px;
-                                        margin-top: 3px;
-                                        .money {
-                                            font-size: 14px;
-                                        }
-                                    }
-                                }
-                                li:hover {
-                                    background-color: #f1f1f1;
-                                }
-                            }
-                        }
-                    }
-                }
-                .btn-booking {
-                    background-color: #2d87f3;
-                    border: 1px solid #2d87f3;
-                    color: #fff;
-                }
-                .btn-booking:disabled {
-                    background-color: #bfbfbf;
-                    border-color: #bfbfbf;
-                    color: #fff;
-                    cursor: not-allowed;
-                    font-size: 16px;
-                    line-height: 24px;
-                    padding: 12px 24px;
-                    height: 100%;
-                    width: 100%;
-                    font-weight: 700;
-                    transition: background-color .3s,border-color .3s;
-                    border-radius: 6px;
-                    overflow: visible;
-                }
-                .btn-booking:enabled {
-                    background-color: #007bff;
-                    border-color:#007bff;
-                    color: #fff;
-                    cursor: pointer;
-                    font-size: 16px;
-                    line-height: 24px;
-                    padding: 12px 24px;
-                    height: 100%;
-                    width: 100%;
-                    font-weight: 700;
-                    transition: background-color .3s,border-color .3s;
-                    border-radius: 6px;
-                    overflow: visible;
-                }
-                .advise {
-                    position: relative;
-                    margin-top: 20px;
-                    ul {
-                        padding-left: 0px;
-                        width: 100%;
-                        display: inline-flex;
-                        max-width: 100%;
-                        border-bottom: 1px solid #e4e8ec;
-                        overflow-x: auto;
-                        overflow-y: hidden;
-                        column-gap: 1.25rem;
-                        li {
-                            color: #2d87f3;
-                            border-bottom: 3px solid #2d87f3;
-                            bottom: -1px;
-                            position: relative;
-                            flex: 1 1 0%;
-                            -webkit-box-pack: center;
-                            justify-content: center;
-                            display: flex;
+                        padding-bottom: 4px;
+                        .title {
                             -webkit-box-align: center;
+                            display: flex;
                             -ms-flex-align: center;
                             align-items: center;
-                            padding-bottom: 4px;
-                            .title {
-                                -webkit-box-align: center;
-                                display: flex;
-                                -ms-flex-align: center;
-                                align-items: center;
-                                .content {
-                                    -webkit-tap-highlight-color: transparent;
-                                    color: rgb(45, 135, 243) !important;
-                                    text-decoration: none;
-                                    font-weight: 700;
-                                    font-size: 1rem;
-                                    line-height: 1.5rem;
-                                    letter-spacing: 0px;
-                                    margin-bottom: 0;
-                                }
+                            .content {
+                                -webkit-tap-highlight-color: transparent;
+                                color: rgb(45, 135, 243) !important;
+                                text-decoration: none;
+                                font-weight: 700;
+                                font-size: 1rem;
+                                line-height: 1.5rem;
+                                letter-spacing: 0px;
+                                margin-bottom: 0;
                             }
                         }
                     }
-                    .booking-description {
-                        color: rgb(89, 89, 89);
-                        font-size: 14px;
-                        line-height: 22px;
-                        margin-top: 20px;
-                    }
                 }
-                .main-form-booking {
-                    background-color: rgb(248, 249, 252);
-                    position: relative;
-                    .title-booking {
-                        font-weight: 700;
-                        font-size: 12px;
-                        line-height: 18px
-                    }
-                    .input-datetime {
-                        .pickerContainer {
-                            position: relative;
-                            padding-top: 0px;
-                            .nav-tabs {
-                                margin-top: 20px;
-                                .nav-item {
+                .booking-description {
+                    color: rgb(89, 89, 89);
+                    font-size: 14px;
+                    line-height: 22px;
+                    margin-top: 20px;
+                }
+            }
+            .main-form-booking {
+                background-color: rgb(248, 249, 252);
+                position: relative;
+                .title-booking {
+                    font-weight: 700;
+                    font-size: 12px;
+                    line-height: 18px
+                }
+                .input-datetime {
+                    .pickerContainer {
+                        position: relative;
+                        padding-top: 0px;
+                        .nav-tabs {
+                            margin-top: 20px;
+                            .nav-item {
+                                border:none;
+                                text-align: center;
+                                font-weight: 600;
+                                .nav-link{
                                     border:none;
                                     text-align: center;
                                     font-weight: 600;
-                                    .nav-link{
-                                        border:none;
-                                        text-align: center;
-                                        font-weight: 600;
-                                        width: 100%;
-                                    }
-                                    .active {
-                                        background: none;
-                                        color:rgb(45, 135, 243);
-                                        border-bottom: 2px solid rgb(45, 135, 243);
-                                    }
+                                    width: 100%;
+                                }
+                                .active {
+                                    background: none;
+                                    color:rgb(45, 135, 243);
+                                    border-bottom: 2px solid rgb(45, 135, 243);
                                 }
                             }
-                            .datetime {
+                        }
+                        .datetime {
+                            position: relative;
+                            width: 100%;
+                            .input-cover {
                                 position: relative;
-                                width: 100%;
-                                .input-cover {
-                                    position: relative;
-                                    input {
-                                        font-size: 16px;
-                                        line-height: 1.2;
-                                        font-weight: 400;
-                                        padding: 12px 16px;
-                                        background-color: rgb(255, 255, 255);
-                                        cursor: pointer;
-                                        width: 100%;
-                                        border: 1px solid rgb(217, 217, 217);
-                                        border-radius: 6px
-                                    }
+                                input {
+                                    font-size: 16px;
+                                    line-height: 1.2;
+                                    font-weight: 400;
+                                    padding: 12px 16px;
+                                    background-color: rgb(255, 255, 255);
+                                    cursor: pointer;
+                                    width: 100%;
+                                    border: 1px solid rgb(217, 217, 217);
+                                    border-radius: 6px
                                 }
                             }
-                            .time-booking{
-                                display: grid;
-                                margin-top: 24px;
-                                gap: 8px;
-                                grid-template-columns: repeat(3, 1fr);
-                                button {
-                                    border-width: 1.5px;
-                                    border: 1px solid rgb(210, 214, 220);
-                                    padding: 8px 0px !important;
-                                    background-color: #fff;
-                                    color: #2d87f3;
-                                    font-size: 14px;
-                                    line-height: 22px;
-                                    border-radius: 6px;
-                                    cursor: pointer;
-                                    font-weight: 700;
-                                    transition: background-color .3s,border-color .3s;
-                                    width: auto;
-                                    span {
-                                        color: rgb(38, 38, 38);
-                                        font-weight: 400;
-                                        align-items: center;
-                                        display: flex;
-                                        justify-content: center;
-                                    }
+                        }
+                        .time-booking{
+                            display: grid;
+                            margin-top: 24px;
+                            gap: 8px;
+                            grid-template-columns: repeat(3, 1fr);
+                            button {
+                                border-width: 1.5px;
+                                border: 1px solid rgb(210, 214, 220);
+                                padding: 8px 0px !important;
+                                background-color: #fff;
+                                color: #2d87f3;
+                                font-size: 14px;
+                                line-height: 22px;
+                                border-radius: 6px;
+                                cursor: pointer;
+                                font-weight: 700;
+                                transition: background-color .3s,border-color .3s;
+                                width: auto;
+                                span {
+                                    color: rgb(38, 38, 38);
+                                    font-weight: 400;
+                                    align-items: center;
+                                    display: flex;
+                                    justify-content: center;
                                 }
-                                .active, button:focus {
-                                    background-color: #2d87f3;
-                                    border: 1px solid #2d87f3;
-                                    font-size: 14px;
-                                    line-height: 22px;
-                                    padding: 7px 0px !important;
-                                    border-radius: 6px;
-                                    cursor: pointer;
-                                    font-weight: 700;
-                                    transition: background-color .3s,border-color .3s;
-                                    width: auto;
-                                    span {
-                                        color: #fff;
-                                        font-weight: 400;
-                                        align-items: center;
-                                        display: flex;
-                                        justify-content: center;
-                                    }
+                            }
+                            .active, button:focus {
+                                background-color: #2d87f3;
+                                border: 1px solid #2d87f3;
+                                font-size: 14px;
+                                line-height: 22px;
+                                padding: 7px 0px !important;
+                                border-radius: 6px;
+                                cursor: pointer;
+                                font-weight: 700;
+                                transition: background-color .3s,border-color .3s;
+                                width: auto;
+                                span {
+                                    color: #fff;
+                                    font-weight: 400;
+                                    align-items: center;
+                                    display: flex;
+                                    justify-content: center;
                                 }
                             }
                         }
@@ -870,3 +870,32 @@
         }
     }
 }
+.infor-hospital {
+            display: flex;
+            gap: 16px;
+            .logo-hospital {
+                width: 140px;
+                height: 140px;
+                position: relative;
+                margin-top: -30px;
+                img{
+                    background-color: white;
+                    border-radius: 50%;
+                    width: 100%;
+                    height: 100%;
+                    object-fit: contain;
+                    box-shadow: rgba(0, 0, 0, 0.07) 0px 2px 2px, rgba(0, 0, 0, 0.15) 0px 4px 7px;
+                }
+            }
+            .name-hospital {
+                padding: 16px 0px;
+                h2 {
+                    font-size: 20px;
+                    font-weight: 600;
+                }
+                .address {
+                    font-size: 13px;
+                    color: var(--textColor);
+                }
+            }
+        }

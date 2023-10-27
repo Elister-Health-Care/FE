@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import "./article.css";
 import { Container } from "reactstrap";
 import LoadingDot from "~/components/Loading/LoadingDot";
@@ -9,6 +9,7 @@ import config from "~/router/config";
 import { AiFillEye } from "react-icons/ai";
 const ArticleDetail = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [name_category, setNameCategory] = useState(null);
   const [articles, setArticles] = useState([]);
@@ -49,7 +50,9 @@ const ArticleDetail = () => {
         setArticle(response.data.data);
         setNameCategory(response.data.data.name_category);
       } catch (error) {
-        console.log("Lỗi kết nối đến API !", error);
+        if(error.response.data.status == 404 ) {
+            navigate("/page-not-found");
+        }
       } finally {
         setLoading(false);
       }
