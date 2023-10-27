@@ -39,6 +39,8 @@ import HospitalDetail from '~/pages/user/Hospital/detail'
 import HospitalInformation from '~/pages/user/Hospital/info'
 import ArticleDetail from '~/pages/user/Article/details'
 import ServiceDetail from '~/pages/user/Service/detail'
+import BMICanculate from '~/pages/user/Health/bmi'
+
 // Import admin pages
 import AdminLayout from '~/layouts/AdminLayout'
 import AdminDashboardPage from '~/pages/admin/Dashboard'
@@ -104,6 +106,7 @@ const BigRoutes = () => (
          </Route>
          <Route path="article/:id" element={<ArticleDetail />}></Route>
          <Route path="service/:id" element={<ServiceDetail />}></Route>
+         <Route path="health-check" element={<BMICanculate/>} />
       </Route>
 
       {/* Private route user-hospital ********************/}
