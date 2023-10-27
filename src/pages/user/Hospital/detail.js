@@ -14,6 +14,7 @@ import FormBooking from "~/components/Form/form-booking";
 
 const HospitalDetail = () => {
   const [loading, setLoading] = useState(false);
+  const [insurances, setInsurance] = useState([])
   const [doctors, setDoctor] = useState([]);
   const [services, setService] = useState([]);
   const [active, setActive] = useState("infor");
@@ -232,6 +233,22 @@ const HospitalDetail = () => {
     };
     getService();
   }, [active, tab]);
+
+  useEffect(() => {
+    const getInsurance = async () => {
+       try {
+          setLoading(true)
+          const response = await http.get('/health-insurace-hospital/hospital/' + id)
+          setInsurance(response.data.data)
+       } catch (error) {
+          console.log('Lỗi kết nối đến API !', error)
+       } finally {
+          setLoading(false)
+       }
+    }
+    getInsurance()
+ }, [id])
+
   const handleChildData = (data) => {
     // setUsers({ ...users, location: data })
   };
@@ -345,7 +362,7 @@ const HospitalDetail = () => {
                     active == "insurance" ? "active link-item" : "link-item"
                   }
                 >
-                 Bảo hiểm 
+                 Bảo hiểm {"("+insurances.length+")"}
                 </Link>
               </div>
             </div>

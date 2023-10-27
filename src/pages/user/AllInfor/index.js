@@ -35,6 +35,17 @@ function AllInforPage() {
       page: 1,
       sort_search_number: true,
    }
+   
+   const formatMoney = (money) => {
+      if (money) {
+         return money.toLocaleString('it-IT', {
+            style: 'currency',
+            currency: 'VND',
+         })
+      }
+      return ''
+   }
+
    const fetchHospital = async () => {
       try {
          const queryParams = `?search=${search.search}&page=${search.page}&paginate=${search.paginate}&sort_search_number=${search.sort_search_number}`
@@ -178,7 +189,7 @@ function AllInforPage() {
                   </div>
                   <div className="all-hospital-list">
                      {services.map((service, index) => (
-                        <div key={index} className="all-service-card">
+                        <div key={index} className="all-service-card shadow">
                            <img
                               className="all-service-avatar"
                               src={
@@ -199,11 +210,12 @@ function AllInforPage() {
                               >
                                  {service.name}
                               </Link>
-                              <div className="p-1">
+                              <div className="p-1 d-block">
                                  <i className="ti-location-pin"></i> Giá dịch
-                                 vụ&nbsp;
-                                 <span className="srv_price">
-                                    {service.price}
+                                 vụ&nbsp; 
+                                 <br/>
+                                 <span className="srv_price text-success">
+                                    {formatMoney(service.price)}
                                  </span>
                               </div>
                               <div className="p-1">

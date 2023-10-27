@@ -374,7 +374,7 @@ useEffect(() => {
                   </div>
                   <div className="all-hospital-list">
                      {services.map((service, index) => (
-                        <div key={index} className="all-service-card">
+                        <div key={index} className="all-service-card shadow">
                            <img
                               className="all-service-avatar"
                               src={
