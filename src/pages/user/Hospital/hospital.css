@@ -832,7 +832,6 @@
 }
 
 .infor-hospital {
-  display: flex;
   gap: 16px;
 }
 .infor-hospital .logo-hospital {
