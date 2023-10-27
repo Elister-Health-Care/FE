@@ -96,14 +96,30 @@ function DoctorProfilePage() {
       }
       const file = e.target.files[0]
       if (file) {
-         const reader = new FileReader()
-         reader.onload = (e) => setSelectImage(e.target.result)
-         reader.readAsDataURL(file)
+         const fileName = file.name
+         const fileExtension = fileName.split('.').pop().toLowerCase()
 
-         setUsers({
-            ...users,
-            avatar: file,
-         })
+         if (
+            fileExtension === 'jpg' ||
+            fileExtension === 'jpeg' ||
+            fileExtension === 'png' ||
+            fileExtension === 'gif'
+         ) {
+            // Đây là một tệp hình ảnh hợp lệ
+            const reader = new FileReader()
+            reader.onload = (e) => setSelectImage(e.target.result)
+            reader.readAsDataURL(file)
+
+            setUsers({
+               ...users,
+               avatar: file,
+            })
+         } else {
+            // Đây không phải tệp hình ảnh hợp lệ, bạn có thể thông báo lỗi hoặc thực hiện xử lý khác.
+            setNotify({
+               image: 'Chỉ cho phép tải lên các tệp hình ảnh (jpg, jpeg, png, gif).',
+            })
+         }
       }
    }
    const handleClickOpenLocation = () => {
@@ -240,6 +256,9 @@ function DoctorProfilePage() {
                         hidden
                      />
                      <h6>{user.role}</h6>
+                     {notify.image && (
+                        <p className={cx('error')}>{notify.image}</p>
+                     )}
                   </div>
                </div>
 
